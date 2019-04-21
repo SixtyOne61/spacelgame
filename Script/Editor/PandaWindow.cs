@@ -154,6 +154,7 @@ namespace Tool
             if(AddButton("Export"))
             {
                 // export all ship part in xml
+                // key was invalid
                 ShipXml.Export(_pandaBuild.ShipPartEntities, NameExport, _pandaSettings.Camera, _pandaBuild.ShipParent, _pandaSettings.ShootingsSpawn, _pandaSettings.SpeedFxSpawn);
             }
 
