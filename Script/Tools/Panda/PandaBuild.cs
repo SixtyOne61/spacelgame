@@ -52,7 +52,7 @@ namespace Tool
             ShipPartEntities.Clear();
         }
 
-        private int GetHash()
+        private int GetHash() // to do deprecated ?
         {
             return ParamCube.GetHashCode();
         }
@@ -69,7 +69,7 @@ namespace Tool
             // force start on entity
             entity.Start();
 
-            ShipPartEntities.Add(ParamCube.GetHashCode(), entity);
+            ShipPartEntities.Add(ParamCube.GetUniqueId(), entity);
         }
 
         public void CreateParts(ref Dictionary<int, Tool.ShipPart> shipParts)
