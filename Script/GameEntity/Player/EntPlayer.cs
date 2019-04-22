@@ -18,10 +18,10 @@ public class EntPlayer : SpacelEntity
     public float Ressource = 0.0f;
 
     // contains all part of a player
-    private Dictionary<int, GameObject> _shipPartsObj = new Dictionary<int, GameObject>();
-    
+    //private Dictionary<int, GameObject> _shipPartsObj = new Dictionary<int, GameObject>();
+
     // contains all entity part of a player
-    private Dictionnary<int, EntityShipPart> _shipPartsEntity;
+    private Dictionary<int, EntShipPart> _shipPartsEntity = new Dictionary<int, EntShipPart>();
 
     public override void Start()
     {
@@ -61,25 +61,26 @@ public class EntPlayer : SpacelEntity
     {
         foreach(KeyValuePair<int, Tool.ShipPart> part in shipParts)
         {
-            GameObject partObj = null;
-            if (!_shipPartsObj.ContainsKey(part.Key))
+            EntShipPart partEntity = null;
+            if (!_shipPartsEntity.ContainsKey(part.Key))
             {
                 //position of part
-                Spawn(ref partObj, part.Value);
+                GameObject go = null;
+                Spawn(ref go, part.Value);
                 // set name of part
-                partObj.name = part.Value.Param.Type.ToString();
+                go.name = part.Value.Param.Type.ToString();
 
                 // add to dictionnary
-                _shipPartsObj.Add(part.Key, partObj);
+                partEntity = go.GetComponent<EntShipPart>();
+                _shipPartsEntity.Add(part.Key, partEntity);
             }
             else // for editor
             {
-                partObj = _shipPartsObj[part.Key];
+                partEntity = _shipPartsEntity[part.Key];
             }
 
             // init list of position in entity ship part
-            EntShipPart entShipPart = partObj.GetComponent<EntShipPart>();
-            entShipPart.Init(part.Value);
+            partEntity.Init(part.Value);
         }
     }
 
@@ -109,8 +110,23 @@ public class EntPlayer : SpacelEntity
         }
     }
     
-    public override Update ()
+    public override void Update ()
     {
-    	
+        base.Update();
+
+        bool oneAlive = false;
+        foreach (KeyValuePair<int, EntShipPart> part in _shipPartsEntity)
+        {
+            if(part.Value.PartIsAlive)
+            {
+                oneAlive = true;
+            }
+        }
+
+        if(!oneAlive)
+        {
+            // TO DO :
+            Debug.Log("Your ship is dead");
+        }
     }
 }

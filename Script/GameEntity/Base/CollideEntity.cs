@@ -69,6 +69,9 @@ public class CollideEntity : VolumeEntity
     {
         base.Refresh();
         ComponentCollision.Reset();
+
+        // check if object was destroy
+        Alive();
     }
 
     public void OnDestroy()
@@ -83,7 +86,6 @@ public class CollideEntity : VolumeEntity
 
     public virtual void Alive()
     {
-    	// to do : use ?
         // check if object need to be destroy
         if (LinkPosList.Count == 0)
         {
