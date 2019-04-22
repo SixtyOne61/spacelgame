@@ -9,6 +9,10 @@ public class EntShipPart : CollideEntity
 {
     private List<LinkPos> _removed = new List<LinkPos>();
     private EntRemovedShip _mirrorRemoved;
+    
+    // true if we still have an alive cube
+    [HideInInspector]
+    public bool PartIsAlive = true;
 
     public override void Start()
     {
@@ -72,5 +76,6 @@ public class EntShipPart : CollideEntity
     public override void Alive()
     {
         // DO NOTHING, don't destroy
+        PartIsAlive = false;
     }
 }

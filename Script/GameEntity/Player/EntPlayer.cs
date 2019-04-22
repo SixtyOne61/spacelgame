@@ -19,6 +19,9 @@ public class EntPlayer : SpacelEntity
 
     // contains all part of a player
     private Dictionary<int, GameObject> _shipPartsObj = new Dictionary<int, GameObject>();
+    
+    // contains all entity part of a player
+    private Dictionnary<int, EntityShipPart> _shipPartsEntity;
 
     public override void Start()
     {
@@ -104,5 +107,10 @@ public class EntPlayer : SpacelEntity
                 Debug.LogError("Type of part ship doesn't support.");
                 break;
         }
+    }
+    
+    public override Update ()
+    {
+    	
     }
 }
