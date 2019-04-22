@@ -19,7 +19,7 @@ namespace Tool
             int hashId = GetHash();
             if (!ShipPartEntities.ContainsKey(hashId))
             {
-                CreatePart();
+                CreatePart(hashId);
             }
 
             Engine.LinkPos linkPos = new Engine.LinkPos(new UnitPos(position.x, position.y, position.z));
@@ -54,10 +54,10 @@ namespace Tool
 
         private int GetHash() // to do deprecated ?
         {
-            return ParamCube.GetHashCode();
+            return ParamCube.GetUniqueId();
         }
 
-        private void CreatePart()
+        private void CreatePart(int hashId)
         {
             // spawn entity ship part
             GameObject obj = null;
@@ -69,7 +69,7 @@ namespace Tool
             // force start on entity
             entity.Start();
 
-            ShipPartEntities.Add(ParamCube.GetUniqueId(), entity);
+            ShipPartEntities.Add(hashId, entity);
         }
 
         public void CreateParts(ref Dictionary<int, Tool.ShipPart> shipParts)
