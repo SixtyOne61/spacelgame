@@ -12,6 +12,8 @@ namespace UI
             rect.anchoredPosition = Vector3.zero;
             rect.offsetMin = Vector2.zero;
             rect.offsetMax = Vector2.zero;
+            
+            InitShipList();
 
             base.Start();
         }
@@ -25,6 +27,11 @@ namespace UI
             }
 #endif
             UIManager.Instance.GoToView(UIManager.View.Lobby);
+        }
+        
+        private void InitShipList()
+        {
+        	
         }
     }
 }
