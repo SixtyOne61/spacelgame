@@ -10,6 +10,11 @@ public class CompController : ComponentBase
 
     private float _currentAcc = 0.0f;
     private float _currentSpeed = 0.0f;
+    public float CurrentSpeed
+    {
+    	get { return _currentSpeed; }
+    	private set;
+    }
 
     public override void FixedUpdate()
     {

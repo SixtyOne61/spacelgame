@@ -31,7 +31,11 @@ namespace UI
         
         private void InitShipList()
         {
-        	
+        	// count file exported
+        	string[] ship = AssetDatabase.FindAssets("Export_");
+        	int nbShip = ship.Lenght;
+        	// to do : spawn button
         }
     }
 }
+    
