@@ -43,6 +43,7 @@ public class EntPlayer : SpacelEntity
 
         // set parent of shootings spawn
         SetParent(ref shootingsSpawn);
+        // set parent of fx spawn
         SetParent(ref speedFx);
 
         SpawnShipPart(ref shipParts);
