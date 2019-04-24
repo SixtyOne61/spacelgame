@@ -164,7 +164,7 @@ namespace Tool
             LoadList(ref shootingsSpawn, "Shooting", ref xmlDoc, Builder.FactoryType.Gameplay, (int)BuilderGameplay.Type.BulletSpawner);
 
             // TO DO : speed fx
-            //LoadList(ref speedFxSpawn, "SpeedFx", ref xmlDoc, Builder.FactoryType.Fx, (int)BuilderFx.Type.Speed);
+            LoadList(ref speedFxSpawn, "SpeedFx", ref xmlDoc, Builder.FactoryType.Fx, (int)BuilderFx.Type.Speed);
         }
 
         public static void ClearList(ref List<Transform> trs)

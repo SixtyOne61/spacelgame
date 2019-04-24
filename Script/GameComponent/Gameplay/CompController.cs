@@ -15,6 +15,9 @@ public class CompController : ComponentBase
     	get { return _currentSpeed; }
     	private set;
     }
+    
+    [HideInInspector]
+    public float Ratio;
 
     public override void FixedUpdate()
     {
@@ -58,6 +61,9 @@ public class CompController : ComponentBase
         // new speed, directed by curve
         float speed = Param.SpeedCurve.Evaluate(_currentSpeed);
         Owner.transform.position += Owner.transform.forward * speed * Param.Speed;
+        
+        // update ratio value
+        Ratio = speed / Param.SpeedCurve.MaxValue;
     }
 
     private void UpdateRotation()
