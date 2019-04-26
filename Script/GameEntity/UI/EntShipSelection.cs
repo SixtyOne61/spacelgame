@@ -33,7 +33,7 @@ namespace UI
         {
         	// count file exported
         	string[] ship = AssetDatabase.FindAssets("Export_");
-        	int nbShip = ship.Lenght;
+        	int nbShip = ship.Length;
         	// to do : spawn button
         }
     }

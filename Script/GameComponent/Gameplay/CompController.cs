@@ -13,7 +13,7 @@ public class CompController : ComponentBase
     public float CurrentSpeed
     {
     	get { return _currentSpeed; }
-    	private set;
+    	private set { _currentSpeed = value; }
     }
     
     [HideInInspector]
@@ -63,7 +63,7 @@ public class CompController : ComponentBase
         Owner.transform.position += Owner.transform.forward * speed * Param.Speed;
         
         // update ratio value
-        Ratio = speed / Param.SpeedCurve.MaxValue;
+        // Ratio = speed / Param.SpeedCurve.MaxValue; TO DO
     }
 
     private void UpdateRotation()

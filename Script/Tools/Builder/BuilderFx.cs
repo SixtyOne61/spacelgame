@@ -19,6 +19,7 @@ namespace Tool
         {
             Loot,
             TrailBullet,
+            Speed,
         }
 
         public void Init()
