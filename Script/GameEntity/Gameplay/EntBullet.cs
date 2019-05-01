@@ -7,7 +7,6 @@ public class EntBullet : CollideEntity
 {
     // components
     public CompLife ComponentLife;
-    private CompTrails<EntTrailbullet> _componentTrails;
 
     // Param
     public Tool.SCRValueCurve ParamSpeed;
@@ -19,11 +18,8 @@ public class EntBullet : CollideEntity
 
         // cube size, was on compMeshGenerator
         float halfCubeSize = CompMeshGenerator.ParamCubeSize.Value / 2.0f;
-        // add component trails, it will spawn trails needed on start
-        _componentTrails = new CompTrails<EntTrailbullet>(new Vector3(halfCubeSize, halfCubeSize, 0.0f));
 
         AddComponent(ComponentLife);
-        AddComponent(_componentTrails);
         base.Start();
 	}
 	

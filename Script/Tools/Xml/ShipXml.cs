@@ -163,7 +163,7 @@ namespace Tool
             // load position of shootings spawn
             LoadList(ref shootingsSpawn, "Shooting", ref xmlDoc, Builder.FactoryType.Gameplay, (int)BuilderGameplay.Type.BulletSpawner);
 
-            // TO DO : speed fx
+            // speed fx
             LoadList(ref speedFxSpawn, "SpeedFx", ref xmlDoc, Builder.FactoryType.Fx, (int)BuilderFx.Type.Speed);
         }
 

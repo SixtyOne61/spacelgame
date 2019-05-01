@@ -16,6 +16,8 @@ namespace Tool
         public string NameExport = "Name Export";
         // nb shooting point
         public int NbShootingPoint = 0;
+        // nb fx speed
+        public int NbFxSpeed = 0;
 
         // previous position of cursor
         private Vector3 _prevPosition = Vector3.zero;
@@ -112,6 +114,28 @@ namespace Tool
             for (int i = 0; i < NbShootingPoint; ++i)
             {
                 _pandaSettings.ShootingsSpawn[i] = ObjectTransform("Shooting spawn " + i, _pandaSettings.ShootingsSpawn[i], true);
+            }
+
+            // nb fx speed
+            IntField("Nb Fx speed", ref NbFxSpeed);
+
+            // resize list if necessary
+            if (NbFxSpeed < _pandaSettings.SpeedFxSpawn.Count)
+            {
+                _pandaSettings.SpeedFxSpawn.RemoveRange(NbFxSpeed, _pandaSettings.SpeedFxSpawn.Count - NbFxSpeed);
+            }
+            else if (NbFxSpeed > _pandaSettings.SpeedFxSpawn.Count)
+            {
+                int nbAdd = NbFxSpeed - _pandaSettings.SpeedFxSpawn.Count;
+                for (int i = 0; i < nbAdd; ++i)
+                {
+                    _pandaSettings.SpeedFxSpawn.Add(null);
+                }
+            }
+
+            for (int i = 0; i < NbFxSpeed; ++i)
+            {
+                _pandaSettings.SpeedFxSpawn[i] = ObjectTransform("Fx speed spawn " + i, _pandaSettings.SpeedFxSpawn[i], true);
             }
 
             EditorGUI.BeginChangeCheck();
@@ -227,6 +251,8 @@ namespace Tool
 
             // refresh nb shooting spawn
             NbShootingPoint = _pandaSettings.ShootingsSpawn.Count;
+            // refresh nb speed fx
+            NbFxSpeed = _pandaSettings.SpeedFxSpawn.Count;
 
             _pandaBuild.CreateParts(ref shipParts);
         }

@@ -12,8 +12,8 @@ namespace Tool
         [Tooltip("Loot Prefab template")]
         public GameObject LootPrefab;
 
-        [Tooltip("Trail bullet Prefab")]
-        public GameObject TrailBulletPrefab;
+        [Tooltip("Speed fx Prefab")]
+        public GameObject SpeedFxPrefab;
 
         public enum Type : int
         {
@@ -36,8 +36,8 @@ namespace Tool
                     obj = LootPrefab;
                     break;
 
-                case (int)Type.TrailBullet:
-                    obj = TrailBulletPrefab;
+                case (int)Type.Speed:
+                    obj = SpeedFxPrefab;
                     break;
 
                 default:
