@@ -8,6 +8,7 @@ public class EntPlayer : SpacelEntity
 {
     public CompController ComponentController;
     public CompShooter ComponentShooter;
+    public CompShield ComponentShield;
 
     // camera's player
     [HideInInspector]
