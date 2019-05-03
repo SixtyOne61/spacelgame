@@ -7,8 +7,11 @@ public class EntSpeedFx : SpacelEntity
 	// ref to player entity
 	private EntPlayer _player = null;
 	
-	[Tooltip("Particle system associate to this entity")]
-	public ParticleSystem Particle;
+	// Particle system associate to this entity
+	private ParticleSystem _particle = null;
+	
+	// life time base
+	float _startLifeTime = 0.0f;
 	
 	public override void Start()
 	{
@@ -19,6 +22,14 @@ public class EntSpeedFx : SpacelEntity
 		{
 			Debug.LogError("Player wasn't found.");
 		}
+		
+		_particle = GetComponent<ParticleSystem>();
+		if(_particle == null)
+		{
+			Debug.LogError("Particle system not found.");
+		}
+		
+		_startLifeTime = _particle.main.startLifetime;
 	}
 	
 	public override void Update()
@@ -26,6 +37,7 @@ public class EntSpeedFx : SpacelEntity
 		base.Update();
 		
 		float ratio = _player.ComponentController.Ratio;
-		
+		_particle.main.startLifetime = ratio * _startLifeTime;
 	}
 }
+    
