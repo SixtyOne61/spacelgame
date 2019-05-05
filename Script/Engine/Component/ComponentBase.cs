@@ -42,5 +42,10 @@ namespace Engine
             Owner = aOwner;
             return this;
         }
+
+        virtual public void OnDestroy()
+        {
+
+        }
     }
 }

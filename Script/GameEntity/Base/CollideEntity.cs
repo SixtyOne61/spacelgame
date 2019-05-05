@@ -4,71 +4,26 @@ using UnityEngine;
 using Engine;
 using System.Linq;
 
-public class CollideEntity : VolumeEntity
+public class CollideEntity<T> : VolumeEntity where T : CompCollision, new()
 {
     // component collision needed
-    public CompCollision ComponentCollision;
-    // param, each collide entity can make damage
-    public Tool.SCRCubeAttribut ParamAttribut;
-
-    // debug
-    protected List<LinkPos> _debugRemove = new List<LinkPos>();
+    protected T _componentCollision;
 
     public override void Start()
     {
-        ComponentCollision.LinkPosList = LinkPosList;
-        AddComponent(ComponentCollision);
+        // init component collision
+        _componentCollision = new T();
+        _componentCollision.ParamCubeSize = CompMeshGenerator.ParamCubeSize;
+        _componentCollision.LinkPosList = LinkPosList;
+
+        AddComponent(_componentCollision);
         base.Start();
-        CollisionManager.Instance.Register(ComponentCollision, gameObject.tag.GetHashCode());
-    }
-
-    public virtual void RemoveAt(int index, int dmg)
-    {
-        LinkPos remove = LinkPosList.ElementAt(index);
-
-        remove.Life -= dmg;
-
-        // we don't remove this component, we have life
-        if(remove.Life > 0)
-        {
-            return;
-        }
-
-        foreach (KeyValuePair<LinkPos.Neighbor, UnitPos> neigbor in remove.Neighbors)
-        {
-            int invert = (int)neigbor.Key * -1;
-            SearchNeigbhor(neigbor.Value, invert, index, -1);
-            SearchNeigbhor(neigbor.Value, invert, index, 1);
-        }
-
-        LinkPosList.RemoveAt(index);
-        _flagRefresh = true;
-
-        _debugRemove.Add(remove);
-    }
-
-    public void SearchNeigbhor(UnitPos lfv, int remove, int idx, int delta)
-    {
-        if (idx < 0 || idx >= LinkPosList.Count)
-        {
-            return;
-        }
-
-        LinkPos link = LinkPosList.ElementAt(idx);
-        if (link.Center == lfv)
-        {
-            link.Remove((LinkPos.Neighbor)remove);
-        }
-        else
-        {
-            SearchNeigbhor(lfv, remove, idx + delta, delta);
-        }
     }
 
     public override void Refresh()
     {
         base.Refresh();
-        ComponentCollision.Reset();
+        _componentCollision.Reset();
 
         // check if object was destroy
         Alive();
@@ -76,7 +31,7 @@ public class CollideEntity : VolumeEntity
 
     public void OnDestroy()
     {
-        CollisionManager.Instance.UnRegister(ComponentCollision, gameObject.tag.GetHashCode());
+        _componentCollision.OnDestroy();
     }
 
     public override void FixedUpdate()
@@ -106,6 +61,8 @@ public class CollideEntity : VolumeEntity
             foreach (LinkPos pos in _debugRemove)
             {
                 Vector3 posVec = new Vector3(pos.Center.x + delta.x, pos.Center.y + delta.y, pos.Center.z + delta.z);
+                // add in world space
+                posVec += transform.position;
                 Gizmos.DrawWireCube(posVec, size);
             }
         }

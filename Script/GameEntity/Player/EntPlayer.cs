@@ -8,7 +8,6 @@ public class EntPlayer : SpacelEntity
 {
     public CompController ComponentController;
     public CompShooter ComponentShooter;
-    public CompShield ComponentShield;
 
     // camera's player
     [HideInInspector]
@@ -17,9 +16,6 @@ public class EntPlayer : SpacelEntity
     // ressource for rebuild, this ressource was collect
     [HideInInspector]
     public float Ressource = 0.0f;
-
-    // contains all part of a player
-    //private Dictionary<int, GameObject> _shipPartsObj = new Dictionary<int, GameObject>();
 
     // contains all entity part of a player
     private Dictionary<int, EntShipPart> _shipPartsEntity = new Dictionary<int, EntShipPart>();

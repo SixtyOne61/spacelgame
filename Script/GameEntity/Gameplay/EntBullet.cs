@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Engine;
 
-public class EntBullet : CollideEntity
+public class EntBullet : CollideEntity<CompCollisionBullet>
 {
     // components
     public CompLife ComponentLife;
@@ -15,9 +15,6 @@ public class EntBullet : CollideEntity
 	override public void Start ()
     {
         LinkPosList.Add(new LinkPos(new UnitPos(0, 0, 0), ParamAttribut != null ? ParamAttribut.Life : int.MaxValue));
-
-        // cube size, was on compMeshGenerator
-        float halfCubeSize = CompMeshGenerator.ParamCubeSize.Value / 2.0f;
 
         AddComponent(ComponentLife);
         base.Start();

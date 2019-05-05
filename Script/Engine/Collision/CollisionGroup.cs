@@ -2,29 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CollisionGroup
+public class CollisionGroup<T>
 {
-    // group id
-    public int Id;
     // list of all collision on this group
-    public List<CompCollision> Components = new List<CompCollision>();
+    public List<T> Components = new List<T>();
 
     public CollisionGroup()
     {
 
     }
 
-    public CollisionGroup(int id)
-    {
-        Id = id;
-    }
-
-    public void Add(CompCollision comp)
+    public void Add(T comp)
     {
         Components.Add(comp);
     }
 
-    public bool Remove(CompCollision comp)
+    public bool Remove(T comp)
     {
         return Components.Remove(comp);
     }

@@ -120,9 +120,9 @@ public class CompCollision : ComponentBase
 
     private void RemovePoint(List<int> removeList, GameObject owner, GameObject other)
     {
-        int dmg = other.GetComponent<CollideEntity>().ParamAttribut.Damage;
+        int dmg = other.GetComponent<VolumeEntity>().ParamAttribut.Damage;
         int delta = 0;
-        CollideEntity ent = owner.GetComponent<CollideEntity>();
+        VolumeEntity ent = owner.GetComponent<VolumeEntity>();
         foreach (int idx in removeList)
         {
             ent.RemoveAt(idx - delta, dmg);

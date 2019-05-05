@@ -26,6 +26,11 @@ public class UnitPos : IComparable
         z = aPos.z;
     }
 
+    public Vector3 ToVec3()
+    {
+        return new Vector3(x, y, z);
+    }
+
     public override bool Equals(object obj)
     {
         if(obj == null)

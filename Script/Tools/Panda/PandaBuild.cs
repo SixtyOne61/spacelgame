@@ -12,7 +12,7 @@ namespace Tool
         public ScriptableCube ParamCube;
 
         // list of all part, Ship part contain information on each part
-        public Dictionary<int, CollideEntity> ShipPartEntities = new Dictionary<int, CollideEntity>();
+        public Dictionary<int, CollideEntity<CompCollisionPlayer>> ShipPartEntities = new Dictionary<int, CollideEntity<CompCollisionPlayer>>();
 
         public void AddCube(Vector3 position)
         {
@@ -45,7 +45,7 @@ namespace Tool
         public void Clean()
         {
             // clean all parts
-            foreach (KeyValuePair<int, CollideEntity> part in ShipPartEntities)
+            foreach (KeyValuePair<int, CollideEntity<CompCollisionPlayer>> part in ShipPartEntities)
             {
                 Builder.Instance.DestroyGameObject(part.Value.gameObject, true);
             }

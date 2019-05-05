@@ -6,9 +6,89 @@ using Engine;
 [System.Serializable]
 public class CompShield : ComponentBase
 {
-	public override void Update()
+    private static readonly Vector4[] defaultEmptyVector = new Vector4[] { new Vector4(0, 0, 0, 0) };
+
+    // list of current impact
+    private List<Vector4> _impacts = new List<Vector4>();
+    // impact duration use for make the wave
+    private float _impactDuration;
+
+    [Tooltip("Material of this shield")]
+    public Material ShieldMaterial;
+    [Tooltip("Param for impact duration")]
+    public Tool.SCROneValue ParamDuration;
+    [HideInInspector]
+    // size of the shield (sphere size)
+    public float ShieldSize = 1.0f;
+
+    public override void Start()
+    {
+        base.Start();
+
+        _impactDuration = ParamDuration.Value;
+        CollisionManager.Instance.Register(this);
+    }
+
+    public override void Update()
 	{
-		float value = Input.GetAxis("");
+        UpdateMaterial();
+        UpdateImapctLife();
+
+        //float value = Input.GetAxis("");
 		base.Update();
 	}
+
+    private void UpdateMaterial()
+    {
+        ShieldMaterial.SetInt("_PointsSize", _impacts.Count);
+        if (_impacts.Count <= 0)
+        {
+            ShieldMaterial.SetVectorArray("_Points", defaultEmptyVector);
+        }
+        else
+        {
+            ShieldMaterial.SetVectorArray("_Points", _impacts.ToArray());
+        }
+    }
+
+    private void UpdateImapctLife()
+    {
+        for(int i = 0; i < _impacts.Count;)
+        {
+            Vector4 impact = _impacts[i];
+            impact.w += Time.deltaTime / _impactDuration;
+            if(impact.w >= _impactDuration)
+            {
+                _impacts.RemoveAt(i);
+            }
+            else
+            {
+                _impacts[i] = impact;
+                ++i;
+            }
+        }
+    }
+
+    public void Hit(CompCollisionBullet compBullet)
+    {
+        foreach(LinkPos pos in compBullet.LinkPosList)
+        {
+            Vector3 worldPos = compBullet.Owner.transform.TransformPoint(pos.Center.ToVec3());
+            if(Vector3.Distance(worldPos, Owner.transform.position) < ShieldSize)
+            {
+                AddImpact(Owner.transform.InverseTransformPoint(worldPos));
+            }
+        }
+    }
+
+    public void AddImpact(Vector3 point)
+    {
+        _impacts.Add(point);
+    }
+
+    public override void OnDestroy()
+    {
+        base.OnDestroy();
+        CollisionManager.Instance.UnRegister(this);
+    }
 }

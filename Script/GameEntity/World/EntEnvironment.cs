@@ -3,6 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Engine;
 
-public class EntEnvironment : CollideEntity
+public class EntEnvironment : CollideEntity<CompCollisionWorld>
 {
 }

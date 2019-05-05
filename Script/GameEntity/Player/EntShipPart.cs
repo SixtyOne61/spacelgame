@@ -5,7 +5,7 @@ using UnityEngine;
 using Engine;
 using Tool;
 
-public class EntShipPart : CollideEntity
+public class EntShipPart : CollideEntity<CompCollisionPlayer>
 {
     private List<LinkPos> _removed = new List<LinkPos>();
     private EntRemovedShip _mirrorRemoved;
@@ -39,8 +39,6 @@ public class EntShipPart : CollideEntity
 
         CompMaterial.ParamMaterial = ScriptableObject.CreateInstance(typeof(Tool.SCRMaterial)) as Tool.SCRMaterial;
         CompMaterial.ParamMaterial.Material = part.Param.Material;
-
-        ComponentCollision.ParamCubeSize = CompMeshGenerator.ParamCubeSize;
     }
 
     public override void RemoveAt(int index, int dmg)
