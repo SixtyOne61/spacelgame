@@ -1,10 +1,11 @@
-;﻿using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Engine;
+using Tool;
 
 [System.Serializable]
-public class CompSpecialiste : ComponentBase
+public class CompSpecialist : ComponentBase
 {
 	private GameObject _currentShield = null;
 	
@@ -16,7 +17,7 @@ public class CompSpecialiste : ComponentBase
         if(shieldInput >= 1
         	&& _currentShield == null)
         {
-        	_currentShield = Builder.Instance.Build(Builder.FactoryType.Gameplay, BuilderGameplay.Type.Shield, Vector3.zero, Quaternion.identity, Owner.transform);
+        	_currentShield = Builder.Instance.Build(Builder.FactoryType.Gameplay, (int)BuilderGameplay.Type.Shield, Vector3.zero, Quaternion.identity, Owner.transform);
         }
     }
 }

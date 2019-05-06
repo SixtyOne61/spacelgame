@@ -59,7 +59,7 @@ namespace Tool
                     obj = BulletPrefab;
                     break;
                     
-                case (int)Type.Bullet:
+                case (int)Type.Shield:
                 	obj = ShieldPrefab;
                 	break;
 

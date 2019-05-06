@@ -8,7 +8,7 @@ public class EntPlayer : SpacelEntity
 {
     public CompController ComponentController;
     public CompShooter ComponentShooter;
-    public CompSpecialiste ComponentSpecialiste;
+    public CompSpecialist ComponentSpecialist;
 
     // camera's player
     [HideInInspector]
@@ -26,7 +26,7 @@ public class EntPlayer : SpacelEntity
         // add component
         AddComponent(ComponentController);
         AddComponent(ComponentShooter);
-        AddComponent(ComponentSpecialiste);
+        AddComponent(ComponentSpecialist);
 
         // spawn camera
         Camera = Builder.Instance.Build(Builder.FactoryType.Gameplay, (int)BuilderGameplay.Type.Camera, Vector3.zero, Quaternion.identity, transform);

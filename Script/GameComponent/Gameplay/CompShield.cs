@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Engine;
+using Tool;
 
 [System.Serializable]
 public class CompShield : ComponentBase
@@ -28,7 +29,7 @@ public class CompShield : ComponentBase
         base.Start();
 
         _impactDuration = ParamShield.Duration;
-        _dmgTaken = ParamShield.DmgTaken;
+        _dmgTaken = ParamShield.DamageTaken;
         CollisionManager.Instance.Register(this);
     }
 
@@ -80,14 +81,14 @@ public class CompShield : ComponentBase
             {
                 AddImpact(Owner.transform.InverseTransformPoint(worldPos));
                 // destroy bullet
-                Builder.Instance.DestroyGameObject(compBullet.Owner);
+                Builder.Instance.DestroyGameObject(compBullet.Owner, true);
                 // update dmg taken
                 _dmgTaken -= compBullet.Owner.GetComponent<VolumeEntity>().ParamAttribut.Damage;
                 
                 // destroy shield
                 if(_dmgTaken <= 0)
                 {
-                	Builder.Instance.DestroyGameObject(Owner);
+                	Builder.Instance.DestroyGameObject(Owner, false);
                 }
             }
         }
