@@ -12,11 +12,13 @@ public class CompShield : ComponentBase
     private List<Vector4> _impacts = new List<Vector4>();
     // impact duration use for make the wave
     private float _impactDuration;
+    // damage taken
+    private float _dmgTaken;
 
     [Tooltip("Material of this shield")]
     public Material ShieldMaterial;
-    [Tooltip("Param for impact duration")]
-    public Tool.SCROneValue ParamDuration;
+    [Tooltip("Param for shield")]
+    public Tool.SCRShield ParamShield;
     [HideInInspector]
     // size of the shield (sphere size)
     public float ShieldSize = 1.0f;
@@ -25,7 +27,8 @@ public class CompShield : ComponentBase
     {
         base.Start();
 
-        _impactDuration = ParamDuration.Value;
+        _impactDuration = ParamShield.Duration;
+        _dmgTaken = ParamShield.DmgTaken;
         CollisionManager.Instance.Register(this);
     }
 
@@ -34,7 +37,6 @@ public class CompShield : ComponentBase
         UpdateMaterial();
         UpdateImapctLife();
 
-        //float value = Input.GetAxis("");
 		base.Update();
 	}
 
@@ -77,6 +79,16 @@ public class CompShield : ComponentBase
             if(Vector3.Distance(worldPos, Owner.transform.position) < ShieldSize)
             {
                 AddImpact(Owner.transform.InverseTransformPoint(worldPos));
+                // destroy bullet
+                Builder.Instance.DestroyGameObject(compBullet.Owner);
+                // update dmg taken
+                _dmgTaken -= compBullet.Owner.GetComponent<VolumeEntity>().ParamAttribut.Damage;
+                
+                // destroy shield
+                if(_dmgTaken <= 0)
+                {
+                	Builder.Instance.DestroyGameObject(Owner);
+                }
             }
         }
     }

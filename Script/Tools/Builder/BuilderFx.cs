@@ -18,7 +18,6 @@ namespace Tool
         public enum Type : int
         {
             Loot,
-            TrailBullet,
             Speed,
         }
 

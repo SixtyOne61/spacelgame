@@ -18,6 +18,8 @@ namespace Tool
         public GameObject BulletSpawnerPrefab;
         [Tooltip("Bullet Prefab")]
         public GameObject BulletPrefab;
+        [Tooltip("Shield Prefab")]
+        public GameObject ShieldPrefab;
 
         public enum Type : int
         {
@@ -25,6 +27,7 @@ namespace Tool
             Camera,
             BulletSpawner,
             Bullet,
+            Shield,
         }
 
         public void Init()
@@ -32,6 +35,7 @@ namespace Tool
             PlayerPrefab.tag = Tag;
             CameraPrefab.tag = Tag;
             BulletPrefab.tag = Tag;
+            ShieldPrefab.tag = Tag;
         }
 
         public GameObject Build(int type)
@@ -54,6 +58,10 @@ namespace Tool
                 case (int)Type.Bullet:
                     obj = BulletPrefab;
                     break;
+                    
+                case (int)Type.Bullet:
+                	obj = ShieldPrefab;
+                	break;
 
                 default:
                     Debug.LogError("Type doesn't manage.");
