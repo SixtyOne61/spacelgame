@@ -74,6 +74,7 @@ public class CompShield : ComponentBase
 
     public void Hit(CompCollisionBullet compBullet)
     {
+        // TO DO : maybe change this
         foreach(LinkPos pos in compBullet.LinkPosList)
         {
             Vector3 worldPos = compBullet.Owner.transform.TransformPoint(pos.Center.ToVec3());

@@ -12,10 +12,10 @@ public class CompSpecialist : ComponentBase
     public override void Update()
     {
         base.Update();
-        
-        float shieldInput = Input.GetAxis("");
-        if(shieldInput >= 1
-        	&& _currentShield == null)
+
+        // x button
+        bool shieldInput = Input.GetKeyDown("joystick button 2");
+        if (shieldInput	&& _currentShield == null)
         {
         	_currentShield = Builder.Instance.Build(Builder.FactoryType.Gameplay, (int)BuilderGameplay.Type.Shield, Vector3.zero, Quaternion.identity, Owner.transform);
         }
