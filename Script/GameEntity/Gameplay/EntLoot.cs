@@ -73,7 +73,7 @@ public class EntLoot : SpacelEntity
                 // we have given all ressource, destroy loot
                 if (_ressourceGiven >= Ressource)
                 {
-                    //Tool.Builder.Instance.DestroyGameObject(gameObject, false);
+                    Tool.Builder.Instance.DestroyGameObject(gameObject, false);
                 }
                 break;
             }

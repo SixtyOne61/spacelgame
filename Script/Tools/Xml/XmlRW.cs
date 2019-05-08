@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Tool
 {
-    public class ShipXml
+    public class XmlRW
     {
         // from https://answers.unity.com/questions/1134997/string-to-vector3.html
         public static Vector3 StringToVector3(string sVector)
@@ -148,7 +148,7 @@ namespace Tool
                 Vector3 pos = Vector3.zero;
                 foreach (var elem in xmlParts.Element("Map").Elements("Data"))
                 {
-                    pos = ShipXml.StringToVector3(elem.Attribute("value").Value);
+                    pos = XmlRW.StringToVector3(elem.Attribute("value").Value);
                     shipParts[key].Add(new UnitPos(pos.x, pos.y, pos.z));
                 }
             }

@@ -179,7 +179,7 @@ namespace Tool
             {
                 // export all ship part in xml
                 // key was invalid
-                ShipXml.Export(_pandaBuild.ShipPartEntities, NameExport, _pandaSettings.Camera, _pandaBuild.ShipParent, _pandaSettings.ShootingsSpawn, _pandaSettings.SpeedFxSpawn);
+                XmlRW.Export(_pandaBuild.ShipPartEntities, NameExport, _pandaSettings.Camera, _pandaBuild.ShipParent, _pandaSettings.ShootingsSpawn, _pandaSettings.SpeedFxSpawn);
             }
 
             if(AddButton("Load"))
@@ -247,7 +247,7 @@ namespace Tool
             _pandaSettings.SpawnIfNecessary();
             _pandaBuild.SpawnIfNecessary();
 
-            ShipXml.Load(NameExport, ref shipParts, _pandaSettings.Camera, _pandaBuild.ShipParent, _pandaSettings.ShootingsSpawn, _pandaSettings.SpeedFxSpawn);
+            XmlRW.Load(NameExport, ref shipParts, _pandaSettings.Camera, _pandaBuild.ShipParent, _pandaSettings.ShootingsSpawn, _pandaSettings.SpeedFxSpawn);
 
             // refresh nb shooting spawn
             NbShootingPoint = _pandaSettings.ShootingsSpawn.Count;

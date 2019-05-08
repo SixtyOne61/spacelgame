@@ -38,7 +38,7 @@ public class EntPlayer : SpacelEntity
 
         // load xml
         Dictionary<int, Tool.ShipPart> shipParts = new Dictionary<int, Tool.ShipPart>();
-        Tool.ShipXml.Load(name, ref shipParts, Camera.transform, transform, shootingsSpawn, speedFx);
+        Tool.XmlRW.Load(name, ref shipParts, Camera.transform, transform, shootingsSpawn, speedFx);
 
         // set parent of shootings spawn
         SetParent(ref shootingsSpawn);

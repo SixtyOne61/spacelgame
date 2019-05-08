@@ -2,7 +2,7 @@
 
 namespace Tool
 {
-    [CreateAssetMenu(fileName = "Scriptable Map", menuName = "Scriptable/Scriptable Map")]
+    [CreateAssetMenu(fileName = "Scriptable Map", menuName = "Scriptable/Whale/Scriptable Map")]
     public class SCRMap : ScriptableObject
     {
         public int Width;
