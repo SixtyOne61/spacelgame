@@ -29,6 +29,30 @@ namespace Tool
 
             return result;
         }
+        
+        public static void Export(string nameFile, List<HelperGenerateWorld> rocks)
+        {
+        	XDocument xmlDoc = new XDocument(new XElement("WorldDesc"));
+        	foreach(HelperGenerateWorld rock in rocks)
+        	{
+        		XElement xmlPart = new XElement("RockChunck");
+        		
+        		// add all sub rock
+        		foreach(List<LinkPos> linkPos in rock.SubList)
+        		{
+        			XElement xmlRock = new XElement("Rock");
+        			xmlRock.Add(
+                    new XElement("Map",
+                        linkPos.Select(x => new XElement("Data", new XAttribute("value", x.Center)))
+                        )
+                    );
+                    
+                    xmlPart.Add(xmlRock);   
+        		}
+        		xmlDoc.Root.Add(xmlPart)
+        	}
+        	xmlDoc.Save(Application.dataPath + "/Export/" + nameFile + ".xml");
+        }
 
         public static void Export(Dictionary<int, CollideEntity<CompCollisionPlayer>> shipParts, string shipName, Transform cameraParent, Transform shipParent, List<Transform> shootingsSpawn, List<Transform> speedFxSpawn)
         {
@@ -105,6 +129,27 @@ namespace Tool
                                                         new XAttribute("y", tr.localPosition.y),
                                                         new XAttribute("z", tr.localPosition.z)));
             return xmlElem;
+        }
+        
+        public static void Load(string nameFile, ref List<HelperGenerateWorld> rocks)
+        {
+        	rocks.Clear();
+        	XDocument xmlDoc = XDocument.Load(Application.dataPath + "/Export/" + nameFile + ".xml");
+        	
+        	foreach(var xmlChuncks in xmlDoc.root.Elements("RockChunck"))
+        	{
+        		foreach(var xmlRocks in xmlChuncks.Elements("Rock"))
+        		{
+        			HelperGenerateWorld chunck = new HelperGenerateWorld();
+        			
+        			Vector3 pos = Vector3.zero;
+        			foreach(var elem on xmlRocks.Element("Map").Elements("Data"))
+        			{
+        				chunck.LinkPos.Add(XmlRW.StringToVector3(elem.Attribute("value").Value));
+        			}
+        			rocks.Add(chunck);
+        		}
+        	}
         }
 
         public static void Load(string shipName, ref Dictionary<int, ShipPart> shipParts, Transform cameraParent, Transform shipParent, List<Transform> shootingsSpawn, List<Transform> speedFxSpawn)
@@ -194,3 +239,4 @@ namespace Tool
         }
     }
 }
+    

@@ -56,6 +56,7 @@ namespace Tool
 
             if(AddButton("Load"))
             {
+            	_whaleBuild.Load(NameExport);
             }
         }
 

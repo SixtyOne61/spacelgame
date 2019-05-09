@@ -58,6 +58,11 @@ public class WhaleBuild
 
     public void Export(string Name)
     {
-
+		 XmlRW.Export(name, m_rocks);
+    }
+    
+    public void Load(string Name)
+    {
+    	XmlRW.Load(name, ref m_rockd);
     }
 }
