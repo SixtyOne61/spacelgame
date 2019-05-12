@@ -10,7 +10,10 @@ public class CompMaterial : ComponentBase
     // Use this for initialization
     public override void Start()
     {
-        Owner.GetComponent<MeshRenderer>().material = ParamMaterial.Material;
-        base.Start();
+        if(ParamMaterial != null)
+        {
+            Owner.GetComponent<MeshRenderer>().material = ParamMaterial.Material;
+            base.Start();
+        }
     }
 }
