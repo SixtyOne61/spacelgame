@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Engine;
 using Tool;
@@ -103,13 +104,13 @@ public class EntWorld : SpacelEntity
         _curr = EstimateCurrCoord();
         AddInActive(_curr);
 
-        for(int x = _curr.x - 1; x <= _curr.x + 1; ++x)
+        for(int x = _curr.x - 2; x <= _curr.x + 2; ++x)
         {
-            for (int y = _curr.y - 1; y <= _curr.y + 1; ++y)
+            for (int y = _curr.y - 2; y <= _curr.y + 2; ++y)
             {
-                for (int z = _curr.z - 1; z <= _curr.z + 1; ++z)
+                for (int z = _curr.z - 2; z <= _curr.z + 2; ++z)
                 {
-                    AddInActive(new Vector3Int(x, y, z));
+                    StartCoroutine(AddInActive(new Vector3Int(x, y, z)));
                 }
             }
         }
@@ -122,12 +123,13 @@ public class EntWorld : SpacelEntity
             && coord.z >= 0 && coord.z < ParamNbChunck.Value;
     }
 
-    private void AddInActive(Vector3Int coord)
+    private IEnumerator AddInActive(Vector3Int coord)
     {
         if (IsValidChunckCoord(coord))
         {
             _chuncksActive.Add(coord);
             _chuncks[coord.x, coord.y, coord.z].SetActive(true);
         }
+        yield return null;
     }
 }

@@ -13,10 +13,22 @@ public class HelperGenerateWorld
     private List<UnitPos> _globalList = new List<UnitPos>();
     // treshold min and max for noise
     private Vector2 _thresholds;
+    public Vector2 Thresholds
+    {
+        get { return _thresholds; }
+    }
     // origine of object
     private Vector3 _origine;
+    public Vector3 Origine
+    {
+        get { return _origine; }
+    }
     // size of cube
     private Tool.SCROneValue _paramSize = null;
+    public Tool.SCROneValue ParamSize
+    {
+        get { return _paramSize; }
+    }
 
     public HelperGenerateWorld(Vector2 clamp, Tool.SCROneValue paramSize, Vector3 origine)
     {

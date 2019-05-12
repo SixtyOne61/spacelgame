@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Engine;
 using Tool;
@@ -15,11 +16,11 @@ public class EntChunck : SpacelEntity {
     // Use this for initialization
     override public void Start()
     {
-        GenerateHashWorldMap();
+        StartCoroutine(GenerateHashWorldMap());
         base.Start();
     }
 
-    private void GenerateHashWorldMap()
+    private IEnumerator GenerateHashWorldMap()
     {
         Rock = new HelperGenerateWorld(ParamNoise.RockThreshold, ParamCubeWorldSize, transform.position);
 
@@ -42,6 +43,7 @@ public class EntChunck : SpacelEntity {
 
         // spawn entity needed
         ReadForms();
+        yield return null;
     }
 
     private void ReadForms()

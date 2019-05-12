@@ -1,13 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Tool;
 
 public class WhaleBuild
 {
-    public Tool.SCRMap ParamMap;
-    public Tool.SCRNoise ParamNoise;
-    public Tool.SCROneValue ParamCubeWorldSize;
-    public Tool.SCROneValue ParamNbChunck;
+    public SCRMap ParamMap;
+    public SCRNoise ParamNoise;
+    public SCROneValue ParamCubeWorldSize;
+    public SCROneValue ParamNbChunck;
 
     private List<HelperGenerateWorld> m_rocks = new List<HelperGenerateWorld>();
 
@@ -29,8 +30,6 @@ public class WhaleBuild
                 }
             }
         }
-
-        
     }
 
     private void GenerateSubPart(Vector3 chunckSize, Vector3 origine)
@@ -58,11 +57,11 @@ public class WhaleBuild
 
     public void Export(string Name)
     {
-		 XmlRW.Export(name, m_rocks);
+		 XmlRW.Export(Name, m_rocks);
     }
     
     public void Load(string Name)
     {
-    	XmlRW.Load(name, ref m_rockd);
+    	XmlRW.Load(Name, ref m_rocks);
     }
 }
