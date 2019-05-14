@@ -18,7 +18,7 @@ public class CompSpecialist : ComponentBase
         if (shieldInput	&& _currentShield == null)
         {
         	_currentShield = Builder.Instance.Build(Builder.FactoryType.Gameplay, (int)BuilderGameplay.Type.Shield, Vector3.zero, Quaternion.identity, Owner.transform);
-        	// TO create cube with min max
+        	// set Shield
         	EntShield ent = _currentShield.GetComponent<EntShield>();
         	EntPlayer entPlayer = Owner.GetComponent<EntPlayet>();
         	if(ent != null && entPlayer != null)
@@ -30,3 +30,4 @@ public class CompSpecialist : ComponentBase
         }
     }
 }
+    
