@@ -17,6 +17,13 @@ public class EntPlayer : SpacelEntity
     // ressource for rebuild, this ressource was collect
     [HideInInspector]
     public float Ressource = 0.0f;
+    
+    // min max on each axis
+    [HideInInspector]
+    public Vector2Int X;
+    public Vector2Int Y;
+    public Vector2Int Z;
+    
 
     // contains all entity part of a player
     private Dictionary<int, EntShipPart> _shipPartsEntity = new Dictionary<int, EntShipPart>();
@@ -72,6 +79,17 @@ public class EntPlayer : SpacelEntity
 
                 // add to dictionnary
                 partEntity = go.GetComponent<EntShipPart>();
+                
+                // update min and max
+                X.x = Mathf.min(partEntity.X.x, X.x);
+                X.y = Mathf.max(partEntity.X.y, X.y);
+                
+                Y.x = Mathf.min(partEntity.Y.x, Y.x);
+                Y.y = Mathf.max(partEntity.Y.y, Y.y);
+                
+                Z.x = Mathf.min(partEntity.Z.x, Z.x);
+                Z.y = Mathf.max(partEntity.Z.y, Z.y);
+                
                 _shipPartsEntity.Add(part.Key, partEntity);
             }
             else // for editor
@@ -130,3 +148,4 @@ public class EntPlayer : SpacelEntity
         }
     }
 }
+    

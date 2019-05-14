@@ -13,6 +13,12 @@ public class EntShipPart : CollideEntity<CompCollisionPlayer>
     // true if we still have an alive cube
     [HideInInspector]
     public bool PartIsAlive = true;
+    
+    // min and max on each axis
+    [HideInInspector]
+    public Vector2Int X;
+    public Vector2Int Y;
+    public Vector2Int Z;
 
     public override void Start()
     {
@@ -26,9 +32,23 @@ public class EntShipPart : CollideEntity<CompCollisionPlayer>
 
     public void Init(Tool.ShipPart part)
     {
+    	UnitPos posInit = part.Cubes[0];
+    	X = new Vector2Int(posInit.x, posInit.x);
+    	Y = new Vector2Int(posInit.y, posInit.y);
+    	Z = new Vector2Int(posInit.z, posInit.z);
+    	
         foreach (UnitPos pos in part.Cubes)
         {
             LinkPosList.Add(new LinkPos(pos, ParamAttribut != null ? ParamAttribut.Life : int.MaxValue));
+            // update min and max
+            X.x = Mathf.min(X.x, pos.x);
+            X.y = Mathf.max(X.y, pos.x);
+            
+            Y.x = Mathf.min(Y.x, pos.y);
+            Y.y = Mathf.max(Y.y, pos.y);
+            
+            Z.x = Mathf.min(Z.x, pos.z);
+            Z.y = Mathf.max(Z.y, pos.z);
         }
 
         // init component
