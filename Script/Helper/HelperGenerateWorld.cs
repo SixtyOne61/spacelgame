@@ -43,6 +43,7 @@ public class HelperGenerateWorld
         if(_thresholds.x <= noise && _thresholds.y >= noise)
         {
             _globalList.Add(pos);
+            // to do : here add neighboor
         }
     }
 
