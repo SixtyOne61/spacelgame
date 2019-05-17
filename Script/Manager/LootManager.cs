@@ -17,21 +17,24 @@ public class LootManager : Singleton<LootManager>
 		LootParent = Builder.Instance.SpawnEmpty("Loot parent").transform;
 	}
 	
-	public void AddLoot(Vector3 position) // to do team
+	public void AddLoot(Vector3 position, int ressource) // to do team
 	{
 		// check if we have loot near
 		int nbChild = transform.childCount;
 		for(int i = 0; i < nbChild; ++i)
 		{
-			if(Vector3.distance(position, transform.GetChild(i).position))
+			Transform child = transform.GetChild(i);
+			if(Vector3.distance(position, child.position) < ParamRange.Value)
 			{
-				// refill this looy
+				// refill this loot
+				child.GetComponent<EntLoot>(). Ressource += ressource;
 				return;
 			}
-			else
-			{
-				// spawn new loot
-			}
 		}
+		
+		// spawn new loot
+		GameObject loot = Builder.Instance.Build(Builder.FactoryType.Fx, (int)Tool.BuilderFx.Type.Loot, transform.TransformPoint(position), Quaternion.identity, GameManager.Instance.LootParent);
+		loot.GetComponent<EntLoot>().Ressource = ressource;		
 	}
 }
+    

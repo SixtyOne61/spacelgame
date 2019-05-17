@@ -87,8 +87,8 @@ public class EntShipPart : CollideEntity<CompCollisionPlayer>
 
     private void SpawnLoot(LinkPos pos)
     {
-        GameObject loot = Builder.Instance.Build(Builder.FactoryType.Fx, (int)Tool.BuilderFx.Type.Loot, transform.TransformPoint(new Vector3(pos.Center.x, pos.Center.y, pos.Center.z)), Quaternion.identity, GameManager.Instance.LootParent);
-        loot.GetComponent<EntLoot>().Ressource = ParamAttribut.Life;
+    	Vector3 worldPos = transform.InverseTransformPoint(new Vector3(pos.Center.x, pos.Center.y, pos.Center.z));
+    	LootManager.Instance.AddLoot(worldPos, ParamAttribut.Life);
     }
 
     public override void Alive()
