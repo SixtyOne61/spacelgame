@@ -81,14 +81,14 @@ public class EntPlayer : SpacelEntity
                 partEntity = go.GetComponent<EntShipPart>();
                 
                 // update min and max
-                X.x = Mathf.min(partEntity.X.x, X.x);
-                X.y = Mathf.max(partEntity.X.y, X.y);
+                X.x = Mathf.Min(partEntity.X.x, X.x);
+                X.y = Mathf.Max(partEntity.X.y, X.y);
                 
-                Y.x = Mathf.min(partEntity.Y.x, Y.x);
-                Y.y = Mathf.max(partEntity.Y.y, Y.y);
+                Y.x = Mathf.Min(partEntity.Y.x, Y.x);
+                Y.y = Mathf.Max(partEntity.Y.y, Y.y);
                 
-                Z.x = Mathf.min(partEntity.Z.x, Z.x);
-                Z.y = Mathf.max(partEntity.Z.y, Z.y);
+                Z.x = Mathf.Min(partEntity.Z.x, Z.x);
+                Z.y = Mathf.Max(partEntity.Z.y, Z.y);
                 
                 _shipPartsEntity.Add(part.Key, partEntity);
             }

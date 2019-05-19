@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Engine;
+using Tool;
 
 //[ExecuteInEditMode]
 public class EntShield : VolumeEntity
@@ -25,14 +26,14 @@ public class EntShield : VolumeEntity
     
     public void InitVertex()
     {
-    	LinkPosList.add(new LinkPos(X.x, Y.x, Z.x)));
-    	LinkPosList.add(new LinkPos(X.y, Y.x, Z.x)));
-    	LinkPosList.add(new LinkPos(X.y, Y.y, Z.x)));
-    	LinkPosList.add(new LinkPos(X.x, Y.y, Z.x)));
+    	LinkPosList.Add(new LinkPos(new UnitPos(X.x, Y.x, Z.x)));
+    	LinkPosList.Add(new LinkPos(new UnitPos(X.y, Y.x, Z.x)));
+    	LinkPosList.Add(new LinkPos(new UnitPos(X.y, Y.y, Z.x)));
+    	LinkPosList.Add(new LinkPos(new UnitPos(X.x, Y.y, Z.x)));
     	
-    	LinkPosList.add(new LinkPos(X.x, Y.x, Z.y)));
-    	LinkPosList.add(new LinkPos(X.y, Y.x, Z.y)));
-    	LinkPosList.add(new LinkPos(X.y, Y.y, Z.y)));
-    	LinkPosList.add(new LinkPos(X.x, Y.y, Z.y)));	
+    	LinkPosList.Add(new LinkPos(new UnitPos(X.x, Y.x, Z.y)));
+    	LinkPosList.Add(new LinkPos(new UnitPos(X.y, Y.x, Z.y)));
+    	LinkPosList.Add(new LinkPos(new UnitPos(X.y, Y.y, Z.y)));
+    	LinkPosList.Add(new LinkPos(new UnitPos(X.x, Y.y, Z.y)));	
     }
 }

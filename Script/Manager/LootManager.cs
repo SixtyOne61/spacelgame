@@ -9,31 +9,32 @@ public class LootManager : Singleton<LootManager>
 	public Transform LootParent;
 	
 	[Tooltip("Range of loot")]
-	SRCOneValue ParamRange;
+	public SCROneValue ParamRange;
 	
 	public void Start()
 	{
 		// spawn empty parent
-		LootParent = Builder.Instance.SpawnEmpty("Loot parent").transform;
+		LootParent = Builder.SpawnEmpty("Loot parent").transform;
+        LootParent.parent = transform;
 	}
 	
 	public void AddLoot(Vector3 position, int ressource) // to do team
 	{
 		// check if we have loot near
-		int nbChild = transform.childCount;
+		int nbChild = LootParent.childCount;
 		for(int i = 0; i < nbChild; ++i)
 		{
-			Transform child = transform.GetChild(i);
-			if(Vector3.distance(position, child.position) < ParamRange.Value)
+			Transform child = LootParent.GetChild(i);
+			if(Vector3.Distance(position, child.position) < ParamRange.Value)
 			{
 				// refill this loot
-				child.GetComponent<EntLoot>(). Ressource += ressource;
+				child.GetComponent<EntLoot>().Ressource += ressource;
 				return;
 			}
 		}
 		
 		// spawn new loot
-		GameObject loot = Builder.Instance.Build(Builder.FactoryType.Fx, (int)Tool.BuilderFx.Type.Loot, transform.TransformPoint(position), Quaternion.identity, GameManager.Instance.LootParent);
+		GameObject loot = Builder.Instance.Build(Builder.FactoryType.Fx, (int)Tool.BuilderFx.Type.Loot, position, Quaternion.identity, LootParent);
 		loot.GetComponent<EntLoot>().Ressource = ressource;		
 	}
 }

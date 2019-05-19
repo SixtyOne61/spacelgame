@@ -33,22 +33,22 @@ public class EntShipPart : CollideEntity<CompCollisionPlayer>
     public void Init(Tool.ShipPart part)
     {
     	UnitPos posInit = part.Cubes[0];
-    	X = new Vector2Int(posInit.x, posInit.x);
-    	Y = new Vector2Int(posInit.y, posInit.y);
-    	Z = new Vector2Int(posInit.z, posInit.z);
+    	X = new Vector2Int((int)posInit.x, (int)posInit.x);
+    	Y = new Vector2Int((int)posInit.y, (int)posInit.y);
+    	Z = new Vector2Int((int)posInit.z, (int)posInit.z);
     	
         foreach (UnitPos pos in part.Cubes)
         {
             LinkPosList.Add(new LinkPos(pos, ParamAttribut != null ? ParamAttribut.Life : int.MaxValue));
             // update min and max
-            X.x = Mathf.min(X.x, pos.x);
-            X.y = Mathf.max(X.y, pos.x);
+            X.x = Mathf.Min(X.x, (int)pos.x);
+            X.y = Mathf.Max(X.y, (int)pos.x);
             
-            Y.x = Mathf.min(Y.x, pos.y);
-            Y.y = Mathf.max(Y.y, pos.y);
+            Y.x = Mathf.Min(Y.x, (int)pos.y);
+            Y.y = Mathf.Max(Y.y, (int)pos.y);
             
-            Z.x = Mathf.min(Z.x, pos.z);
-            Z.y = Mathf.max(Z.y, pos.z);
+            Z.x = Mathf.Min(Z.x, (int)pos.z);
+            Z.y = Mathf.Max(Z.y, (int)pos.z);
         }
 
         // init component
@@ -87,7 +87,7 @@ public class EntShipPart : CollideEntity<CompCollisionPlayer>
 
     private void SpawnLoot(LinkPos pos)
     {
-    	Vector3 worldPos = transform.InverseTransformPoint(new Vector3(pos.Center.x, pos.Center.y, pos.Center.z));
+    	Vector3 worldPos =  transform.TransformPoint(new Vector3(pos.Center.x, pos.Center.y, pos.Center.z));
     	LootManager.Instance.AddLoot(worldPos, ParamAttribut.Life);
     }
 

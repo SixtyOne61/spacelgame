@@ -20,7 +20,7 @@ public class CompSpecialist : ComponentBase
         	_currentShield = Builder.Instance.Build(Builder.FactoryType.Gameplay, (int)BuilderGameplay.Type.Shield, Vector3.zero, Quaternion.identity, Owner.transform);
         	// set Shield
         	EntShield ent = _currentShield.GetComponent<EntShield>();
-        	EntPlayer entPlayer = Owner.GetComponent<EntPlayet>();
+        	EntPlayer entPlayer = Owner.GetComponent<EntPlayer>();
         	if(ent != null && entPlayer != null)
         	{
         		ent.X = entPlayer.X;

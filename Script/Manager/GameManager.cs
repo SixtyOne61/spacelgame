@@ -6,7 +6,6 @@ public class GameManager : Singleton<GameManager>
 {
     public Transform PlayersParent;
     public Transform WorldParent;
-    public Transform LootParent;
 
     // list of all players
     [HideInInspector]
