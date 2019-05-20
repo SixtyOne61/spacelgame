@@ -26,21 +26,44 @@ public class EntShield : VisuelEntity
         //CompMeshGenerator.ParamCubeSize = ScriptableObject.CreateInstance(typeof(Tool.SCROneValue)) as Tool.SCROneValue;
         //CompMeshGenerator.ParamCubeSize.Value = 1.0f;
         // compute vertex
-        InitVertex();
+        GenerateCubeMesh();
         AddComponent(ComponentShield);
         base.Start();
     }
     
-    public void InitVertex()
+    private void GenerateCubeMesh()
     {
-    	//LinkPosList.Add(new LinkPos(new UnitPos(X.x, Y.x, Z.x)));
-    	//LinkPosList.Add(new LinkPos(new UnitPos(X.y, Y.x, Z.x)));
-    	//LinkPosList.Add(new LinkPos(new UnitPos(X.y, Y.y, Z.x)));
-    	//LinkPosList.Add(new LinkPos(new UnitPos(X.x, Y.y, Z.x)));
-    	//
-    	//LinkPosList.Add(new LinkPos(new UnitPos(X.x, Y.x, Z.y)));
-    	//LinkPosList.Add(new LinkPos(new UnitPos(X.y, Y.x, Z.y)));
-    	//LinkPosList.Add(new LinkPos(new UnitPos(X.y, Y.y, Z.y)));
-    	//LinkPosList.Add(new LinkPos(new UnitPos(X.x, Y.y, Z.y)));	
+    	_vertices.Add(new Vector3(X.x, Y.x, Z.x));
+    	_vertices.Add(new Vector3(X.y, Y.x, Z.x));
+    	_vertices.Add(new Vector3(X.y, Y.y, Z.x));
+    	_vertices.Add(new Vector3(X.x, Y.y, Z.x));
+    	
+    	_vertices.Add(new Vector3(X.x, Y.y, Z.y));
+    	_vertices.Add(new Vector3(X.y, Y.y, Z.y));
+    	_vertices.Add(new Vector3(X.y, Y.x, Z.y));
+    	_vertices.Add(new Vector3(X.x, Y.x, Z.y));
+    
+    	// triangle
+    	int[] triangles = {
+    		0, 2, 1, //face front
+    		0, 3, 2,
+    		2, 3, 4, //face top
+    		2, 4, 5,
+    		1, 2, 5, //face right
+    		1, 5, 6,
+    		0, 7, 4, //face left
+    		0, 4, 3,
+    		5, 4, 7, //face back
+    		5, 7, 6,
+    		0, 6, 7, //face bottom
+    		0, 1, 6 };
+    	_triangles = triangles;
+    	
+    	Mesh mesh = GetComponent<MeshFilter>().mesh;
+    	mesh.Clear();
+    	mesh.vertices = vertices;
+    	mesh.triangles = triangles;
+    	mesh.Optimize ();
+    	mesh.RecalculateNormals ();
     }
 }
