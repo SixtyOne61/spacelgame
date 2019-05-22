@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using Engine;
 
+// to do remove this file
 [System.Serializable]
 public class CompSimpleCollision : ComponentBase
 {
@@ -79,6 +80,13 @@ public class CompSimpleCollision : ComponentBase
     	EntBullet ent = other.Owner.GetComponent<EntBullet>();
     	if(ent)
     	{
+    		int dmg = ent.ParamAttribut.Damage;
+    		EntShield our = Owner.GetComponent<EntShield>();
+    		if(our != null)
+    		{
+    			
+    		}
+    
     		// to do dmg shield
     		Builder.Instance.DestroyGameObject(ent.gameObject);
     	}
