@@ -79,7 +79,9 @@ public class EntPlayer : SpacelEntity
 
                 // add to dictionnary
                 partEntity = go.GetComponent<EntShipPart>();
-                
+                // init list of position in entity ship part
+                partEntity.Init(part.Value);
+
                 // update min and max
                 X.x = Mathf.Min(partEntity.X.x, X.x);
                 X.y = Mathf.Max(partEntity.X.y, X.y);
@@ -95,10 +97,9 @@ public class EntPlayer : SpacelEntity
             else // for editor
             {
                 partEntity = _shipPartsEntity[part.Key];
+                // init list of position in entity ship part
+                partEntity.Init(part.Value);
             }
-
-            // init list of position in entity ship part
-            partEntity.Init(part.Value);
         }
     }
 
