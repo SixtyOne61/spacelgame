@@ -22,9 +22,6 @@ public class EntShield : VisuelEntity
 
     public override void Start()
     {
-        // TO DO : create mesh with the coord without volume entity
-        //CompMeshGenerator.ParamCubeSize = ScriptableObject.CreateInstance(typeof(Tool.SCROneValue)) as Tool.SCROneValue;
-        //CompMeshGenerator.ParamCubeSize.Value = 1.0f;
         // compute vertex
         GenerateCubeMesh();
         AddComponent(ComponentShield);
