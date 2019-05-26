@@ -16,9 +16,9 @@ public class EntShipPart : CollideEntity<CompCollisionPlayer>
     
     // min and max on each axis
     [HideInInspector]
-    public Vector2Int X;
-    public Vector2Int Y;
-    public Vector2Int Z;
+    public Vector2 X;
+    public Vector2 Y;
+    public Vector2 Z;
 
     public override void Start()
     {
@@ -33,22 +33,22 @@ public class EntShipPart : CollideEntity<CompCollisionPlayer>
     public void Init(Tool.ShipPart part)
     {
     	UnitPos posInit = part.Cubes[0];
-    	X = new Vector2Int((int)posInit.x, (int)posInit.x);
-    	Y = new Vector2Int((int)posInit.y, (int)posInit.y);
-    	Z = new Vector2Int((int)posInit.z, (int)posInit.z);
+    	X = new Vector2(posInit.x, posInit.x);
+    	Y = new Vector2(posInit.y, posInit.y);
+    	Z = new Vector2(posInit.z, posInit.z);
     	
         foreach (UnitPos pos in part.Cubes)
         {
             LinkPosList.Add(new LinkPos(pos, ParamAttribut != null ? ParamAttribut.Life : int.MaxValue));
             // update min and max
-            X.x = Mathf.Min(X.x, (int)pos.x);
-            X.y = Mathf.Max(X.y, (int)pos.x);
+            X.x = Mathf.Min(X.x, pos.x);
+            X.y = Mathf.Max(X.y, pos.x);
             
-            Y.x = Mathf.Min(Y.x, (int)pos.y);
-            Y.y = Mathf.Max(Y.y, (int)pos.y);
+            Y.x = Mathf.Min(Y.x, pos.y);
+            Y.y = Mathf.Max(Y.y, pos.y);
             
-            Z.x = Mathf.Min(Z.x, (int)pos.z);
-            Z.y = Mathf.Max(Z.y, (int)pos.z);
+            Z.x = Mathf.Min(Z.x, pos.z);
+            Z.y = Mathf.Max(Z.y, pos.z);
         }
 
         // init component

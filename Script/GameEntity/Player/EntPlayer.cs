@@ -9,7 +9,7 @@ public class EntPlayer : SpacelEntity
     public CompController ComponentController;
     public CompShooter ComponentShooter;
     public CompSpecialist ComponentSpecialist;
-    public CompTakeOnMe ComponentTakeOnMe;
+    //public CompTakeOnMe ComponentTakeOnMe;
 
     // camera's player
     [HideInInspector]
@@ -21,9 +21,9 @@ public class EntPlayer : SpacelEntity
     
     // min max on each axis
     [HideInInspector]
-    public Vector2Int X;
-    public Vector2Int Y;
-    public Vector2Int Z;
+    public Vector2 X;
+    public Vector2 Y;
+    public Vector2 Z;
     
 
     // contains all entity part of a player
@@ -35,7 +35,7 @@ public class EntPlayer : SpacelEntity
         AddComponent(ComponentController);
         AddComponent(ComponentShooter);
         AddComponent(ComponentSpecialist);
-        AddComponent(ComponentTakeOnMe);
+       // AddComponent(ComponentTakeOnMe);
 
         // spawn camera
         Camera = Builder.Instance.Build(Builder.FactoryType.Gameplay, (int)BuilderGameplay.Type.Camera, Vector3.zero, Quaternion.identity, transform);
