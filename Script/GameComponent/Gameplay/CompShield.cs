@@ -23,6 +23,9 @@ public class CompShield : ComponentBase
     [HideInInspector]
     // size of the shield (sphere size)
     public float ShieldSize = 1.0f;
+    [HideInInspector]
+    // center of shield
+    public Vector3 Center = Vector3.zero;
 
     public override void Start()
     {

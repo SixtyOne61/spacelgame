@@ -14,18 +14,24 @@ public class EntShield : VisuelEntity
     public Vector2 Y;
     [HideInInspector]
     public Vector2 Z;
-
-    // for build shield
-    private Vector3 _center = Vector3.zero;
+    [HideInInspector]
+    // radius of the shield, depend of x,y,z
+    public float Radius = 0.0f;
+    [HideInInspector]
+	// for build shield
+    public Vector3 Center = Vector3.zero;
 
     public override void Start()
     {
         // center 
-        _center = new Vector3((X.y + X.x) / 2.0f, (Y.y + Y.x) / 2.0f, (Z.y + Z.x) / 2.0f);
+        Center = new Vector3((X.y + X.x) / 2.0f, (Y.y + Y.x) / 2.0f, (Z.y + Z.x) / 2.0f);
         // compute vertex for create icosphere
         Create();
         // move object to center
-        transform.position = _center;
+        transform.position = Center;
+        // init component
+        ComponentShield.ShieldSize = Radius;
+        ComponentShiele.Center = Center;
         AddComponent(ComponentShield);
         base.Start();
     }
@@ -86,25 +92,25 @@ public class EntShield : VisuelEntity
 
         List<Vector3> vertList = new List<Vector3>();
 
-        float radius = Mathf.Max(X.y, Mathf.Max(Y.y, Z.y));
+        Radius = Mathf.Max(X.y, Mathf.Max(Y.y, Z.y));
 
         // create 12 vertices of a icosahedron
         float t = (1f + Mathf.Sqrt(5f)) / 2f;
 
-        vertList.Add(new Vector3(-1f, t, 0f).normalized * radius);
-        vertList.Add(new Vector3(1f, t, 0f).normalized * radius);
-        vertList.Add(new Vector3(-1f, -t, 0f).normalized * radius);
-        vertList.Add(new Vector3(1f, -t, 0f).normalized * radius);
+        vertList.Add(new Vector3(-1f, t, 0f).normalized * Radius);
+        vertList.Add(new Vector3(1f, t, 0f).normalized * Radius);
+        vertList.Add(new Vector3(-1f, -t, 0f).normalized * Radius);
+        vertList.Add(new Vector3(1f, -t, 0f).normalized * Radius);
 
-        vertList.Add(new Vector3(0f, -1f, t).normalized * radius);
-        vertList.Add(new Vector3(0f, 1f, t).normalized * radius);
-        vertList.Add(new Vector3(0f, -1f, -t).normalized * radius);
-        vertList.Add(new Vector3(0f, 1f, -t).normalized * radius);
+        vertList.Add(new Vector3(0f, -1f, t).normalized * Radius);
+        vertList.Add(new Vector3(0f, 1f, t).normalized * Radius);
+        vertList.Add(new Vector3(0f, -1f, -t).normalized * Radius);
+        vertList.Add(new Vector3(0f, 1f, -t).normalized * Radius);
 
-        vertList.Add(new Vector3(t, 0f, -1f).normalized * radius);
-        vertList.Add(new Vector3(t, 0f, 1f).normalized * radius);
-        vertList.Add(new Vector3(-t, 0f, -1f).normalized * radius);
-        vertList.Add(new Vector3(-t, 0f, 1f).normalized * radius);
+        vertList.Add(new Vector3(t, 0f, -1f).normalized * Radius);
+        vertList.Add(new Vector3(t, 0f, 1f).normalized * Radius);
+        vertList.Add(new Vector3(-t, 0f, -1f).normalized * Radius);
+        vertList.Add(new Vector3(-t, 0f, 1f).normalized * Radius);
 
 
         // create 20 triangles of the icosahedron
