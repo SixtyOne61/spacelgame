@@ -81,8 +81,10 @@ public class CompShield : ComponentBase
         foreach(LinkPos pos in compBullet.LinkPosList)
         {
             Vector3 worldPos = compBullet.Owner.transform.TransformPoint(pos.Center.ToVec3());
-            if(Vector3.Distance(worldPos, Owner.transform.position) < ShieldSize)
+            if(Vector3.Distance(worldPos, Owner.transform.position) <= ShieldSize)
             {
+            	// To do 
+            	PerfectHit(worldPos);
                 AddImpact(Owner.transform.InverseTransformPoint(worldPos));
                 // destroy bullet
                 Builder.Instance.DestroyGameObject(compBullet.Owner, true);
@@ -96,6 +98,11 @@ public class CompShield : ComponentBase
                 }
             }
         }
+    }
+    
+    public void PerfectHit(Vector3 point)
+    {
+    	
     }
 
     public void AddImpact(Vector3 point)
