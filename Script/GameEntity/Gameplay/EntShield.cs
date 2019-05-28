@@ -31,7 +31,7 @@ public class EntShield : VisuelEntity
         transform.position = Center;
         // init component
         ComponentShield.ShieldSize = Radius;
-        ComponentShiele.Center = Center;
+        ComponentShield.Center = Center;
         AddComponent(ComponentShield);
         base.Start();
     }

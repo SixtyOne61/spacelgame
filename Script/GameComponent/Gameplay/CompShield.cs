@@ -102,7 +102,7 @@ public class CompShield : ComponentBase
     
     public void PerfectHit(Vector3 point)
     {
-    	
+    	// create many aabb for describe this object
     }
 
     public void AddImpact(Vector3 point)
