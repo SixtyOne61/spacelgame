@@ -86,10 +86,10 @@ public class CompShield : ComponentBase
             	// To do 
             	PerfectHit(worldPos);
                 AddImpact(Owner.transform.InverseTransformPoint(worldPos));
-                // destroy bullet
-                Builder.Instance.DestroyGameObject(compBullet.Owner, true);
                 // update dmg taken
                 _dmgTaken -= compBullet.Owner.GetComponent<VolumeEntity>().ParamAttribut.Damage;
+                // destroy bullet
+                Builder.Instance.DestroyGameObject(compBullet.Owner, false);
                 
                 // destroy shield
                 if(_dmgTaken <= 0)
