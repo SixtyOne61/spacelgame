@@ -46,6 +46,11 @@ public class HelperGenerateWorld
             // to do : here add neighboor
         }
     }
+    
+    public void Add(LinkPos pos)
+    {
+    	
+    }
 
     public void DispachPosInUnitaryObject()
     {
@@ -143,3 +148,4 @@ public class HelperGenerateWorld
         }
     }
 }
+    

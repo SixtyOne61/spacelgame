@@ -22,7 +22,6 @@ namespace Tool
         {
             DisplaySettings();
             DisplayActions();
-            DisplayExport();
         }
 
         private void DisplaySettings()
@@ -41,22 +40,10 @@ namespace Tool
             {
                 _whaleBuild.Generate();
             }
-        }
-
-        private void DisplayExport()
-        {
-            Label("Export");
-
-            NameExport = TextField(NameExport);
-
-            if(AddButton("Export"))
+            else if(AddButton("Export to prefab"))
             {
-                _whaleBuild.Export(NameExport);
-            }
-
-            if(AddButton("Load"))
-            {
-            	_whaleBuild.Load(NameExport);
+            	// create function to export obj to prefab
+            	// check prefab utility
             }
         }
 
