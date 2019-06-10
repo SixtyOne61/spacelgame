@@ -1,67 +1,55 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Tool;
 
-public class WhaleBuild
+namespace Tool
 {
-    public SCRMap ParamMap;
-    public SCRNoise ParamNoise;
-    public SCROneValue ParamCubeWorldSize;
-    public SCROneValue ParamNbChunck;
-
-    private List<HelperGenerateWorld> m_rocks = new List<HelperGenerateWorld>();
-
-    public void Generate()
+    public class WhaleBuild
     {
-        m_rocks.Clear();
-        // sub divise world
-        int delta = (int)ParamNbChunck.Value;
-        Vector3 chunckSize = new Vector3(ParamMap.Width / delta, ParamMap.Height / delta, ParamMap.Depth / delta);
-        Vector3 origine = Vector3.zero;
+        [Tooltip("Param for build map")]
+        public SCRWhale ParamWhale;
+        [Tooltip("Noise rock param")]
+        public SCRNoise ParamRock;
 
-        for(int i = 0; i < delta; ++i)
+        // rock helper
+        public HelperBuildRock HelperBuildRock = new HelperBuildRock();
+
+        // contains all helper
+        private List<AbsHelperBuild> _helpers = new List<AbsHelperBuild>();
+
+        public void Init()
         {
-            for (int j = 0; j < delta; ++j)
-            {
-                for (int z = 0; z < delta; ++z)
-                {
-                    GenerateSubPart(chunckSize, new Vector3(i * chunckSize.x, j * chunckSize.y, z * chunckSize.z));
-                }
-            }
-        }
-    }
-
-    private void GenerateSubPart(Vector3 chunckSize, Vector3 origine)
-    {
-        HelperGenerateWorld Rock = new HelperGenerateWorld(ParamNoise.RockThreshold, ParamCubeWorldSize, origine);
-
-        float sizeCubeWorld = ParamCubeWorldSize.Value;
-        for (float x = 0; x < chunckSize.x; x += sizeCubeWorld)
-        {
-            for (float y = 0; y < chunckSize.y; y += sizeCubeWorld)
-            {
-                for (float z = 0; z < chunckSize.z; z += sizeCubeWorld)
-                {
-                    UnitPos pos = new UnitPos(x, y, z);
-                    Rock.Add(pos);
-                }
-            }
+            _helpers.Clear();
+            HelperBuildRock.ParamWhale = ParamWhale;
+            HelperBuildRock.ParamRock = ParamRock;
+            _helpers.Add(HelperBuildRock);
         }
 
-        // dispach all coord on unitary object (object who all coord can acces to an other)
-        Rock.DispachPosInUnitaryObject();
+        public void Generate()
+        {
+            // TO DO : change this, make escargot
+            // generate all object for world, create prefab
+            for (int x = ParamWhale.Width.x; x <= ParamWhale.Width.y; ++x)
+            {
+                for (int y = ParamWhale.Height.x; y <= ParamWhale.Height.y; ++y)
+                {
+                    for (int z = ParamWhale.Depth.x; z <= ParamWhale.Depth.y; ++z)
+                    {
+                        // ... call on all helper
+                        foreach (AbsHelperBuild helper in _helpers)
+                        {
+                            helper.Build(x, y, z);
+                        }
+                    }
+                }
+            }
 
-        m_rocks.Add(Rock);
-    }
+            // export each object to prefab
+            foreach (AbsHelperBuild helper in _helpers)
+            {
+                helper.ExportToPrefab();
+            }
+        }
 
-    public void Export(string Name)
-    {
-		 XmlRW.Export(Name, m_rocks);
-    }
-    
-    public void Load(string Name)
-    {
-    	XmlRW.Load(Name, ref m_rocks);
     }
 }

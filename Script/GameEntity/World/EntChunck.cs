@@ -22,7 +22,7 @@ public class EntChunck : SpacelEntity {
 
     private IEnumerator GenerateHashWorldMap()
     {
-        Rock = new HelperGenerateWorld(ParamNoise.RockThreshold, ParamCubeWorldSize, transform.position);
+        Rock = new HelperGenerateWorld(ParamNoise.Threshold, ParamCubeWorldSize, transform.position);
 
         // for all chunck coord, check if we can add it in global groupe
         float sizeCubeWorld = ParamCubeWorldSize.Value;

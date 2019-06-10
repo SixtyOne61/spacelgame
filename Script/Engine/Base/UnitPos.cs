@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System;
 
-
+[System.Serializable]
 public class UnitPos : IComparable
 {
     public static UnitPos UPINVALID = new UnitPos(float.NaN, float.NaN, float.NaN);

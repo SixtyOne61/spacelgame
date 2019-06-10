@@ -83,7 +83,6 @@ public class CompShield : ComponentBase
             Vector3 worldPos = compBullet.Owner.transform.TransformPoint(pos.Center.ToVec3());
             if(Vector3.Distance(worldPos, Owner.transform.position) <= ShieldSize)
             {
-            	// To do 
             	PerfectHit(worldPos);
                 AddImpact(Owner.transform.InverseTransformPoint(worldPos));
                 // update dmg taken

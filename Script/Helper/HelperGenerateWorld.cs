@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Engine;
 
+
+// TO DO : remove
 public class HelperGenerateWorld
 {
     // contain all unitary object, each sub list was one object
@@ -45,11 +47,6 @@ public class HelperGenerateWorld
             _globalList.Add(pos);
             // to do : here add neighboor
         }
-    }
-    
-    public void Add(LinkPos pos)
-    {
-    	
     }
 
     public void DispachPosInUnitaryObject()

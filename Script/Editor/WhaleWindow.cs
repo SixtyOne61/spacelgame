@@ -26,10 +26,9 @@ namespace Tool
 
         private void DisplaySettings()
         {
-            _whaleBuild.ParamMap = EditorGUILayout.ObjectField("Param Map", _whaleBuild.ParamMap, typeof(SCRMap), false) as SCRMap;
-            _whaleBuild.ParamNoise = EditorGUILayout.ObjectField("Param Noise", _whaleBuild.ParamNoise, typeof(SCRNoise), false) as SCRNoise;
-            _whaleBuild.ParamCubeWorldSize = EditorGUILayout.ObjectField("Param Cube World Size", _whaleBuild.ParamCubeWorldSize, typeof(SCROneValue), false) as SCROneValue;
-            _whaleBuild.ParamNbChunck = EditorGUILayout.ObjectField("Param Nb Chunck", _whaleBuild.ParamNbChunck, typeof(SCROneValue), false) as SCROneValue;
+            _whaleBuild.ParamWhale = EditorGUILayout.ObjectField("Param Whale", _whaleBuild.ParamWhale, typeof(SCRWhale), false) as SCRWhale;
+            _whaleBuild.ParamRock = EditorGUILayout.ObjectField("Param Rock", _whaleBuild.ParamRock, typeof(SCRNoise), false) as SCRNoise;
+            
         }
 
         private void DisplayActions()
@@ -38,12 +37,8 @@ namespace Tool
 
             if (AddButton("Generate"))
             {
+                _whaleBuild.Init(); // TO DO : change this
                 _whaleBuild.Generate();
-            }
-            else if(AddButton("Export to prefab"))
-            {
-            	// create function to export obj to prefab
-            	// check prefab utility
             }
         }
 

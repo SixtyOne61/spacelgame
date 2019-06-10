@@ -16,6 +16,7 @@ namespace Engine
         Left = 32
     }
 
+    [System.Serializable]
     public class LinkPos
     {
         public enum Neighbor : int
@@ -68,6 +69,19 @@ namespace Engine
         public bool Has(Neighbor where)
         {
             return Neighbors.ContainsKey(where);
+        }
+
+        public bool Has(UnitPos pos)
+        {
+            foreach(KeyValuePair<Neighbor, UnitPos> our in Neighbors)
+            {
+                if(pos == our.Value)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private void AddMask(Neighbor where)

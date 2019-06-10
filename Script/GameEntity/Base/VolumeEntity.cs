@@ -7,11 +7,13 @@ using System.Linq;
 public class VolumeEntity : VisuelEntity
 {
     // Component
-    public CompMeshGenerator CompMeshGenerator;
-    public CompMaterial CompMaterial;
+    public CompMeshGenerator CompMeshGenerator = new CompMeshGenerator();
+    public CompMaterial CompMaterial = new CompMaterial();
 
     [Tooltip("param, each Volume entity can make damage")]
     public Tool.SCRCubeAttribut ParamAttribut;
+
+    public LinkPos[] LinkPosArray;
 
     [HideInInspector]
     public List<LinkPos> LinkPosList = new List<LinkPos>();
@@ -24,6 +26,10 @@ public class VolumeEntity : VisuelEntity
 
     public override void Start()
     {
+        if(LinkPosArray.Length != 0)
+        {
+            LinkPosList = LinkPosArray.ToList();
+        }
         CompMeshGenerator.LinkPosList = LinkPosList;
 
         AddComponent(CompMeshGenerator);
