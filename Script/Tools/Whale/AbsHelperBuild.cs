@@ -8,7 +8,14 @@ namespace Tool
     {
         [Tooltip("Param for build map")]
         public SCRWhale ParamWhale;
+        [Tooltip("born x")]
+        public Vector2 Bornx;
+        [Tooltip("born y")]
+        public Vector2 Borny;
+        [Tooltip("born z")]
+        public Vector2 Bornz;
 
+        publoc abstract void Generate();
         public abstract void Build(int x, int y, int z);
         public abstract void ExportToPrefab();
 

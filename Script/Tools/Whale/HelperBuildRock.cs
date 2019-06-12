@@ -21,6 +21,27 @@ namespace Tool
                 obj.ExportToPrefab();
             }
         }
+        
+        public override void Generate()
+        {
+        	int start = (bornx.y - bornx.x) >> 1;
+        	int delta = 1;
+        	while(delta != start)
+        	{
+        		for(int x = start - delta; x <= start + delta; x += delta)
+        		++delta;
+        	}
+        	for(int x = bornx.x; x <= bornx.y; ++x)
+        	{
+        		for(int y = borny.x; y <= borny.y; ++y)
+        		{
+        			for(int z = bornz.x; z <= bornz.y; ++z)
+        			{
+        				Build(x,y,z);
+        			}
+        		}
+        	}
+        }
 
         public override void Build(int x, int y, int z)
         {

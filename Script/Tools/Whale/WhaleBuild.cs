@@ -11,22 +11,56 @@ namespace Tool
         [Tooltip("Noise rock param")]
         public SCRNoise ParamRock;
 
-        // rock helper
-        public HelperBuildRock HelperBuildRock = new HelperBuildRock();
-
-        // contains all helper
-        private List<AbsHelperBuild> _helpers = new List<AbsHelperBuild>();
+        // contains all rock helper
+        private List<HelperBuildRock> _helperRocks = new List<HelperBuildRock>();
 
         public void Init()
         {
             _helpers.Clear();
-            HelperBuildRock.ParamWhale = ParamWhale;
-            HelperBuildRock.ParamRock = ParamRock;
-            _helpers.Add(HelperBuildRock);
+            HelperBuildRock baseRock = new HelperBuildRock();
+            baseRock.ParamWhale = ParamWhale;
+            baseRock.ParamRock = ParamRock;
+            for(int i = 0; i < ParamWhale.NbChunck * 3; ++i)
+            {
+            	_helperRocks.Add(new HelperBuildRock(baseRock)));
+            }      
+        }
+        
+        public void GenerateRock()
+        {
+        	Vector2 delta = new vector2(ParamWhale.SizeChunck, ParamWhale.SizeChunck);
+        	int max = delta.x * ParamWhale.NbChunck;
+        	Vector2 bornx = bornxDefault = new Vector2(0, ParamWhale.SizeChunck);
+        	Vector2 borny = bornyDefault = new Vector2(0, ParamWhale.SizeChunck);
+        	Vector2 bornz = bornzDefault = new Vector2(0, ParamWhale.SizeChunck);
+        	foreach(HelperBuildRock helper in _helperRocks)
+        	{
+        		helper.bornx = bornx;
+        		helper.borny = borny;
+        		helper.bornz = bornz;
+        		
+        		helper.Generate();
+        		helper.ExportToPrefab();
+        		
+        		// change born
+        		bornx += delta;
+        		if(bornx.y >= max)
+        		{
+        			bornx = bornxDefault;
+        			borny += delta;
+        			if(borny.y >= delta)
+        			{
+        				borny = bornyDefault;
+        				bornz += delta;
+        			}
+        		}
+        		
+        	}
         }
 
         public void Generate()
         {
+        	GenerateRock();
             // TO DO : change this, make escargot
             // generate all object for world, create prefab
             for (int x = ParamWhale.Width.x; x <= ParamWhale.Width.y; ++x)
