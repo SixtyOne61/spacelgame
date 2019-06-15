@@ -24,18 +24,18 @@ namespace Tool
         
         public override void Generate()
         {
-        	int start = (bornx.y - bornx.x) >> 1;
+        	/*int start = (int)(Bornx.y - Bornx.x) >> 1;
         	int delta = 1;
         	while(delta != start)
         	{
         		for(int x = start - delta; x <= start + delta; x += delta)
         		++delta;
-        	}
-        	for(int x = bornx.x; x <= bornx.y; ++x)
+        	}*/
+        	for(int x = (int)Bornx.x; x <= (int)Bornx.y; ++x)
         	{
-        		for(int y = borny.x; y <= borny.y; ++y)
+        		for(int y = (int)Borny.x; y <= (int)Borny.y; ++y)
         		{
-        			for(int z = bornz.x; z <= bornz.y; ++z)
+        			for(int z = (int)Bornz.x; z <= (int)Bornz.y; ++z)
         			{
         				Build(x,y,z);
         			}

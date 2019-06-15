@@ -16,28 +16,37 @@ namespace Tool
 
         public void Init()
         {
-            _helpers.Clear();
+            _helperRocks.Clear();
             HelperBuildRock baseRock = new HelperBuildRock();
             baseRock.ParamWhale = ParamWhale;
             baseRock.ParamRock = ParamRock;
-            for(int i = 0; i < ParamWhale.NbChunck * 3; ++i)
+                        
+            for (int i = 0; i < ParamWhale.NbChunck; ++i)
             {
-            	_helperRocks.Add(new HelperBuildRock(baseRock)));
-            }      
+                for(int j = 0; j < ParamWhale.NbChunck; ++j)
+                {
+                    for(int k = 0; k < ParamWhale.NbChunck; ++k)
+                    {
+                        _helperRocks.Add(baseRock);
+                    }
+                }
+            }   
         }
         
         public void GenerateRock()
         {
-        	Vector2 delta = new vector2(ParamWhale.SizeChunck, ParamWhale.SizeChunck);
-        	int max = delta.x * ParamWhale.NbChunck;
-        	Vector2 bornx = bornxDefault = new Vector2(0, ParamWhale.SizeChunck);
-        	Vector2 borny = bornyDefault = new Vector2(0, ParamWhale.SizeChunck);
-        	Vector2 bornz = bornzDefault = new Vector2(0, ParamWhale.SizeChunck);
-        	foreach(HelperBuildRock helper in _helperRocks)
+        	Vector2 delta = new Vector2(ParamWhale.SizeChunck, ParamWhale.SizeChunck);
+        	int max = (int)(delta.x * ParamWhale.NbChunck);
+        	Vector2 bornx = new Vector2(0, ParamWhale.SizeChunck);
+            Vector2 bornxDefault = bornx;
+            Vector2 borny = new Vector2(0, ParamWhale.SizeChunck);
+            Vector2 bornyDefault = borny;
+            Vector2 bornz = new Vector2(0, ParamWhale.SizeChunck);
+            foreach (HelperBuildRock helper in _helperRocks)
         	{
-        		helper.bornx = bornx;
-        		helper.borny = borny;
-        		helper.bornz = bornz;
+        		helper.Bornx = bornx;
+        		helper.Borny = borny;
+        		helper.Bornz = bornz;
         		
         		helper.Generate();
         		helper.ExportToPrefab();
@@ -48,7 +57,7 @@ namespace Tool
         		{
         			bornx = bornxDefault;
         			borny += delta;
-        			if(borny.y >= delta)
+        			if(borny.y >= max)
         			{
         				borny = bornyDefault;
         				bornz += delta;
@@ -61,29 +70,6 @@ namespace Tool
         public void Generate()
         {
         	GenerateRock();
-            // TO DO : change this, make escargot
-            // generate all object for world, create prefab
-            for (int x = ParamWhale.Width.x; x <= ParamWhale.Width.y; ++x)
-            {
-                for (int y = ParamWhale.Height.x; y <= ParamWhale.Height.y; ++y)
-                {
-                    for (int z = ParamWhale.Depth.x; z <= ParamWhale.Depth.y; ++z)
-                    {
-                        // ... call on all helper
-                        foreach (AbsHelperBuild helper in _helpers)
-                        {
-                            helper.Build(x, y, z);
-                        }
-                    }
-                }
-            }
-
-            // export each object to prefab
-            foreach (AbsHelperBuild helper in _helpers)
-            {
-                helper.ExportToPrefab();
-            }
         }
-
     }
 }

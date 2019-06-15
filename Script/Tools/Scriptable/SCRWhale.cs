@@ -9,11 +9,6 @@ namespace Tool
     	public int SizeChunck;
     	[Tooltip("Number of chunck")]
         public int NbChunck;
-        public Vector2Int Width = SizeChunck * NbChunck;
-        public Vector2Int Height = SizeChunck * NbChunck;
-        public Vector2Int Depth = SizeChunck * NbChunck;
-        
-        
     }
 }
 

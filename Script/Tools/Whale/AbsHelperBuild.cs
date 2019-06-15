@@ -15,15 +15,19 @@ namespace Tool
         [Tooltip("born z")]
         public Vector2 Bornz;
 
-        publoc abstract void Generate();
+        public abstract void Generate();
         public abstract void Build(int x, int y, int z);
         public abstract void ExportToPrefab();
 
         public bool IsValidCoord(int x, int y, int z)
         {
-            return !(x < ParamWhale.Width.x || x > ParamWhale.Width.y
-                || y < ParamWhale.Height.x || y > ParamWhale.Height.y
-                || z < ParamWhale.Depth.x || z > ParamWhale.Depth.y);
+            Vector2Int Width = new Vector2Int(0, ParamWhale.SizeChunck * ParamWhale.NbChunck);
+            Vector2Int Height = new Vector2Int(0, ParamWhale.SizeChunck * ParamWhale.NbChunck);
+            Vector2Int Depth = new Vector2Int(0, ParamWhale.SizeChunck * ParamWhale.NbChunck);
+
+            return !(x < Width.x || x > Width.y
+                || y < Height.x || y > Height.y
+                || z < Depth.x || z > Depth.y);
         }
     }
 }
