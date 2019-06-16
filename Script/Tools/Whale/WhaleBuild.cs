@@ -16,18 +16,14 @@ namespace Tool
 
         public void Init()
         {
-            _helperRocks.Clear();
-            HelperBuildRock baseRock = new HelperBuildRock();
-            baseRock.ParamWhale = ParamWhale;
-            baseRock.ParamRock = ParamRock;
-                        
+            _helperRocks.Clear();                        
             for (int i = 0; i < ParamWhale.NbChunck; ++i)
             {
                 for(int j = 0; j < ParamWhale.NbChunck; ++j)
                 {
                     for(int k = 0; k < ParamWhale.NbChunck; ++k)
                     {
-                        _helperRocks.Add(baseRock);
+                        _helperRocks.Add(new HelperBuildRock(ParamRock, ParamWhale));
                     }
                 }
             }   
