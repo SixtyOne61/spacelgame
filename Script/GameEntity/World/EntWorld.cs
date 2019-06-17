@@ -23,6 +23,12 @@ public class EntWorld : SpacelEntity
     public override void Start()
     {
         base.Start();
+        Spawn();
+    }
+    
+    public void Spawn()
+    {
+    	
     }
 
     public override void Update()
