@@ -28,11 +28,17 @@ public class EntWorld : SpacelEntity
     
     public void Spawn()
     {
-    	
+    	GameObject[] prefabs = Resources.LoadAll<GameObject>("Assets/Prefab/World/Generate/");
+    	foreach(GameObject go in prefabs)
+    	{
+    		GameObject chunck = Instantiate(go, Vector3.zero, Quaternion.identity);
+    		chunck.transform.SetParent(transform);
+    	}
     }
 
     public override void Update()
     {
+    	return; // for test if it's work, remove
         if(_curr != EstimateCurrCoord())
         {
             // update chunck active
@@ -139,3 +145,4 @@ public class EntWorld : SpacelEntity
         yield return null;
     }
 }
+    
