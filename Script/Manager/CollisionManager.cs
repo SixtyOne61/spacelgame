@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class CollisionManager : Singleton<CollisionManager>
 {
+	// To do : order world collision separate in zone for reduce number of call
     private CollisionGroup<CompCollisionPlayer> _playerGroup = new CollisionGroup<CompCollisionPlayer>();
     private CollisionGroup<CompCollisionWorld> _worldGroup = new CollisionGroup<CompCollisionWorld>();
     private CollisionGroup<CompCollisionBullet> _bulletGroup = new CollisionGroup<CompCollisionBullet>();
