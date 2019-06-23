@@ -12,7 +12,7 @@ public class CompCollision : ComponentBase
     public List<LinkPos> LinkPosList = new List<LinkPos>();
 
     // use for define box
-    private BoxParam _boxParam = new BoxParam();
+    public BoxParam Box = new BoxParam();
 
 #if (UNITY_EDITOR)
     // for debug
@@ -21,26 +21,33 @@ public class CompCollision : ComponentBase
 
     public override void Start()
     {
+        CollisionManager.Instance.Register(this);
         base.Start();
 
         Reset();
     }
 
+    public override void OnDestroy()
+    {
+        base.OnDestroy();
+        CollisionManager.Instance.UnRegister(this);
+    }
+
     public void Reset()
     {
-        _boxParam.x.IsInit = false;
-        _boxParam.y.IsInit = false;
-        _boxParam.z.IsInit = false;
+        Box.x.IsInit = false;
+        Box.y.IsInit = false;
+        Box.z.IsInit = false;
 
         // create LOD box
         foreach (LinkPos pos in LinkPosList)
         {
-            _boxParam.x.AddBest(pos.Center.x);
-            _boxParam.y.AddBest(pos.Center.y);
-            _boxParam.z.AddBest(pos.Center.z);
+            Box.x.AddBest(pos.Center.x);
+            Box.y.AddBest(pos.Center.y);
+            Box.z.AddBest(pos.Center.z);
         }
 
-        _boxParam.Terminate(ParamCubeSize.Value);
+        Box.Terminate(ParamCubeSize.Value);
     }
 
     public void Hit(CompCollision other)
@@ -56,32 +63,32 @@ public class CompCollision : ComponentBase
 
     private bool HitShpereBox(CompCollision other)
     {
-        Vector3 otherPos = other.Owner.transform.TransformPoint(other._boxParam.Center);
-        Vector3 pos = Owner.transform.TransformPoint(_boxParam.Center);
-        return Vector3.Distance(otherPos, pos) <= (other._boxParam.Ray + _boxParam.Ray);
+        Vector3 otherPos = other.Owner.transform.TransformPoint(other.Box.Center);
+        Vector3 pos = Owner.transform.TransformPoint(Box.Center);
+        return Vector3.Distance(otherPos, pos) <= (other.Box.Ray + Box.Ray);
     }
 
     private bool HitBoundBox(CompCollision other)
     {
         // transform box param from other to our local space
-        Vector3 otherCenter = other._boxParam.Center;
+        Vector3 otherCenter = other.Box.Center;
         otherCenter = other.Owner.transform.TransformPoint(otherCenter);
 
         // our local space
         otherCenter = Owner.transform.InverseTransformPoint(otherCenter);
 
         BoxParam tmp = new BoxParam(otherCenter);
-        tmp.x.Clamp = new Vector2(otherCenter.x - other._boxParam.x.Half, otherCenter.x + other._boxParam.x.Half);
-        tmp.y.Clamp = new Vector2(otherCenter.y - other._boxParam.y.Half, otherCenter.y + other._boxParam.y.Half);
-        tmp.z.Clamp = new Vector2(otherCenter.z - other._boxParam.z.Half, otherCenter.z + other._boxParam.z.Half);
+        tmp.x.Clamp = new Vector2(otherCenter.x - other.Box.x.Half, otherCenter.x + other.Box.x.Half);
+        tmp.y.Clamp = new Vector2(otherCenter.y - other.Box.y.Half, otherCenter.y + other.Box.y.Half);
+        tmp.z.Clamp = new Vector2(otherCenter.z - other.Box.z.Half, otherCenter.z + other.Box.z.Half);
 
-        return _boxParam.HasContact(tmp);
+        return Box.HasContact(tmp);
     }
 
     private void PerfectHit(CompCollision other)
     {
-        BoxParam tmp = GetRelativeBox(_boxParam, this, other._boxParam, other);
-        BoxParam tmp2 = GetRelativeBox(other._boxParam, other, _boxParam, this);
+        BoxParam tmp = GetRelativeBox(Box, this, other.Box, other);
+        BoxParam tmp2 = GetRelativeBox(other.Box, other, Box, this);
 
         // size of each cube
         float size = ParamCubeSize.Value;
@@ -133,7 +140,7 @@ public class CompCollision : ComponentBase
     private BoxParam GetRelativeBox(BoxParam box1, CompCollision comp1, BoxParam box2, CompCollision comp2)
     {
         // transform center of box2 to world coord
-        Vector3 otherCenter = comp2._boxParam.Center;
+        Vector3 otherCenter = comp2.Box.Center;
         otherCenter = comp2.Owner.transform.TransformPoint(otherCenter);
 
         // transform to box1 local coord

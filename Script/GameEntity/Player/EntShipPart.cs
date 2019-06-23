@@ -5,7 +5,7 @@ using UnityEngine;
 using Engine;
 using Tool;
 
-public class EntShipPart : CollideEntity<CompCollisionPlayer>
+public class EntShipPart : CollideEntity
 {
     private List<LinkPos> _removed = new List<LinkPos>();
     private EntRemovedShip _mirrorRemoved;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Engine;
 
-public class EntBullet : CollideEntity<CompCollisionBullet>
+public class EntBullet : CollideEntity
 {
     // components
     public CompLife ComponentLife;

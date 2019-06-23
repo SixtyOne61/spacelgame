@@ -36,7 +36,7 @@ namespace Tool
             volEnt.CompMeshGenerator.ParamCubeSize = Param.ParamCubeSize;
             volEnt.CompMaterial.ParamMaterial = Param.ParamMaterial;
 
-            string localPath = "Assets/Prefab/World/Generate/" + _desc[0].Center + ".prefab";
+            string localPath = "Assets/Resources/Generate/" + _desc[0].Center + ".prefab";
             PrefabUtility.SaveAsPrefabAssetAndConnect(obj, localPath, InteractionMode.AutomatedAction);
         }
     }

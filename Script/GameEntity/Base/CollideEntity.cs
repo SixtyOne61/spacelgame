@@ -4,34 +4,29 @@ using UnityEngine;
 using Engine;
 using System.Linq;
 
-public class CollideEntity<T> : VolumeEntity where T : CompCollision, new()
+public class CollideEntity : VolumeEntity
 {
     // component collision needed
-    protected T _componentCollision;
+    public CompCollision ComponentCollision;
 
     public override void Start()
     {
         // init component collision
-        _componentCollision = new T();
-        _componentCollision.ParamCubeSize = CompMeshGenerator.ParamCubeSize;
-        _componentCollision.LinkPosList = LinkPosList;
+        ComponentCollision = new CompCollision();
+        ComponentCollision.ParamCubeSize = CompMeshGenerator.ParamCubeSize;
+        ComponentCollision.LinkPosList = LinkPosList;
 
-        AddComponent(_componentCollision);
+        AddComponent(ComponentCollision);
         base.Start();
     }
 
     public override void Refresh()
     {
         base.Refresh();
-        _componentCollision.Reset();
+        ComponentCollision.Reset();
 
         // check if object was destroy
         Alive();
-    }
-
-    public void OnDestroy()
-    {
-        _componentCollision.OnDestroy();
     }
 
     public override void FixedUpdate()

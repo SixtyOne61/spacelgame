@@ -12,8 +12,6 @@ namespace Tool
         // prefab for world
         [Tooltip("Rock Prefab")]
         public GameObject RockPrefab;
-        [Tooltip("Chunck Prefab")]
-        public GameObject ChunckPrefab;
         [Tooltip("Border Prefab")]
         public GameObject BorderPrefab;
         [Tooltip("World Prefab")]
@@ -21,7 +19,6 @@ namespace Tool
 
         public enum Type : int
         {
-            Chunck,
             Rock,
             Border,
             World,
@@ -30,7 +27,6 @@ namespace Tool
         public void Init()
         {
             RockPrefab.tag = Tag;
-            ChunckPrefab.tag = Tag;
             BorderPrefab.tag = Tag;
             WorldPrefab.tag = Tag;
         }
@@ -40,10 +36,6 @@ namespace Tool
             GameObject obj = null;
             switch (type)
             {
-                case (int)Type.Chunck:
-                    obj = ChunckPrefab;
-                    break;
-
                 case (int)Type.Rock:
                     obj = RockPrefab;
                     break;

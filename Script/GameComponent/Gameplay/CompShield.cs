@@ -33,7 +33,9 @@ public class CompShield : ComponentBase
 
         _impactDuration = ParamShield.Duration;
         _dmgTaken = ParamShield.DamageTaken;
-        CollisionManager.Instance.Register(this);
+
+        // TO DO 
+        //CollisionManager.Instance.Register(this);
     }
 
     public override void Update()
@@ -75,20 +77,20 @@ public class CompShield : ComponentBase
         }
     }
 
-    public void Hit(CompCollisionBullet compBullet)
+    public void Hit(CompCollision comp)
     {
         // TO DO : maybe change this
-        foreach(LinkPos pos in compBullet.LinkPosList)
+        foreach(LinkPos pos in comp.LinkPosList)
         {
-            Vector3 worldPos = compBullet.Owner.transform.TransformPoint(pos.Center.ToVec3());
+            Vector3 worldPos = comp.Owner.transform.TransformPoint(pos.Center.ToVec3());
             if(Vector3.Distance(worldPos, Owner.transform.position) <= ShieldSize)
             {
             	PerfectHit(worldPos);
                 AddImpact(Owner.transform.InverseTransformPoint(worldPos));
                 // update dmg taken
-                _dmgTaken -= compBullet.Owner.GetComponent<VolumeEntity>().ParamAttribut.Damage;
+                _dmgTaken -= comp.Owner.GetComponent<VolumeEntity>().ParamAttribut.Damage;
                 // destroy bullet
-                Builder.Instance.DestroyGameObject(compBullet.Owner, false);
+                Builder.Instance.DestroyGameObject(comp.Owner, false);
                 
                 // destroy shield
                 if(_dmgTaken <= 0)
@@ -112,6 +114,8 @@ public class CompShield : ComponentBase
     public override void OnDestroy()
     {
         base.OnDestroy();
-        CollisionManager.Instance.UnRegister(this);
+
+        // TO DO
+        //CollisionManager.Instance.UnRegister(this);
     }
 }

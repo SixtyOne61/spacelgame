@@ -30,36 +30,14 @@ namespace Tool
 
             return result;
         }
-        
-        public static void Export(string nameFile, List<HelperGenerateWorld> rocks)
-        {
-        	XDocument xmlDoc = new XDocument(new XElement("WorldDesc"));
-        	foreach(HelperGenerateWorld rock in rocks)
-        	{
-        		XElement xmlPart = new XElement("RockChunck");
 
-                xmlPart.Add(new XElement("Param"), new XAttribute("Thresholds", rock.Thresholds), new XAttribute("Origine", rock.Origine), new XAttribute("ParamSize", rock.ParamSize.Value));
-
-        		// add all sub rock
-        		foreach(List<LinkPos> linkPos in rock.SubList)
-        		{
-                    XElement xmlRock = new XElement("Map",
-                        linkPos.Select(x => new XElement("Data", new XAttribute("value", x.Center), new XAttribute("Mask", x.Mask), x.Neighbors.Select(y => new XElement("Neighbor", new XAttribute("Key", y.Key), new XAttribute("Pos", y.Value))) )));
-
-                    xmlPart.Add(xmlRock);   
-        		}
-                xmlDoc.Root.Add(xmlPart);
-        	}
-        	xmlDoc.Save(Application.dataPath + "/Export/" + nameFile + ".xml");
-        }
-
-        public static void Export(Dictionary<int, CollideEntity<CompCollisionPlayer>> shipParts, string shipName, Transform cameraParent, Transform shipParent, List<Transform> shootingsSpawn, List<Transform> speedFxSpawn)
+        public static void Export(Dictionary<int, CollideEntity> shipParts, string shipName, Transform cameraParent, Transform shipParent, List<Transform> shootingsSpawn, List<Transform> speedFxSpawn)
         {
             // add root in xml
             XDocument xmlDoc = new XDocument(new XElement("ShipDesc"));
 
             // for each ship part
-            foreach (KeyValuePair<int, CollideEntity<CompCollisionPlayer>> part in shipParts)
+            foreach (KeyValuePair<int, CollideEntity> part in shipParts)
             {
                 // root of part
                 XElement xmlPart = new XElement("Part");
@@ -128,28 +106,6 @@ namespace Tool
                                                         new XAttribute("y", tr.localPosition.y),
                                                         new XAttribute("z", tr.localPosition.z)));
             return xmlElem;
-        }
-        
-        public static void Load(string nameFile, ref List<HelperGenerateWorld> rocks)
-        {
-            /*rocks.Clear();
-        	XDocument xmlDoc = XDocument.Load(Application.dataPath + "/Export/" + nameFile + ".xml");
-
-            foreach (var xmlChuncks in xmlDoc.Root.Elements("RockChunck"))
-        	{
-        		foreach(var xmlRocks in xmlChuncks.Elements("Rock"))
-        		{
-        			HelperGenerateWorld chunck = new HelperGenerateWorld();
-
-                    List<LinkPos> linkPos = new List<LinkPos>();
-        			Vector3 pos = Vector3.zero;
-        			foreach(var elem in xmlRocks.Element("Map").Elements("Data"))
-        			{
-                        linkPos.Add(new LinkPos(XmlRW.StringToVector3(elem.Attribute("value").Value)));
-        			}
-        			rocks.Add(chunck);
-        		}
-        	}*/
         }
 
         public static void Load(string shipName, ref Dictionary<int, ShipPart> shipParts, Transform cameraParent, Transform shipParent, List<Transform> shootingsSpawn, List<Transform> speedFxSpawn)

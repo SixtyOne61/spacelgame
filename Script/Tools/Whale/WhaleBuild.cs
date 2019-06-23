@@ -49,14 +49,20 @@ namespace Tool
         		
         		// change born
         		bornx += delta;
-        		if(bornx.y >= max)
+        		if(bornx.y > max)
         		{
         			bornx = bornxDefault;
         			borny += delta;
-        			if(borny.y >= max)
+        			if(borny.y > max)
         			{
         				borny = bornyDefault;
         				bornz += delta;
+                        if(bornz.y > max)
+                        {
+                            // DO NOT APPEND
+                            Debug.LogError("[WHALE] Too many helper.");
+                            break;
+                        }
         			}
         		}
         		

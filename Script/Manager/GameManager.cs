@@ -23,8 +23,6 @@ public class GameManager : Singleton<GameManager>
     {
         GameObject localPlayer = Builder.Instance.Build(Builder.FactoryType.Gameplay, (int)Tool.BuilderGameplay.Type.Player, Vector3.zero, Quaternion.identity, PlayersParent);
         localPlayer.name = Utils.ShipUse.ShipName;
-        // for switch chunck to the good one
-        WorldParent.GetComponentInChildren<EntWorld>().RefTransform = localPlayer.transform;
 
         Players.Add(localPlayer.GetComponent<EntPlayer>());
     }

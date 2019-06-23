@@ -6,8 +6,7 @@ using Engine;
 // TO DO : use componentMeshGenerator and EntBorderFront
 public class EntBorder : VisuelEntity
 {
-    public Tool.SCRMap ParamMap;
-    public Tool.SCROneValue ParamNbChunck;
+    public Tool.SCRWhale ParamMap;
 
     private List<Vector3> _vertices;
     private List<int> _triangles;
@@ -26,49 +25,52 @@ public class EntBorder : VisuelEntity
         _triangles = new List<int>();
 
         // all front, then back face
-        for(int z = 0; z <= ParamNbChunck.Value * ParamMap.Depth; z += (int)ParamNbChunck.Value * ParamMap.Depth)
+        int nbChunck = ParamMap.NbChunck;
+        int size = ParamMap.SizeChunck;
+        int combine = nbChunck * size;
+        for(int z = 0; z <= combine; z += combine)
         {
-            for (int x = 0; x < ParamNbChunck.Value; ++x)
+            for (int x = 0; x < nbChunck; ++x)
             {
-                for (int y = 0; y < ParamNbChunck.Value; ++y)
+                for (int y = 0; y < nbChunck; ++y)
                 {
-                    Vector3 start = new Vector3(x * ParamMap.Width, y * ParamMap.Height, z);
-                    CreateDownBeam(start, new Vector3(ParamMap.Depth, 1, -1));
-                    CreateUpBeam(start, new Vector3(ParamMap.Width, ParamMap.Height, -1));
-                    CreateLeftBeam(start, new Vector3(1, ParamMap.Height - 1, 0), false);
-                    CreateRightBeam(start, new Vector3(ParamMap.Width, ParamMap.Height - 1, -1), true);
+                    Vector3 start = new Vector3(x * size, y * size, z);
+                    CreateDownBeam(start, new Vector3(size, 1, -1));
+                    CreateUpBeam(start, new Vector3(size, size, -1));
+                    CreateLeftBeam(start, new Vector3(1, size - 1, 0), false);
+                    CreateRightBeam(start, new Vector3(size, size - 1, -1), true);
                 }
             }
         }
 
         // all left, then right face
-        for(int x = 0; x <= ParamNbChunck.Value * ParamMap.Width; x += (int)ParamNbChunck.Value * ParamMap.Width)
+        for(int x = 0; x <= combine; x += combine)
         {
-            for (int z = 0; z < ParamNbChunck.Value; ++z)
+            for (int z = 0; z < nbChunck; ++z)
             {
-                for (int y = 0; y < ParamNbChunck.Value; ++y)
+                for (int y = 0; y < nbChunck; ++y)
                 {
-                    Vector3 start = new Vector3(x, y * ParamMap.Height, z * ParamMap.Depth);
-                    CreateDownBeam(start, new Vector3(-1, 1, ParamMap.Depth));
-                    CreateUpBeam(start, new Vector3(-1, ParamMap.Height, ParamMap.Depth));
-                    CreateLeftBeam(start, new Vector3(-1, ParamMap.Height - 1, ParamMap.Depth), true);
-                    CreateRightBeam(start, new Vector3(0, ParamMap.Height - 1, 1), false);
+                    Vector3 start = new Vector3(x, y * size, z * size);
+                    CreateDownBeam(start, new Vector3(-1, 1, size));
+                    CreateUpBeam(start, new Vector3(-1, size, size));
+                    CreateLeftBeam(start, new Vector3(-1, size - 1, size), true);
+                    CreateRightBeam(start, new Vector3(0, size - 1, 1), false);
                 }
             }
         }
 
         // all bottom, then top face
-        for (int y = 0; y <= ParamNbChunck.Value * ParamMap.Height; y += (int)ParamNbChunck.Value * ParamMap.Height)
+        for (int y = 0; y <= combine; y += combine)
         {
-            for (int x = 0; x < ParamNbChunck.Value; ++x)
+            for (int x = 0; x < nbChunck; ++x)
             {
-                for (int z = 0; z < ParamNbChunck.Value; ++z)
+                for (int z = 0; z < nbChunck; ++z)
                 {
-                    Vector3 start = new Vector3(x * ParamMap.Width, y, z * ParamMap.Depth);
-                    CreateBottomBeam(start, new Vector3(ParamMap.Width, 1, 1));
-                    CreateTopBeam(start, new Vector3(ParamMap.Width, 1, ParamMap.Depth));
-                    CreateRightBeamTop(start, new Vector3(1, -1, ParamMap.Depth - 1));
-                    CreateLeftBeamTop(start, new Vector3(ParamMap.Width, -1, ParamMap.Depth - 1));
+                    Vector3 start = new Vector3(x * size, y, z * size);
+                    CreateBottomBeam(start, new Vector3(size, 1, 1));
+                    CreateTopBeam(start, new Vector3(size, 1, size));
+                    CreateRightBeamTop(start, new Vector3(1, -1, size - 1));
+                    CreateLeftBeamTop(start, new Vector3(size, -1, size - 1));
                 }
             }
         }
