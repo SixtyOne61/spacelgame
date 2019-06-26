@@ -17,5 +17,10 @@ namespace Engine
             _staticObject.Add(entity);
             InfluenceBox = entity.ComponentCollision.Box;
         }
+        
+        public bool AddStatic(CollideEntity entity)
+        {
+        	
+        }
     }
 }
