@@ -31,7 +31,10 @@ namespace Engine
         		_staticObject.Add(entity);
         		// update box
         		UpdateBox(box);
+                return true;
         	}
+
+            return false;
         }
         
         private void UpdateBox(BoxParam box)
@@ -39,14 +42,26 @@ namespace Engine
         	UpdateClamp(InfluenceBox.x.Clamp, box.x.Clamp);
         	UpdateClamp(InfluenceBox.y.Clamp, box.y.Clamp);
         	UpdateClamp(InfluenceBox.z.Clamp, box.z.Clamp);
-        	InfluenceBox.Terminate();
+            // size of cube is 1.0f
+        	InfluenceBox.Terminate(1.0f);
         }
         
         private void UpdateClamp(Vector2 a, Vector2 b)
         {
-        	a.x = Min(a.x, b.x);
-        	a.y = Max(a.y, b.y);
+        	a.x = Mathf.Min(a.x, b.x);
+        	a.y = Mathf.Max(a.y, b.y);
         }
+
+#if (UNITY_EDITOR)
+        public void OnDrawGizmos()
+        {
+            if(Tool.DebugWindowAccess.Instance.Serialize.EnableDrawChunck)
+            {
+                Gizmos.color = Color.cyan;
+                Gizmos.DrawWireCube(InfluenceBox.Center, new Vector3(InfluenceBox.x.Clamp.y - InfluenceBox.x.Clamp.x, InfluenceBox.y.Clamp.y - InfluenceBox.y.Clamp.x, InfluenceBox.z.Clamp.y - InfluenceBox.z.Clamp.x));
+            }
+        }
+#endif
     }
 }
     
