@@ -28,13 +28,13 @@ namespace Tool
         public void ExportToPrefab()
         {
             GameObject obj = new GameObject();
-            obj.AddComponent<VolumeEntity>();
+            obj.AddComponent<CollideEntity>();
 
-            VolumeEntity volEnt = obj.GetComponent<VolumeEntity>();
-            volEnt.LinkPosArray = _desc.ToArray();
-            volEnt.ParamAttribut = Param.ParamAttribut;
-            volEnt.CompMeshGenerator.ParamCubeSize = Param.ParamCubeSize;
-            volEnt.CompMaterial.ParamMaterial = Param.ParamMaterial;
+            CollideEntity collideEntity = obj.GetComponent<CollideEntity>();
+            collideEntity.LinkPosArray = _desc.ToArray();
+            collideEntity.ParamAttribut = Param.ParamAttribut;
+            collideEntity.CompMeshGenerator.ParamCubeSize = Param.ParamCubeSize;
+            collideEntity.CompMaterial.ParamMaterial = Param.ParamMaterial;
 
             string localPath = "Assets/Resources/Generate/" + _desc[0].Center + ".prefab";
             PrefabUtility.SaveAsPrefabAssetAndConnect(obj, localPath, InteractionMode.AutomatedAction);

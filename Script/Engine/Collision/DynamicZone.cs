@@ -9,26 +9,23 @@ namespace Engine
         // largest box for this zone
         public BoxParam InfluenceBox;
 
-        private List<CollideEntity> _staticObject = new List<CollideEntity>();
-        private List<CollideEntity> _dynamicObject = new List<CollideEntity>();
+        public List<CompCollision> _staticObject = new List<CompCollision>();
+        public List<CompCollision> _dynamicObject = new List<CompCollision>();
 
-        public DynamicZone(CollideEntity entity)
+        public DynamicZone(CompCollision comp)
         {
-            _staticObject.Add(entity);
-            InfluenceBox = entity.ComponentCollision.Box;
+            _staticObject.Add(comp);
+            InfluenceBox = comp.Box;
         }
         
-        public bool AddStatic(CollideEntity entity)
+        public bool AddStatic(CompCollision comp)
         {
-        	BoxParam box = entity.ComponentCollision.Box;
-        	
-        	float distance = Vector3.Distance(InfluenceBox.Center, box.Center);
-        	distance -= InfluenceBox.LargeSize;
-        	distance -= box.LargeSize;
-        	
-        	if(distance <= 0.0f)
+        	BoxParam box = comp.Box;
+
+            float distance = InfluenceBox.MinDistance(box);        	
+        	if(distance <= 5.0f)
         	{
-        		_staticObject.Add(entity);
+        		_staticObject.Add(comp);
         		// update box
         		UpdateBox(box);
                 return true;
@@ -36,17 +33,31 @@ namespace Engine
 
             return false;
         }
+
+        public void FusionAddStatic(List<CompCollision> other)
+        {
+            foreach(CompCollision comp in other)
+            {
+                _staticObject.Add(comp);
+                UpdateBox(comp.Box);
+            }
+        }
+
+        public void FusionAddDynamic(List<CompCollision> other)
+        {
+            _dynamicObject.AddRange(other);
+        }
         
         private void UpdateBox(BoxParam box)
         {
-        	UpdateClamp(InfluenceBox.x.Clamp, box.x.Clamp);
-        	UpdateClamp(InfluenceBox.y.Clamp, box.y.Clamp);
-        	UpdateClamp(InfluenceBox.z.Clamp, box.z.Clamp);
+        	UpdateClamp(ref InfluenceBox.x.Clamp, box.x.Clamp);
+        	UpdateClamp(ref InfluenceBox.y.Clamp, box.y.Clamp);
+        	UpdateClamp(ref InfluenceBox.z.Clamp, box.z.Clamp);
             // size of cube is 1.0f
-        	InfluenceBox.Terminate(1.0f);
+            InfluenceBox.Terminate(0.0f);
         }
         
-        private void UpdateClamp(Vector2 a, Vector2 b)
+        private void UpdateClamp(ref Vector2 a, Vector2 b)
         {
         	a.x = Mathf.Min(a.x, b.x);
         	a.y = Mathf.Max(a.y, b.y);

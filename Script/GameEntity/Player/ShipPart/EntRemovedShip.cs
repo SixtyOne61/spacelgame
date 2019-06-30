@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EntRemovedShip : VolumeEntity
+public class EntRemovedShip : Engine.VolumeEntity
 {
     private int _countPos = 0;
 

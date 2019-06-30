@@ -14,6 +14,7 @@ public class EntBullet : CollideEntity
 	// Use this for initialization
 	override public void Start ()
     {
+        IsStaticObject = false;
         LinkPosList.Add(new LinkPos(new UnitPos(0, 0, 0), ParamAttribut != null ? ParamAttribut.Life : int.MaxValue));
 
         AddComponent(ComponentLife);
