@@ -45,10 +45,12 @@ public class CollisionManager : Singleton<CollisionManager>
 
     public void Register(CompCollisionStatic component)
     {
-        foreach (DynamicZone dynamicZone in _dynamicZones)
+    	for(int i = 0; i < _dynamicZonr.Count; ++i)
         {
-            if (dynamicZone.AddStatic(component))
+            if (_dynamicZone[i].AddStatic(component))
             {
+            	// find if this zone has contact with an other
+            	ConcatZone(_dynamicZone[i], i);
                 return;
             }
         }
@@ -57,7 +59,14 @@ public class CollisionManager : Singleton<CollisionManager>
 
     public void Register(CompCollisionDynamic component)
     {
-
+    	for(int i = 0; i < _dynamicZone[i].Count; ++i)
+    	{
+    		if(_dynamicZone[i].Add(component))
+    		{
+    			return;
+    		}
+    	}
+    	// To do manage dynamic object alone
     }
 
     #endregion
@@ -70,36 +79,33 @@ public class CollisionManager : Singleton<CollisionManager>
     }
     
     #endregion
+    
+    private void ConcatZone(DynamicZone zone, int idx)
+    {
+    	for(int i = 0; i < _dynamicZone.Count; )
+    	{
+    		if(i == idx)
+    		{
+    			++i;
+    			continue;
+    		}
+    		
+    		if(zone.InfluenceBox.HasContact(_dynamicZone[i]))
+    		{
+    			zone.FusionAddStatic(_dynamicZones[i]._staticObject);
+    			zone.FusionAddDynamic(_dynamicZones[i]._dynamicObject);
+               _dynamicZones.RemoveAt(i);
+    		}
+    		else
+    		{
+    			++i;
+    		}
+    	}
+    }
 
     public void FixedUpdate()
     {
-        /*if(OptimStaticZone)
-        {
-            OptimStaticZone = false;
-            for (int i = 0; i < _dynamicZones.Count; ++i)
-            {
-                DynamicZone refDynamicZone = _dynamicZones[i];
-                for(int j = 0; j < _dynamicZones.Count;)
-                {
-                    if(i == j)
-                    {
-                        ++i;
-                        continue;
-                    }
-
-                    if(refDynamicZone.InfluenceBox.HasContact(_dynamicZones[j].InfluenceBox))
-                    {
-                        refDynamicZone.FusionAddStatic(_dynamicZones[j]._staticObject);
-                        refDynamicZone.FusionAddDynamic(_dynamicZones[j]._dynamicObject);
-                        _dynamicZones.RemoveAt(j);
-                    }
-                    else
-                    {
-                        ++j;
-                    }
-                }
-            }
-        }*/
+        
     }
 
 #if (UNITY_EDITOR)

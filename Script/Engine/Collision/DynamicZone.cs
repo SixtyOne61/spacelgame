@@ -18,6 +18,7 @@ namespace Engine
             InfluenceBox = comp.Box;
         }
         
+        // To Do rename to add and use polymorphisme
         public bool AddStatic(CompCollision comp)
         {
         	BoxParam box = comp.Box;
@@ -32,6 +33,17 @@ namespace Engine
         	}
 
             return false;
+        }
+        
+        public bool Add(CompCollisionDynamic comp)
+        {
+        	BoxParam box = comp.Box;
+        	if(InfluenceBox.HasContact(box))
+        	{
+        		_dynamicObject.Add(comp);
+        		return true;
+        	}
+        	return false;
         }
 
         public void FusionAddStatic(List<CompCollision> other)
