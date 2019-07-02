@@ -45,12 +45,12 @@ public class CollisionManager : Singleton<CollisionManager>
 
     public void Register(CompCollisionStatic component)
     {
-    	for(int i = 0; i < _dynamicZonr.Count; ++i)
+    	for(int i = 0; i < _dynamicZones.Count; ++i)
         {
-            if (_dynamicZone[i].AddStatic(component))
+            if (_dynamicZones[i].AddStatic(component))
             {
             	// find if this zone has contact with an other
-            	ConcatZone(_dynamicZone[i], i);
+            	//ConcatZone(_dynamicZones[i], i);
                 return;
             }
         }
@@ -59,13 +59,11 @@ public class CollisionManager : Singleton<CollisionManager>
 
     public void Register(CompCollisionDynamic component)
     {
-    	for(int i = 0; i < _dynamicZone[i].Count; ++i)
+    	for(int i = 0; i < _dynamicZones.Count; ++i)
     	{
-    		if(_dynamicZone[i].Add(component))
-    		{
-    			return;
-    		}
-    	}
+            _dynamicZones[i].Add(component);
+
+        }
     	// To do manage dynamic object alone
     }
 
@@ -82,7 +80,7 @@ public class CollisionManager : Singleton<CollisionManager>
     
     private void ConcatZone(DynamicZone zone, int idx)
     {
-    	for(int i = 0; i < _dynamicZone.Count; )
+    	for(int i = 0; i < _dynamicZones.Count; )
     	{
     		if(i == idx)
     		{
@@ -90,7 +88,7 @@ public class CollisionManager : Singleton<CollisionManager>
     			continue;
     		}
     		
-    		if(zone.InfluenceBox.HasContact(_dynamicZone[i]))
+    		if(zone.InfluenceBox.HasContact(_dynamicZones[i].InfluenceBox))
     		{
     			zone.FusionAddStatic(_dynamicZones[i]._staticObject);
     			zone.FusionAddDynamic(_dynamicZones[i]._dynamicObject);
