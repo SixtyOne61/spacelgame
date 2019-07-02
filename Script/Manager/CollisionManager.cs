@@ -49,8 +49,8 @@ public class CollisionManager : Singleton<CollisionManager>
         {
             if (_dynamicZones[i].AddStatic(component))
             {
-            	// find if this zone has contact with an other
-            	//ConcatZone(_dynamicZones[i], i);
+            	// find if this zone is around an other
+            	EatZone(_dynamicZones[i], i);
                 return;
             }
         }
@@ -78,7 +78,7 @@ public class CollisionManager : Singleton<CollisionManager>
     
     #endregion
     
-    private void ConcatZone(DynamicZone zone, int idx)
+    private void EatZone(DynamicZone zone, int idx)
     {
     	for(int i = 0; i < _dynamicZones.Count; )
     	{
@@ -88,7 +88,7 @@ public class CollisionManager : Singleton<CollisionManager>
     			continue;
     		}
     		
-    		if(zone.InfluenceBox.HasContact(_dynamicZones[i].InfluenceBox))
+    		if(zone.InfluenceBox.IsAround(_dynamicZones[i].InfluenceBox))
     		{
     			zone.FusionAddStatic(_dynamicZones[i]._staticObject);
     			zone.FusionAddDynamic(_dynamicZones[i]._dynamicObject);
@@ -103,7 +103,10 @@ public class CollisionManager : Singleton<CollisionManager>
 
     public void FixedUpdate()
     {
-        
+        foreach(DynamicZone zone in _dynamicZones)
+        {
+        	zone.UpdateCollision();
+        }
     }
 
 #if (UNITY_EDITOR)

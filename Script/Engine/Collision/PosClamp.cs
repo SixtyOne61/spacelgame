@@ -46,7 +46,7 @@ namespace Engine
 
         public bool HasInContact(PosClamp other)
         {
-            return Clamp.x >= other.Clamp.x && Clamp.y >= other.Clamp.y;
+            return Clamp.x <= other.Clamp.x && Clamp.y >= other.Clamp.y;
         }
 
         public bool HasContact(float start, float end)

@@ -74,6 +74,17 @@ namespace Engine
         	a.x = Mathf.Min(a.x, b.x);
         	a.y = Mathf.Max(a.y, b.y);
         }
+        
+        public void UpdateCollision()
+        {
+        	foreach(CompCollision comp in _dynamicObject)
+        	{
+        		if(comp.Owner.transform.hasChanged)
+        		{
+        			// To Do collision
+        		}
+        	}
+        }
 
 #if (UNITY_EDITOR)
         public void OnDrawGizmos()
@@ -87,4 +98,5 @@ namespace Engine
 #endif
     }
 }
+    
     

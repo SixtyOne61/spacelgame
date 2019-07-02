@@ -57,7 +57,7 @@ namespace Engine
             return x.HasContact(other.x) && y.HasContact(other.y) && z.HasContact(other.z);
         }
 
-        public bool HasInContact(BoxParam other)
+        public bool IsAround(BoxParam other)
         {
             return x.HasInContact(other.x) && y.HasInContact(other.y) && z.HasInContact(other.z);
         }
