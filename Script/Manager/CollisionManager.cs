@@ -5,20 +5,10 @@ using Engine;
 
 public class CollisionManager : Singleton<CollisionManager>
 {
-    // To do : order world collision separate in zone for reduce number of call
-    //private CollisionGroup<CompCollisionPlayer> _playerGroup = new CollisionGroup<CompCollisionPlayer>();
-    //private CollisionGroup<CompCollisionWorld> _worldGroup = new CollisionGroup<CompCollisionWorld>();
-    //private CollisionGroup<CompCollisionBullet> _bulletGroup = new CollisionGroup<CompCollisionBullet>();
-    //private CollisionGroup<CompShield> _shieldGroup = new CollisionGroup<CompShield>();
-
-    private List<DynamicZone> _dynamicZones = new List<DynamicZone>();
+	private List<DynamicZone> _dynamicZones = new List<DynamicZone>();
 
     [Tooltip("True for disable manager, use for editor scene")]
     public bool IsDisable;
-
-    // optim all static zone on next update
-    public bool OptimStaticZone = false;
-
 
     public void Start()
     {
@@ -61,8 +51,10 @@ public class CollisionManager : Singleton<CollisionManager>
     {
     	for(int i = 0; i < _dynamicZones.Count; ++i)
     	{
-            _dynamicZones[i].Add(component);
-
+            if(_dynamicZones[i].Add(component))
+            {
+            	return;
+            }
         }
     	// To do manage dynamic object alone
     }
