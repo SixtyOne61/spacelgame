@@ -37,7 +37,7 @@ public class CollisionManager : Singleton<CollisionManager>
     {
     	for(int i = 0; i < _dynamicZones.Count; ++i)
         {
-            if (_dynamicZones[i].AddStatic(component))
+            if (_dynamicZones[i].Add(component))
             {
             	// find if this zone is around an other
             	EatZone(_dynamicZones[i], i);
@@ -80,7 +80,7 @@ public class CollisionManager : Singleton<CollisionManager>
     			continue;
     		}
     		
-    		if(zone.InfluenceBox.IsAround(_dynamicZones[i].InfluenceBox))
+    		if(zone.HasContact(_dynamicZones(i)))
     		{
     			zone.FusionAddStatic(_dynamicZones[i]._staticObject);
     			zone.FusionAddDynamic(_dynamicZones[i]._dynamicObject);

@@ -18,21 +18,25 @@ namespace Engine
             InfluenceBox = comp.Box;
         }
         
-        // To Do rename to add and use polymorphisme
-        public bool AddStatic(CompCollision comp)
+        public bool Add(CompCollisionStatic comp)
         {
         	BoxParam box = comp.Box;
-
-            float distance = InfluenceBox.MinDistance(box);        	
-        	if(distance <= 5.0f)
+        	if(InfluenceBox.HasContact(box))
         	{
-        		_staticObject.Add(comp);
-        		// update box
-        		UpdateBox(box);
-                return true;
+        		// check if contact exist with at least one static
+        		foreach(CompCollision staticComp in _staticObject)
+        		{
+        			if(staticComp.Box.HasContact(box))
+        			{
+        				_staticObject.Add(box);
+        				// update relative box
+        				UpdateBox();
+        				return true;
+        			}
+        		}
         	}
-
-            return false;
+        	
+        	return false;
         }
         
         public bool Add(CompCollisionDynamic comp)
@@ -85,6 +89,21 @@ namespace Engine
         		}
         	}
         }
+        
+        public bool HasContact(DynamicZone other)
+        {
+        	foreach(CompCollision comp in _staticObject)
+        	{
+        		foreach(CompCollision otherComp in other._staticObject)
+        		{
+        			if(comp.Box.HasContact(otherComp.Box))
+        			{
+        				return true;
+        			}
+        		}
+        	}
+        	return false;
+        }
 
 #if (UNITY_EDITOR)
         public void OnDrawGizmos()
@@ -98,5 +117,6 @@ namespace Engine
 #endif
     }
 }
+    
     
     
