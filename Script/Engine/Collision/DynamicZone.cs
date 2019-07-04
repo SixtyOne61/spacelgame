@@ -28,9 +28,9 @@ namespace Engine
         		{
         			if(staticComp.Box.HasContact(box))
         			{
-        				_staticObject.Add(box);
+        				_staticObject.Add(comp);
         				// update relative box
-        				UpdateBox();
+        				UpdateBox(comp.Box);
         				return true;
         			}
         		}

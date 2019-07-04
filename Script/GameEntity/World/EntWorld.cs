@@ -22,8 +22,6 @@ public class EntWorld : SpacelEntity
     		GameObject chunck = Instantiate(go, Vector3.zero, Quaternion.identity);
     		chunck.transform.SetParent(transform);
     	}
-
-        CollisionManager.Instance.OptimStaticZone = true;
     }
 }
     
