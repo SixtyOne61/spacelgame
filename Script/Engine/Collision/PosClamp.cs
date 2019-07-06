@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System;
 
 namespace Engine
 {
@@ -12,6 +11,20 @@ namespace Engine
         public float Half;
         public float Center;
         public bool IsInit = false;
+        
+        public PosClamp()
+        {
+
+        }
+
+        public PosClamp(PosClamp param)
+        {
+            Clamp = new Vector2(param.Clamp.x, param.Clamp.y);
+            Size = param.Size;
+            Half = param.Half;
+            Center = param.Center;
+            IsInit = param.IsInit;
+        }
 
         public void AddBest(float val)
         {

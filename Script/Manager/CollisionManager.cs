@@ -6,6 +6,7 @@ using Engine;
 public class CollisionManager : Singleton<CollisionManager>
 {
 	private List<DynamicZone> _dynamicZones = new List<DynamicZone>();
+    private DynamicZone _orphanObjects = new DynamicZone();
 
     [Tooltip("True for disable manager, use for editor scene")]
     public bool IsDisable;
@@ -17,85 +18,83 @@ public class CollisionManager : Singleton<CollisionManager>
 
     #region Register
 
-    private bool CanRegister()
-    {
-        if (IsDisable)
-        {
-            return false;
-        }
-
-        // disable on editor
-        if (SceneManager.GetActiveScene().name.GetHashCode() == "Editor".GetHashCode())
-        {
-            return false;
-        }
-
-        return true;
-    }
-
     public void Register(CompCollisionStatic component)
     {
-    	for(int i = 0; i < _dynamicZones.Count; ++i)
+        // list of all zone who can receive component
+        List<DynamicZone> promotZones = new List<DynamicZone>();
+
+        int i = 0;
+        while (i < _dynamicZones.Count)
         {
-            if (_dynamicZones[i].Add(component))
+            if(_dynamicZones[i].HasContact(component))
             {
-            	// find if this zone is around an other
-            	//EatZone(_dynamicZones[i], i);
-                return;
+                promotZones.Add(_dynamicZones[i]);
+                _dynamicZones.RemoveAt(i);
+            }
+            else
+            {
+                ++i;
             }
         }
-        _dynamicZones.Add(new DynamicZone(component));
+
+        // create a new big zone with promotzone
+        DynamicZone newZone = new DynamicZone(component);
+        foreach (DynamicZone promotZone in promotZones)
+        {
+            newZone._staticObjects.AddRange(promotZone._staticObjects);
+            newZone._dynamicObjects.AddRange(promotZone._dynamicObjects);
+        }
+
+        newZone.ComputeInfluenceBox();
+
+        _dynamicZones.Add(newZone);
     }
 
     public void Register(CompCollisionDynamic component)
     {
+        bool atLeastOne = false;
     	for(int i = 0; i < _dynamicZones.Count; ++i)
     	{
-            if(_dynamicZones[i].Add(component))
+            if(_dynamicZones[i].InfluenceBox.HasContact(component.Box))
             {
-            	return;
+                _dynamicZones[i]._dynamicObjects.Add(component);
+                atLeastOne = true;
             }
         }
-    	// To do manage dynamic object alone
+
+        if(!atLeastOne)
+        {
+            _orphanObjects._dynamicObjects.Add(component);
+        }
     }
 
     #endregion
 
     #region UnRegister
 
-    public void UnRegister(CompCollision component)
+    public void UnRegister(CompCollisionStatic component)
     {
         // TO DO
     }
-    
-    #endregion
-    
-    private void EatZone(DynamicZone zone, int idx)
+
+    public void UnRegister(CompCollisionDynamic component)
     {
-    	for(int i = 0; i < _dynamicZones.Count; )
-    	{
-    		if(i == idx)
-    		{
-    			++i;
-    			continue;
-    		}
-    		
-    		if(zone.HasContact(_dynamicZones[i]))
-    		{
-    			zone.FusionAddStatic(_dynamicZones[i]._staticObject);
-    			zone.FusionAddDynamic(_dynamicZones[i]._dynamicObject);
-               _dynamicZones.RemoveAt(i);
-    		}
-    		else
-    		{
-    			++i;
-    		}
-    	}
+        // TO DO
     }
+
+    #endregion
 
     public void FixedUpdate()
     {
-        foreach(DynamicZone zone in _dynamicZones)
+        foreach (DynamicZone zone in _dynamicZones)
+        {
+            zone.CheckDynamic();
+        }
+
+        // check dynamic for orphan
+        // TO DO : create new type zone for this "orphan"
+
+        foreach (DynamicZone zone in _dynamicZones)
         {
         	zone.UpdateCollision();
         }

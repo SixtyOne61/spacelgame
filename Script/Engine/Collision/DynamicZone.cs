@@ -9,59 +9,33 @@ namespace Engine
         // largest box for this zone
         public BoxParam InfluenceBox;
 
-        public List<CompCollision> _staticObject = new List<CompCollision>();
-        public List<CompCollision> _dynamicObject = new List<CompCollision>();
+        public List<CompCollision> _staticObjects = new List<CompCollision>();
+        public List<CompCollision> _dynamicObjects = new List<CompCollision>();
 
         public DynamicZone(CompCollision comp)
         {
-            _staticObject.Add(comp);
-            InfluenceBox = comp.Box;
-        }
-        
-        public bool Add(CompCollisionStatic comp)
-        {
-        	BoxParam box = comp.Box;
-        	if(InfluenceBox.HasContact(box))
-        	{
-        		// check if contact exist with at least one static
-        		foreach(CompCollision staticComp in _staticObject)
-        		{
-        			if(staticComp.Box.HasContact(box))
-        			{
-        				_staticObject.Add(comp);
-        				// update relative box
-        				UpdateBox(comp.Box);
-        				return true;
-        			}
-        		}
-        	}
-        	
-        	return false;
-        }
-        
-        public bool Add(CompCollisionDynamic comp)
-        {
-        	BoxParam box = comp.Box;
-        	if(InfluenceBox.HasContact(box))
-        	{
-        		_dynamicObject.Add(comp);
-        		return true;
-        	}
-        	return false;
+            _staticObjects.Add(comp);
         }
 
-        public void FusionAddStatic(List<CompCollision> other)
+        public DynamicZone()
         {
-            foreach(CompCollision comp in other)
+
+        }
+
+        public void ComputeInfluenceBox()
+        {
+            if(_staticObjects.Count == 0)
             {
-                _staticObject.Add(comp);
-                UpdateBox(comp.Box);
+                Debug.LogError("[DynamicZone] Compute Influence box, but without _static Object.");
+                return;
             }
-        }
 
-        public void FusionAddDynamic(List<CompCollision> other)
-        {
-            _dynamicObject.AddRange(other);
+            InfluenceBox = new BoxParam(_staticObjects[0].Box);
+
+            foreach(CompCollision staticObject in _staticObjects)
+            {
+                UpdateBox(staticObject.Box);
+            }
         }
         
         private void UpdateBox(BoxParam box)
@@ -81,28 +55,57 @@ namespace Engine
         
         public void UpdateCollision()
         {
-        	foreach(CompCollision comp in _dynamicObject)
+        	foreach(CompCollision comp in _dynamicObjects)
         	{
         		if(comp.Owner.transform.hasChanged)
         		{
-        			// To Do collision
+        			foreach(CompCollision other in _staticObjects)
+                    {
+                        comp.Hit(other);
+                    }
         		}
         	}
         }
         
         public bool HasContact(DynamicZone other)
         {
-        	foreach(CompCollision comp in _staticObject)
-        	{
-        		foreach(CompCollision otherComp in other._staticObject)
-        		{
-        			if(comp.Box.HasContact(otherComp.Box))
-        			{
-        				return true;
-        			}
-        		}
-        	}
+            foreach (CompCollision otherComp in other._staticObjects)
+            {
+                if(HasContact(otherComp))
+                {
+                    return true;
+                }
+            }
         	return false;
+        }
+
+        public bool HasContact(CompCollision other)
+        {
+            foreach (CompCollision comp in _staticObjects)
+            {
+                if (comp.Box.HasContact(other.Box))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public void CheckDynamic()
+        {
+            for(int i = 0; i < _dynamicObjects.Count; )
+            {
+                CompCollision comp = _dynamicObjects[i];
+                if (comp.Owner.transform.hasChanged && !comp.Box.HasContact(InfluenceBox))
+                {
+                    CollisionManager.Instance.Register((CompCollisionDynamic)comp);
+                    _dynamicObjects.RemoveAt(i);
+                }
+                else
+                {
+                    ++i;
+                }
+            }
         }
 
 #if (UNITY_EDITOR)

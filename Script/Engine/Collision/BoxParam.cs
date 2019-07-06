@@ -26,6 +26,17 @@ namespace Engine
 
         }
 
+        public BoxParam(BoxParam param)
+        {
+            x = new PosClamp(param.x);
+            y = new PosClamp(param.y);
+            z = new PosClamp(param.z);
+            points.AddRange(param.points);
+            LargeSize = param.LargeSize;
+            Ray = param.Ray;
+            Center = new Vector3(param.Center.x, param.Center.y, param.Center.z);
+        }
+
         public BoxParam(Vector3 center)
         {
             Center = center;

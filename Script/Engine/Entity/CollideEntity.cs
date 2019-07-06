@@ -5,6 +5,7 @@ namespace Engine
 {
     public class CollideEntity : VolumeEntity
     {
+        // TO DO : change this, use polymorphisme
         [Tooltip("True for static object")]
         public bool IsStaticObject = true;
 

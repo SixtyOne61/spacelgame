@@ -26,12 +26,6 @@ namespace Engine
             base.Start();
         }
 
-        public override void OnDestroy()
-        {
-            base.OnDestroy();
-            CollisionManager.Instance.UnRegister(this);
-        }
-
         public void Reset()
         {
             Box.x.IsInit = false;
@@ -183,6 +177,12 @@ namespace Engine
                 {
                     Gizmos.DrawCube(box.Center, new Vector3(box.x.Size, box.y.Size, box.z.Size));
                 }
+            }
+
+            if (Tool.DebugWindowAccess.Instance.Serialize.EnableDrawChunck)
+            {
+                Gizmos.color = Color.green;
+                Gizmos.DrawWireCube(Box.Center, new Vector3(Box.x.Clamp.y - Box.x.Clamp.x, Box.y.Clamp.y - Box.y.Clamp.x, Box.z.Clamp.y - Box.z.Clamp.x));
             }
         }
 #endif
