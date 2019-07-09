@@ -65,6 +65,21 @@ namespace Engine
                     }
         		}
         	}
+        	
+        	// to do, collision between dynamic
+        	for(int i = 0; i < _dynamicObjects.Count; ++i)
+        	{
+        		ComponentCollision c1 = _dynamicObjects[i];
+        		bool c1HasChanged = c1.Owner.transform.hasChanged;
+        		for(int j = i + 1; j < _dynamicObjects.Count; ++j)
+        		{
+        			ComponentCollision c2 = _dynamicObjects[j];
+        			if(!c1HasChanged && !c2.Owner.transform.hasChanged)
+        			{
+        				continue;
+        			}
+        		}
+        	}
         }
         
         public bool HasContact(DynamicZone other)
@@ -91,7 +106,7 @@ namespace Engine
             return false;
         }
 
-        public void CheckDynamic()
+        public virtual void CheckDynamic()
         {
             for(int i = 0; i < _dynamicObjects.Count; )
             {

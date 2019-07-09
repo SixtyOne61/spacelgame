@@ -6,7 +6,7 @@ using Engine;
 public class CollisionManager : Singleton<CollisionManager>
 {
 	private List<DynamicZone> _dynamicZones = new List<DynamicZone>();
-    private DynamicZone _orphanObjects = new DynamicZone();
+    private DynamicOrphanZone _orphanObjects = new DynamicOrphanZone();
 
     [Tooltip("True for disable manager, use for editor scene")]
     public bool IsDisable;
@@ -14,6 +14,21 @@ public class CollisionManager : Singleton<CollisionManager>
     public void Start()
     {
         // TO DO : maybe add mask for collision between team etc
+    }
+    
+    public bool AddDynamic(CompCollision comp)
+    {
+    	bool ret = false;
+    	foreach(DynamicZone zone in _dynamicZones)
+    	{
+    		if(zone.InflunceBox.HasContact(comp))
+    		{
+    			zone._dynamicObjects.Add(comp);
+    			ret = true;
+    		}
+    	}
+    	
+    	return ret;
     }
 
     #region Register
@@ -52,17 +67,7 @@ public class CollisionManager : Singleton<CollisionManager>
 
     public void Register(CompCollisionDynamic component)
     {
-        bool atLeastOne = false;
-    	for(int i = 0; i < _dynamicZones.Count; ++i)
-    	{
-            if(_dynamicZones[i].InfluenceBox.HasContact(component.Box))
-            {
-                _dynamicZones[i]._dynamicObjects.Add(component);
-                atLeastOne = true;
-            }
-        }
-
-        if(!atLeastOne)
+        if(!AddDynamic(component))
         {
             _orphanObjects._dynamicObjects.Add(component);
         }
@@ -90,14 +95,17 @@ public class CollisionManager : Singleton<CollisionManager>
         {
             zone.CheckDynamic();
         }
-
-        // check dynamic for orphan
-        // TO DO : create new type zone for this "orphan"
-
+        
+        
+        // check if orphan is still orphan
+        _orphanDynamic.CheckDynamic();
+        
         foreach (DynamicZone zone in _dynamicZones)
         {
         	zone.UpdateCollision();
         }
+        
+        _orphanDynamic.UpdateCollision();
     }
 
 #if (UNITY_EDITOR)
