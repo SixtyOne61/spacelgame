@@ -61,19 +61,23 @@ namespace Engine
             return Vector3.Distance(otherPos, pos) <= (other.Box.Ray + Box.Ray);
         }
 
-        private bool HitBoundBox(CompCollision other)
+        public bool HitBoundBox(CompCollision other)
         {
-            // transform box param from other to our local space
-            Vector3 otherCenter = other.Box.Center;
-            otherCenter = other.Owner.transform.TransformPoint(otherCenter);
+            return HitBoundBox(other.Owner.transform, other.Box);
+        }
+
+        public bool HitBoundBox(Transform otherTransform, BoxParam otherBox)
+        {
+            Vector3 otherCenter = otherBox.Center;
+            otherCenter = otherTransform.transform.TransformPoint(otherCenter);
 
             // our local space
-            otherCenter = Owner.transform.InverseTransformPoint(otherCenter);
+            otherCenter = Owner.transform.InverseTransformDirection(otherCenter);
 
             BoxParam tmp = new BoxParam(otherCenter);
-            tmp.x.Clamp = new Vector2(otherCenter.x - other.Box.x.Half, otherCenter.x + other.Box.x.Half);
-            tmp.y.Clamp = new Vector2(otherCenter.y - other.Box.y.Half, otherCenter.y + other.Box.y.Half);
-            tmp.z.Clamp = new Vector2(otherCenter.z - other.Box.z.Half, otherCenter.z + other.Box.z.Half);
+            tmp.x.Clamp = new Vector2(otherCenter.x - otherBox.x.Half, otherCenter.x + otherBox.x.Half);
+            tmp.y.Clamp = new Vector2(otherCenter.y - otherBox.y.Half, otherCenter.y + otherBox.y.Half);
+            tmp.z.Clamp = new Vector2(otherCenter.z - otherBox.z.Half, otherCenter.z + otherBox.z.Half);
 
             return Box.HasContact(tmp);
         }

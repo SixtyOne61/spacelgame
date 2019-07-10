@@ -6,9 +6,6 @@ namespace Engine
 {
     public class DynamicZone
     {
-        // largest box for this zone
-        public BoxParam InfluenceBox;
-
         public List<CompCollision> _staticObjects = new List<CompCollision>();
         public List<CompCollision> _dynamicObjects = new List<CompCollision>();
 
@@ -20,37 +17,6 @@ namespace Engine
         public DynamicZone()
         {
 
-        }
-
-        public void ComputeInfluenceBox()
-        {
-            if(_staticObjects.Count == 0)
-            {
-                Debug.LogError("[DynamicZone] Compute Influence box, but without _static Object.");
-                return;
-            }
-
-            InfluenceBox = new BoxParam(_staticObjects[0].Box);
-
-            foreach(CompCollision staticObject in _staticObjects)
-            {
-                UpdateBox(staticObject.Box);
-            }
-        }
-        
-        private void UpdateBox(BoxParam box)
-        {
-        	UpdateClamp(ref InfluenceBox.x.Clamp, box.x.Clamp);
-        	UpdateClamp(ref InfluenceBox.y.Clamp, box.y.Clamp);
-        	UpdateClamp(ref InfluenceBox.z.Clamp, box.z.Clamp);
-            // size of cube is 1.0f
-            InfluenceBox.Terminate(0.0f);
-        }
-        
-        private void UpdateClamp(ref Vector2 a, Vector2 b)
-        {
-        	a.x = Mathf.Min(a.x, b.x);
-        	a.y = Mathf.Max(a.y, b.y);
         }
         
         public void UpdateCollision()
@@ -69,15 +35,17 @@ namespace Engine
         	// to do, collision between dynamic
         	for(int i = 0; i < _dynamicObjects.Count; ++i)
         	{
-        		ComponentCollision c1 = _dynamicObjects[i];
+                CompCollision c1 = _dynamicObjects[i];
         		bool c1HasChanged = c1.Owner.transform.hasChanged;
         		for(int j = i + 1; j < _dynamicObjects.Count; ++j)
         		{
-        			ComponentCollision c2 = _dynamicObjects[j];
+                    CompCollision c2 = _dynamicObjects[j];
         			if(!c1HasChanged && !c2.Owner.transform.hasChanged)
         			{
         				continue;
         			}
+
+                    // TO DO
         		}
         	}
         }
@@ -98,7 +66,7 @@ namespace Engine
         {
             foreach (CompCollision comp in _staticObjects)
             {
-                if (comp.Box.HasContact(other.Box))
+                if (comp.HitBoundBox(other))
                 {
                     return true;
                 }
@@ -111,7 +79,7 @@ namespace Engine
             for(int i = 0; i < _dynamicObjects.Count; )
             {
                 CompCollision comp = _dynamicObjects[i];
-                if (comp.Owner.transform.hasChanged && !comp.Box.HasContact(InfluenceBox))
+                if (comp.Owner.transform.hasChanged && !HasContact(comp))
                 {
                     CollisionManager.Instance.Register((CompCollisionDynamic)comp);
                     _dynamicObjects.RemoveAt(i);
@@ -123,16 +91,33 @@ namespace Engine
             }
         }
 
-#if (UNITY_EDITOR)
-        public void OnDrawGizmos()
+        public bool UnRegisterStatic(CompCollision comp)
         {
-            if(Tool.DebugWindowAccess.Instance.Serialize.EnableDrawChunck)
+            for(int i = 0; i < _staticObjects.Count; ++i)
             {
-                Gizmos.color = Color.cyan;
-                Gizmos.DrawWireCube(InfluenceBox.Center, new Vector3(InfluenceBox.x.Clamp.y - InfluenceBox.x.Clamp.x, InfluenceBox.y.Clamp.y - InfluenceBox.y.Clamp.x, InfluenceBox.z.Clamp.y - InfluenceBox.z.Clamp.x));
+                if(comp.GetHashCode() == _staticObjects[i].GetHashCode())
+                {
+                    _staticObjects.RemoveAt(i);
+                    return true;
+                }
             }
+
+            return false;
         }
-#endif
+
+        public bool UnRegisterDynamic(CompCollision comp)
+        {
+            for(int i = 0; i < _dynamicObjects.Count; ++i)
+            {
+                if(comp.GetHashCode() == _dynamicObjects[i].GetHashCode())
+                {
+                    _dynamicObjects.RemoveAt(i);
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }
     

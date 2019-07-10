@@ -18,14 +18,14 @@ public class CollisionManager : Singleton<CollisionManager>
     
     public bool AddDynamic(CompCollision comp)
     {
-    	bool ret = false;
+        bool ret = false;
     	foreach(DynamicZone zone in _dynamicZones)
     	{
-    		if(zone.InflunceBox.HasContact(comp))
-    		{
-    			zone._dynamicObjects.Add(comp);
-    			ret = true;
-    		}
+            if(zone.HasContact(comp))
+            {
+                zone._dynamicObjects.Add(comp);
+                ret = true;
+            }
     	}
     	
     	return ret;
@@ -60,8 +60,6 @@ public class CollisionManager : Singleton<CollisionManager>
             newZone._dynamicObjects.AddRange(promotZone._dynamicObjects);
         }
 
-        newZone.ComputeInfluenceBox();
-
         _dynamicZones.Add(newZone);
     }
 
@@ -79,43 +77,42 @@ public class CollisionManager : Singleton<CollisionManager>
 
     public void UnRegister(CompCollisionStatic component)
     {
-        // TO DO
+        foreach(DynamicZone zone in _dynamicZones)
+        {
+            if(zone.UnRegisterStatic(component))
+            {
+                break;
+            }
+        }
     }
 
     public void UnRegister(CompCollisionDynamic component)
     {
-        // TO DO
+        foreach (DynamicZone zone in _dynamicZones)
+        {
+            zone.UnRegisterDynamic(component);
+        }
+
+        _orphanObjects.UnRegisterDynamic(component);
     }
 
     #endregion
 
     public void FixedUpdate()
     {
-        foreach (DynamicZone zone in _dynamicZones)
+        /*foreach (DynamicZone zone in _dynamicZones)
         {
             zone.CheckDynamic();
         }
-        
-        
+
         // check if orphan is still orphan
-        _orphanDynamic.CheckDynamic();
+        _orphanObjects.CheckDynamic();*/
         
         foreach (DynamicZone zone in _dynamicZones)
         {
         	zone.UpdateCollision();
         }
-        
-        _orphanDynamic.UpdateCollision();
-    }
 
-#if (UNITY_EDITOR)
-    public void OnDrawGizmos()
-    {
-        foreach(Engine.DynamicZone dynamicZone in _dynamicZones)
-        {
-            dynamicZone.OnDrawGizmos();
-        }
+        _orphanObjects.UpdateCollision();
     }
-#endif
-
 }
