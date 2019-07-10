@@ -13,7 +13,7 @@ namespace Engine
         public LinkPos[] LinkPosArray;
 
         // component collision
-        private CompCollision _componentCollision;
+        private ComponentCollision _componentCollision;
 
         public override void Start()
         {
@@ -22,19 +22,20 @@ namespace Engine
                 LinkPosList = LinkPosArray.ToList();
             }
 
+            _componentCollision = new ComponentCollision();
+            AddComponent(_componentCollision);
+            _componentCollision.LinkPosList = LinkPosList;
+            _componentCollision.Init(CompMeshGenerator.ParamCubeSize.Value);
             // init component collision
-            if (IsStaticObject)
+            // TO DO
+            /*if (IsStaticObject)
             {
                 _componentCollision = new CompCollisionStatic();
             }
             else
             {
                 _componentCollision = new CompCollisionDynamic();
-            }
-
-            _componentCollision.ParamCubeSize = CompMeshGenerator.ParamCubeSize;
-            _componentCollision.LinkPosList = LinkPosList;
-            AddComponent(_componentCollision);
+            }*/
 
             base.Start();
         }
@@ -42,7 +43,8 @@ namespace Engine
         public override void Refresh()
         {
             base.Refresh();
-            _componentCollision.Reset();
+            // TO DO
+            //_componentCollision.Reset();
 
             // check if object was destroy
             Alive();
