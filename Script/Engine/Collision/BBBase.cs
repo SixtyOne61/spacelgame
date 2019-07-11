@@ -43,6 +43,13 @@ namespace Engine
         public float zMin = 0.0f;
         [HideInInspector]
         public float zMax = 0.0f;
+        
+        // center of box
+        [HideInInspector]
+        public Vector3 Center = Vector3.zero;
+        //ray for sphere
+        [HideInInspector]
+        public float Ray = 0.0f;
 
         public BBBase()
         {
@@ -73,6 +80,8 @@ namespace Engine
             Vertex6 = new UnitPos(xMax, yMin, zMax);
             Vertex7 = new UnitPos(xMax, yMax, zMax);
             Vertex8 = new UnitPos(xMin, yMax, zMax);
+            
+            ComputeShpereBox();
         }
 
         public void Best(LinkPos pos)
@@ -129,13 +138,36 @@ namespace Engine
                 Vertex7.z = zMax;
                 Vertex8.z = zMax;
             }
+            ComputeShpereBox();
+        }
+        
+        private void ComputeShpereBox()
+        {
+        	float distx = (xMax - xMin) / 2.0f;
+        	float disty = (yMax - yMin) / 2.0f;
+        	float distz = (zMax - zMin) / 2.0f;
+        	Center.x = distx + xMin;
+        	Center.y = disty + yMin;
+        	Center.z = distz + zMin;
+        	Ray = Mathf.Max(distx, Mathf.Max(disty, distz));
+        }
+        
+        public bool HitSphere(ComponentCollision comp)
+        {
+        	//aabb from comp
+        	BBBase b2 = comp.BBox;
+        	Vector3 centerWorld = b2.Owner.TransformPoint(b2.Center);
+        	Vector3 centerLocal = Owner.InverseTransformPoint(centerWorld);
+        	
+        	distance = Vector3.Distance(Center, centerLocal);
+        	return distance <= Ray + b2.Ray;
         }
 
         public bool HitOBB(ComponentCollision comp)
         {
             // aabb from comp
             BBBase b2 = comp.BBox;
-            // transform com Vertex1 (full min) and Vertex7 (full max) to our local space
+            // transform Vertex1 (full min) and Vertex7 (full max) from comp to our local space
             UnitPos v1 = b2.Vertex1;
             UnitPos v7 = b2.Vertex7;
 
@@ -148,7 +180,7 @@ namespace Engine
             return HitAABB(v1Local, v7Local);
         }
 
-        public bool HitAABB(Vector3 min, Vector3 max)
+        private bool HitAABB(Vector3 min, Vector3 max)
         {
             return Vertex1.x >= min.x ? Vertex1.x <= max.x : Vertex7.x >= min.x
                 && Vertex1.y >= min.y ? Vertex1.y <= max.y : Vertex7.y >= min.y
@@ -156,3 +188,4 @@ namespace Engine
         }
     }
 }
+    

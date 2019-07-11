@@ -27,10 +27,35 @@ namespace Engine
                 BBox.Best(linkPos);
             }
         }
+        
+        public bool Hit(ComponentCollision comp)
+        {
+        	// just check distance
+        	if(HitSphere(comp))
+        	{
+        		// check OBB hit
+        		if(HitOBB(comp))
+        		{
+        			// check perfect hit
+        		
+        		}
+        	}
+        }
+        
+        public bool HitSphere(ComponentCollision comp)
+        {
+        	return BBox.HitSphere(comp);
+        }
+        
+        public bool HitOBB(ComponentCollision comp)
+        {
+        	return BBox.HitOBB(comm);
+        }
 
 #if (UNITY_EDITOR)
         public override void OnDrawGizmos()
         {
+        	// draw box
             Gizmos.color = Color.green;
             Gizmos.DrawLine(BBox.Owner.TransformPoint(BBox.Vertex1.ToVec3()), BBox.Owner.TransformPoint(BBox.Vertex2.ToVec3()));
             Gizmos.DrawLine(BBox.Owner.TransformPoint(BBox.Vertex1.ToVec3()), BBox.Owner.TransformPoint(BBox.Vertex4.ToVec3()));
