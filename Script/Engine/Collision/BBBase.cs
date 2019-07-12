@@ -159,7 +159,7 @@ namespace Engine
         	Vector3 centerWorld = b2.Owner.TransformPoint(b2.Center);
         	Vector3 centerLocal = Owner.InverseTransformPoint(centerWorld);
         	
-        	distance = Vector3.Distance(Center, centerLocal);
+        	float distance = Vector3.Distance(Center, centerLocal);
         	return distance <= Ray + b2.Ray;
         }
 
@@ -189,7 +189,7 @@ namespace Engine
         
         public bool PerfectHit(ComponentCollision comp)
         {
-        	
+            return false;
         }
     }
 }

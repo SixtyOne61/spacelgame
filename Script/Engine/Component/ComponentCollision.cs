@@ -39,10 +39,12 @@ namespace Engine
         			// check perfect hit
         			if(PerfectHit(comp))
         			{
-        				// To do
+                        // To do
+                        return true;
         			}
         		}
         	}
+            return false;
         }
         
         public bool HitSphere(ComponentCollision comp)
