@@ -186,6 +186,11 @@ namespace Engine
                 && Vertex1.y >= min.y ? Vertex1.y <= max.y : Vertex7.y >= min.y
                 && Vertex1.z >= min.z ? Vertex1.z <= max.z : Vertex7.z >= min.z;
         }
+        
+        public bool PerfectHit(ComponentCollision comp)
+        {
+        	
+        }
     }
 }
     

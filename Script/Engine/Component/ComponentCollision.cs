@@ -37,7 +37,10 @@ namespace Engine
         		if(HitOBB(comp))
         		{
         			// check perfect hit
-        		
+        			if(PerfectHit(comp))
+        			{
+        				// To do
+        			}
         		}
         	}
         }
@@ -49,7 +52,12 @@ namespace Engine
         
         public bool HitOBB(ComponentCollision comp)
         {
-        	return BBox.HitOBB(comm);
+        	return BBox.HitOBB(comp);
+        }
+        
+        private bool PerfectHit(ComponentCollision comp)
+        {
+        	return BBox.PerfectHit(comp);
         }
 
 #if (UNITY_EDITOR)
