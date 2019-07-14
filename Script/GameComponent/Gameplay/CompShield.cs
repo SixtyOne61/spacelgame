@@ -77,7 +77,7 @@ public class CompShield : ComponentBase
         }
     }
 
-    public void Hit(CompCollision comp)
+    public void Hit(ComponentCollision comp)
     {
         // TO DO : maybe change this
         foreach(LinkPos pos in comp.LinkPosList)
