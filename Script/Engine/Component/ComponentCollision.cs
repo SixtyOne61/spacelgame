@@ -32,16 +32,14 @@ namespace Engine
         {
         	// just check distance
         	if(HitSphere(comp))
-        	{
-        		// check OBB hit
-        		if(HitOBB(comp))
+            {
+                Vector3 otherVMin;
+                Vector3 otherVMax;
+                // check OBB hit
+                if (HitOBB(comp, out otherVMin, out otherVMax))
         		{
-        			// check perfect hit
-        			if(PerfectHit(comp))
-        			{
-                        // To do
-                        return true;
-        			}
+                    // check perfect hit
+                    PerfectHit(comp, otherVMin, otherVMax);
         		}
         	}
             return false;
@@ -54,12 +52,70 @@ namespace Engine
         
         public bool HitOBB(ComponentCollision comp)
         {
-        	return BBox.HitOBB(comp);
+            Vector3 otherVMin;
+            Vector3 otherVMax;
+            return HitOBB(comp, out otherVMin, out otherVMax);
+        }
+
+        private bool HitOBB(ComponentCollision comp, out Vector3 out_vmin, out Vector3 out_vmax)
+        {
+        	return BBox.HitOBB(comp, out out_vmin, out out_vmax);
         }
         
-        private bool PerfectHit(ComponentCollision comp)
+        private void PerfectHit(ComponentCollision comp, Vector3 otherVmin, Vector3 otherVmax)
         {
-        	return BBox.PerfectHit(comp);
+            // find intersect volume
+            float minx = Mathf.Max(BBox.Vertex1.x, otherVmin.x);
+            float maxx = Mathf.Min(BBox.Vertex7.x, otherVmax.x);
+
+            float miny = Mathf.Max(BBox.Vertex1.y, otherVmin.y);
+            float maxy = Mathf.Min(BBox.Vertex7.y, otherVmax.y);
+
+            float minz = Mathf.Max(BBox.Vertex1.z, otherVmin.z);
+            float maxz = Mathf.Min(BBox.Vertex7.z, otherVmax.z);
+
+            Vector3 intersectMin = new Vector3(minx, miny, minz);
+            Vector3 intersectMax = new Vector3(maxx, maxy, maxz);
+
+            IntersectVolume(intersectMin, intersectMax, comp.Owner.GetComponent<VolumeEntity>().ParamAttribut.Damage);
+            
+            // convert intersect volume to comp's local space
+            intersectMin = Owner.transform.TransformPoint(intersectMin);
+            intersectMin = comp.Owner.transform.InverseTransformPoint(intersectMin);
+            intersectMax = Owner.transform.TransformPoint(intersectMax);
+            intersectMax = comp.Owner.transform.InverseTransformPoint(intersectMax);
+            comp.IntersectVolume(intersectMin, intersectMax, Owner.GetComponent<VolumeEntity>().ParamAttribut.Damage);
+        }
+
+        public void IntersectVolume(Vector3 vmin, Vector3 vmax, int dmg)
+        {
+            if(dmg == 0)
+            {
+                return;
+            }
+
+            VolumeEntity ent = Owner.GetComponent<VolumeEntity>();
+
+            for(int i = 0; i < LinkPosList.Count;)
+            {
+                UnitPos pos = LinkPosList[i].Center;
+                if(HasContact(vmin.x, vmax.x, pos.x, pos.x + BBox.SizeCube)
+                    && HasContact(vmin.y, vmax.y, pos.y, pos.y + BBox.SizeCube)
+                    && HasContact(vmin.z, vmax.z, pos.z, pos.z + BBox.SizeCube))
+                {
+                    if(ent.RemoveAt(i, dmg))
+                    {
+                        // TO DO : refresh box
+                        continue;
+                    }
+                }
+                ++i;
+            }
+        }
+
+        private bool HasContact(float min, float max, float start, float end)
+        {
+            return min >= start ? min <= end : max >= start;
         }
 
 #if (UNITY_EDITOR)

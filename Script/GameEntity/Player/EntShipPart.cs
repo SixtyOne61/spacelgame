@@ -62,7 +62,8 @@ public class EntShipPart : CollideEntity
         CompMaterial.ParamMaterial.Material = part.Param.Material;
     }
 
-    public override void RemoveAt(int index, int dmg)
+    // TO DO : facto with base
+    public override bool RemoveAt(int index, int dmg)
     {
         LinkPos remove = LinkPosList.ElementAt(index);
 
@@ -71,7 +72,7 @@ public class EntShipPart : CollideEntity
         // we don't remove this component, we have life
         if (remove.Life > 0)
         {
-            return;
+            return false;
         }
 
         // spawn a loot on this pos
@@ -84,6 +85,7 @@ public class EntShipPart : CollideEntity
         _removed.Add(remove);
         // for generic debug
         _debugRemove.Add(remove);
+        return true;
     }
 
     private void SpawnLoot(LinkPos pos)

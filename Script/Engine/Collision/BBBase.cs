@@ -6,7 +6,7 @@ namespace Engine
 {
     public class BBBase
     {
-        protected float _sizeCube = 0.0f;
+        public float SizeCube = 0.0f;
 
         // transform of Owner
         [HideInInspector]
@@ -61,16 +61,16 @@ namespace Engine
             Owner = owner;
 
             UnitPos center = init.Center;
-            _sizeCube = sizeCube;
+            SizeCube = sizeCube;
 
-            xMin = center.x - _sizeCube;
-            xMax = center.x + _sizeCube;
+            xMin = center.x - SizeCube;
+            xMax = center.x + SizeCube;
 
-            yMin = center.y - _sizeCube;
-            yMax = center.y + _sizeCube;
+            yMin = center.y - SizeCube;
+            yMax = center.y + SizeCube;
 
-            zMin = center.z - _sizeCube;
-            zMax = center.z + _sizeCube;
+            zMin = center.z - SizeCube;
+            zMax = center.z + SizeCube;
 
             Vertex1 = new UnitPos(xMin, yMin, zMin);
             Vertex2 = new UnitPos(xMax, yMin, zMin);
@@ -88,51 +88,51 @@ namespace Engine
         {
             UnitPos center = pos.Center;
 
-            if (center.x - _sizeCube < xMin)
+            if (center.x - SizeCube < xMin)
             {
-                xMin = center.x - _sizeCube;
+                xMin = center.x - SizeCube;
                 Vertex1.x = xMin;
                 Vertex4.x = xMin;
                 Vertex5.x = xMin;
                 Vertex8.x = xMin;
             }
-            else if (center.x + _sizeCube > xMax)
+            else if (center.x + SizeCube > xMax)
             {
-                xMax = center.x + _sizeCube;
+                xMax = center.x + SizeCube;
                 Vertex2.x = xMax;
                 Vertex3.x = xMax;
                 Vertex6.x = xMax;
                 Vertex7.x = xMax;
             }
 
-            if (center.y - _sizeCube < yMin)
+            if (center.y - SizeCube < yMin)
             {
-                yMin = center.y - _sizeCube;
+                yMin = center.y - SizeCube;
                 Vertex1.y = yMin;
                 Vertex2.y = yMin;
                 Vertex5.y = yMin;
                 Vertex6.y = yMin;
             }
-            else if (center.y + _sizeCube > yMax)
+            else if (center.y + SizeCube > yMax)
             {
-                yMax = center.y + _sizeCube;
+                yMax = center.y + SizeCube;
                 Vertex3.y = yMax;
                 Vertex4.y = yMax;
                 Vertex7.y = yMax;
                 Vertex8.y = yMax;
             }
 
-            if (center.z - _sizeCube < zMin)
+            if (center.z - SizeCube < zMin)
             {
-                zMin = center.z - _sizeCube;
+                zMin = center.z - SizeCube;
                 Vertex1.z = zMin;
                 Vertex2.z = zMin;
                 Vertex3.z = zMin;
                 Vertex4.z = zMin;
             }
-            else if (center.z + _sizeCube > zMax)
+            else if (center.z + SizeCube > zMax)
             {
-                zMax = center.z + _sizeCube;
+                zMax = center.z + SizeCube;
                 Vertex5.z = zMax;
                 Vertex6.z = zMax;
                 Vertex7.z = zMax;
@@ -163,7 +163,7 @@ namespace Engine
         	return distance <= Ray + b2.Ray;
         }
 
-        public bool HitOBB(ComponentCollision comp)
+        public bool HitOBB(ComponentCollision comp, out Vector3 out_vmin, out Vector3 out_vmax)
         {
             // aabb from comp
             BBBase b2 = comp.BBox;
@@ -174,10 +174,10 @@ namespace Engine
             Vector3 v1World = b2.Owner.TransformPoint(new Vector3(v1.x, v1.y, v1.z));
             Vector3 v7World = b2.Owner.TransformPoint(new Vector3(v7.x, v7.y, v7.z));
 
-            Vector3 v1Local = Owner.InverseTransformPoint(v1World);
-            Vector3 v7Local = Owner.InverseTransformPoint(v7World);
+            out_vmin = Owner.InverseTransformPoint(v1World);
+            out_vmax = Owner.InverseTransformPoint(v7World);
 
-            return HitAABB(v1Local, v7Local);
+            return HitAABB(out_vmin, out_vmax);
         }
 
         private bool HitAABB(Vector3 min, Vector3 max)
@@ -185,11 +185,6 @@ namespace Engine
             return Vertex1.x >= min.x ? Vertex1.x <= max.x : Vertex7.x >= min.x
                 && Vertex1.y >= min.y ? Vertex1.y <= max.y : Vertex7.y >= min.y
                 && Vertex1.z >= min.z ? Vertex1.z <= max.z : Vertex7.z >= min.z;
-        }
-        
-        public bool PerfectHit(ComponentCollision comp)
-        {
-            return false;
         }
     }
 }

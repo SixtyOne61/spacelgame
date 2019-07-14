@@ -6,10 +6,10 @@ namespace Engine
 {
     public class DynamicZone
     {
-        public List<CompCollision> _staticObjects = new List<CompCollision>();
-        public List<CompCollision> _dynamicObjects = new List<CompCollision>();
+        public List<ComponentCollision> _staticObjects = new List<ComponentCollision>();
+        public List<ComponentCollision> _dynamicObjects = new List<ComponentCollision>();
 
-        public DynamicZone(CompCollision comp)
+        public DynamicZone(ComponentCollision comp)
         {
             _staticObjects.Add(comp);
         }
@@ -19,40 +19,43 @@ namespace Engine
 
         }
         
-        public void UpdateCollision()
+        public void UpdateStaticCollision()
         {
-        	foreach(CompCollision comp in _dynamicObjects)
-        	{
-        		if(comp.Owner.transform.hasChanged)
-        		{
-        			foreach(CompCollision other in _staticObjects)
+            foreach (ComponentCollision comp in _dynamicObjects)
+            {
+                if (comp.Owner.transform.hasChanged)
+                {
+                    foreach (ComponentCollision other in _staticObjects)
                     {
                         comp.Hit(other);
                     }
-        		}
-        	}
-        	
-        	// to do, collision between dynamic
-        	for(int i = 0; i < _dynamicObjects.Count; ++i)
-        	{
-                CompCollision c1 = _dynamicObjects[i];
-        		bool c1HasChanged = c1.Owner.transform.hasChanged;
-        		for(int j = i + 1; j < _dynamicObjects.Count; ++j)
-        		{
-                    CompCollision c2 = _dynamicObjects[j];
-        			if(!c1HasChanged && !c2.Owner.transform.hasChanged)
-        			{
-        				continue;
-        			}
+                }
+            }
+        }
+
+        public void UpdateDynamicCollision()
+        {
+            // to do, collision between dynamic
+            for (int i = 0; i < _dynamicObjects.Count; ++i)
+            {
+                ComponentCollision c1 = _dynamicObjects[i];
+                bool c1HasChanged = c1.Owner.transform.hasChanged;
+                for (int j = i + 1; j < _dynamicObjects.Count; ++j)
+                {
+                    ComponentCollision c2 = _dynamicObjects[j];
+                    if (!c1HasChanged && !c2.Owner.transform.hasChanged)
+                    {
+                        continue;
+                    }
 
                     // TO DO
-        		}
-        	}
+                }
+            }
         }
         
         public bool HasContact(DynamicZone other)
         {
-            foreach (CompCollision otherComp in other._staticObjects)
+            foreach (ComponentCollision otherComp in other._staticObjects)
             {
                 if(HasContact(otherComp))
                 {
@@ -62,11 +65,11 @@ namespace Engine
         	return false;
         }
 
-        public bool HasContact(CompCollision other)
+        public bool HasContact(ComponentCollision other)
         {
-            foreach (CompCollision comp in _staticObjects)
+            foreach (ComponentCollision comp in _staticObjects)
             {
-                if (comp.HitBoundBox(other))
+                if (comp.HitSphere(other) && comp.HitOBB(other))
                 {
                     return true;
                 }
@@ -78,10 +81,10 @@ namespace Engine
         {
             for(int i = 0; i < _dynamicObjects.Count; )
             {
-                CompCollision comp = _dynamicObjects[i];
+                ComponentCollision comp = _dynamicObjects[i];
                 if (comp.Owner.transform.hasChanged && !HasContact(comp))
                 {
-                    CollisionManager.Instance.Register((CompCollisionDynamic)comp);
+                    CollisionManager.Instance.RegisterDynamic(comp);
                     _dynamicObjects.RemoveAt(i);
                 }
                 else
@@ -91,7 +94,7 @@ namespace Engine
             }
         }
 
-        public bool UnRegisterStatic(CompCollision comp)
+        public bool UnRegisterStatic(ComponentCollision comp)
         {
             for(int i = 0; i < _staticObjects.Count; ++i)
             {
@@ -105,7 +108,7 @@ namespace Engine
             return false;
         }
 
-        public bool UnRegisterDynamic(CompCollision comp)
+        public bool UnRegisterDynamic(ComponentCollision comp)
         {
             for(int i = 0; i < _dynamicObjects.Count; ++i)
             {

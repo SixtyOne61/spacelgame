@@ -53,7 +53,7 @@ namespace Engine
             _components.Add(aComponent.SetOwner(gameObject));
         }
 
-        public void OnDestroy()
+        virtual public void OnDestroy()
         {
             foreach (ComponentBase comp in _components)
             {

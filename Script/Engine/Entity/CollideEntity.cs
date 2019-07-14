@@ -3,6 +3,7 @@ using System.Linq;
 
 namespace Engine
 {
+    [RequireComponent(typeof(MeshCollider))]
     public class CollideEntity : VolumeEntity
     {
         // TO DO : change this, use polymorphisme
@@ -26,18 +27,33 @@ namespace Engine
             AddComponent(_componentCollision);
             _componentCollision.LinkPosList = LinkPosList;
             _componentCollision.Init(CompMeshGenerator.ParamCubeSize.Value);
-            // init component collision
-            // TO DO
-            /*if (IsStaticObject)
+
+            // register
+            if(IsStaticObject)
             {
-                _componentCollision = new CompCollisionStatic();
+                CollisionManager.Instance.RegisterStatic(_componentCollision);
             }
             else
             {
-                _componentCollision = new CompCollisionDynamic();
-            }*/
+                CollisionManager.Instance.RegisterDynamic(_componentCollision);
+            }
 
+            GetComponent<MeshCollider>().sharedMesh = CompMeshGenerator.CustomMesh;
             base.Start();
+        }
+
+        public override void OnDestroy()
+        {
+            if(IsStaticObject)
+            {
+                CollisionManager.Instance.UnRegisterStatic(_componentCollision);
+            }
+            else
+            {
+                CollisionManager.Instance.UnRegisterDynamic(_componentCollision);
+            }
+
+            base.OnDestroy();
         }
 
         public override void Refresh()

@@ -49,7 +49,8 @@ namespace Engine
             }
         }
 
-        public virtual void RemoveAt(int index, int dmg)
+        // TO DO : facto with EntShipPart
+        public virtual bool RemoveAt(int index, int dmg)
         {
             LinkPos remove = LinkPosList.ElementAt(index);
 
@@ -58,7 +59,7 @@ namespace Engine
             // we don't remove this component, we have life
             if (remove.Life > 0)
             {
-                return;
+                return false;
             }
 
             foreach (KeyValuePair<LinkPos.Neighbor, UnitPos> neigbor in remove.Neighbors)
@@ -70,6 +71,7 @@ namespace Engine
 
             LinkPosList.RemoveAt(index);
             _flagRefresh = true;
+            return true;
         }
 
         public virtual void SearchNeigbhor(UnitPos lfv, int remove, int idx, int delta)

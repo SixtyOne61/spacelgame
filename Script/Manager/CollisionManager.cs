@@ -16,7 +16,7 @@ public class CollisionManager : Singleton<CollisionManager>
         // TO DO : maybe add mask for collision between team etc
     }
     
-    public bool AddDynamic(CompCollision comp)
+    public bool AddDynamic(ComponentCollision comp)
     {
         bool ret = false;
     	foreach(DynamicZone zone in _dynamicZones)
@@ -33,7 +33,7 @@ public class CollisionManager : Singleton<CollisionManager>
 
     #region Register
 
-    public void Register(CompCollisionStatic component)
+    public void RegisterStatic(ComponentCollision component)
     {
         // list of all zone who can receive component
         List<DynamicZone> promotZones = new List<DynamicZone>();
@@ -63,7 +63,7 @@ public class CollisionManager : Singleton<CollisionManager>
         _dynamicZones.Add(newZone);
     }
 
-    public void Register(CompCollisionDynamic component)
+    public void RegisterDynamic(ComponentCollision component)
     {
         if(!AddDynamic(component))
         {
@@ -75,7 +75,7 @@ public class CollisionManager : Singleton<CollisionManager>
 
     #region UnRegister
 
-    public void UnRegister(CompCollisionStatic component)
+    public void UnRegisterStatic(ComponentCollision component)
     {
         foreach(DynamicZone zone in _dynamicZones)
         {
@@ -86,7 +86,7 @@ public class CollisionManager : Singleton<CollisionManager>
         }
     }
 
-    public void UnRegister(CompCollisionDynamic component)
+    public void UnRegisterDynamic(ComponentCollision component)
     {
         foreach (DynamicZone zone in _dynamicZones)
         {
@@ -103,16 +103,17 @@ public class CollisionManager : Singleton<CollisionManager>
         /*foreach (DynamicZone zone in _dynamicZones)
         {
             zone.CheckDynamic();
-        }
+        }*/
 
         // check if orphan is still orphan
-        _orphanObjects.CheckDynamic();*/
+        _orphanObjects.CheckDynamic();
         
         foreach (DynamicZone zone in _dynamicZones)
         {
-        	zone.UpdateCollision();
+            zone.UpdateStaticCollision();
+            zone.UpdateDynamicCollision();
         }
 
-        _orphanObjects.UpdateCollision();
+        _orphanObjects.UpdateDynamicCollision();
     }
 }
