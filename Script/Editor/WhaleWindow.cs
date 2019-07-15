@@ -28,7 +28,7 @@ namespace Tool
         {
             _whaleBuild.ParamWhale = EditorGUILayout.ObjectField("Param Whale", _whaleBuild.ParamWhale, typeof(SCRWhale), false) as SCRWhale;
             _whaleBuild.ParamRock = EditorGUILayout.ObjectField("Param Rock", _whaleBuild.ParamRock, typeof(SCRNoise), false) as SCRNoise;
-            
+            _whaleBuild.RockAttribut = EditorGUILayout.ObjectField("Rock Attribut", _whaleBuild.RockAttribut, typeof(SCRCubeAttribut), false) as SCRCubeAttribut;
         }
 
         private void DisplayActions()

@@ -6,15 +6,11 @@ namespace Engine
     [RequireComponent(typeof(MeshCollider))]
     public class CollideEntity : VolumeEntity
     {
-        // TO DO : change this, use polymorphisme
-        [Tooltip("True for static object")]
-        public bool IsStaticObject = true;
-
         // need it for whale, export fail without array
         public LinkPos[] LinkPosArray;
 
         // component collision
-        private ComponentCollision _componentCollision;
+        public ComponentCollision ComponentCollision;
 
         public override void Start()
         {
@@ -23,21 +19,14 @@ namespace Engine
                 LinkPosList = LinkPosArray.ToList();
             }
 
-            _componentCollision = new ComponentCollision();
-            AddComponent(_componentCollision);
-            _componentCollision.LinkPosList = LinkPosList;
-            _componentCollision.Init(CompMeshGenerator.ParamCubeSize.Value);
+            ComponentCollision = new ComponentCollision();
+            AddComponent(ComponentCollision);
+            ComponentCollision.LinkPosList = LinkPosList;
+            ComponentCollision.Init(CompMeshGenerator.ParamCubeSize.Value);
 
-            // register
-            if(IsStaticObject)
-            {
-                CollisionManager.Instance.RegisterStatic(_componentCollision);
-            }
-            else
-            {
-                CollisionManager.Instance.RegisterDynamic(_componentCollision);
-            }
+            base.Start();
 
+            // init mesh collider
             MeshCollider meshCollider = GetComponent<MeshCollider>();
             if (meshCollider)
             {
@@ -45,29 +34,11 @@ namespace Engine
                 meshCollider.isTrigger = true;
                 meshCollider.sharedMesh = CompMeshGenerator.CustomMesh;
             }
-            base.Start();
-        }
-
-        public override void OnDestroy()
-        {
-            if(IsStaticObject)
-            {
-                CollisionManager.Instance.UnRegisterStatic(_componentCollision);
-            }
-            else
-            {
-                CollisionManager.Instance.UnRegisterDynamic(_componentCollision);
-            }
-
-            base.OnDestroy();
         }
 
         public override void Refresh()
         {
             base.Refresh();
-            // TO DO
-            //_componentCollision.Reset();
-
             // check if object was destroy
             Alive();
         }
@@ -86,35 +57,21 @@ namespace Engine
             }
         }
 
-        public void OnTriggerEnter(Collider other)
+        public void OnTriggerStay(Collider other)
         {
-            Debug.Log("Trigger Enter.");
-        }
-
-        public void OnCollisionEnter(Collision collision)
-        {
-            Debug.Log("Collision Enter.");
-        }
-
-#if (UNITY_EDITOR)
-        public override void OnDrawGizmos()
-        {
-            base.OnDrawGizmos();
-
-            if (Tool.DebugWindowAccess.Instance.Serialize.EnableDrawRemovePos)
+            if(gameObject.tag.GetHashCode() == other.gameObject.tag.GetHashCode())
             {
-                Gizmos.color = Color.magenta;
-                Vector3 size = new Vector3(CompMeshGenerator.ParamCubeSize.Value, CompMeshGenerator.ParamCubeSize.Value, CompMeshGenerator.ParamCubeSize.Value);
-                Vector3 delta = size / 2.0f;
-                foreach (LinkPos pos in _debugRemove)
-                {
-                    Vector3 posVec = new Vector3(pos.Center.x + delta.x, pos.Center.y + delta.y, pos.Center.z + delta.z);
-                    // add in world space
-                    posVec += transform.position;
-                    Gizmos.DrawWireCube(posVec, size);
-                }
+                return;
             }
+
+            Debug.Log("Trigger Enter.");
+            CollideEntity ent = other.GetComponent<CollideEntity>();
+            if(ent == null)
+            {
+                return;
+            }
+
+            ComponentCollision.Hit(ent.ComponentCollision);
         }
-#endif
     }
 }

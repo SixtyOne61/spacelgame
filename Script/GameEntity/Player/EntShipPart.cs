@@ -22,7 +22,6 @@ public class EntShipPart : CollideEntity
 
     public override void Start()
     {
-        IsStaticObject = false;
         base.Start();
 
         // spawn removed part

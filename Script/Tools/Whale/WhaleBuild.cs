@@ -10,6 +10,8 @@ namespace Tool
         public SCRWhale ParamWhale;
         [Tooltip("Noise rock param")]
         public SCRNoise ParamRock;
+        [Tooltip("Rock cube attribut")]
+        public SCRCubeAttribut RockAttribut;
 
         // contains all rock helper
         private List<HelperBuildRock> _helperRocks = new List<HelperBuildRock>();
@@ -23,7 +25,7 @@ namespace Tool
                 {
                     for(int k = 0; k < ParamWhale.NbChunck; ++k)
                     {
-                        _helperRocks.Add(new HelperBuildRock(ParamRock, ParamWhale));
+                        _helperRocks.Add(new HelperBuildRock(ParamRock, ParamWhale, RockAttribut));
                     }
                 }
             }   

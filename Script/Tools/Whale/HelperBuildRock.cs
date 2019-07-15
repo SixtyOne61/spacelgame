@@ -10,6 +10,8 @@ namespace Tool
     {
         [Tooltip("Noise rock param")]
         public SCRNoise ParamRock;
+        [Tooltip("Rock cube attribut")]
+        public SCRCubeAttribut RockAttribut;
 
         // valide position
         private List<BuildingObject> _objects = new List<BuildingObject>();
@@ -27,10 +29,11 @@ namespace Tool
             Bornz = copy.Bornz;
         }
 
-        public HelperBuildRock(SCRNoise paramRock, SCRWhale paramWhale)
+        public HelperBuildRock(SCRNoise paramRock, SCRWhale paramWhale, SCRCubeAttribut rockAttribut)
         {
             ParamWhale = paramWhale;
             ParamRock = paramRock;
+            RockAttribut = rockAttribut;
         }
 
         public override void ExportToPrefab()
@@ -64,7 +67,7 @@ namespace Tool
                 int x = _openList[0].x;
                 int y = _openList[0].y;
                 int z = _openList[0].z;
-                LinkPos newpos = new LinkPos(new UnitPos(x, y, z));
+                LinkPos newpos = new LinkPos(new UnitPos(x, y, z), RockAttribut.Life);
                 _openList.RemoveAt(0);
 
                 // create new object
@@ -83,7 +86,7 @@ namespace Tool
 
         private void Add(int x, int y, int z)
         {
-            LinkPos newpos = new LinkPos(new UnitPos(x, y, z));
+            LinkPos newpos = new LinkPos(new UnitPos(x, y, z), RockAttribut.Life);
             // all neighboor
             AddNeighboor(x, y + 1, z, LinkPos.Neighbor.Top, ref newpos);
             AddNeighboor(x, y - 1, z, LinkPos.Neighbor.Bottom, ref newpos);
