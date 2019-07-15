@@ -38,7 +38,13 @@ namespace Engine
                 CollisionManager.Instance.RegisterDynamic(_componentCollision);
             }
 
-            GetComponent<MeshCollider>().sharedMesh = CompMeshGenerator.CustomMesh;
+            MeshCollider meshCollider = GetComponent<MeshCollider>();
+            if (meshCollider)
+            {
+                meshCollider.convex = true;
+                meshCollider.isTrigger = true;
+                meshCollider.sharedMesh = CompMeshGenerator.CustomMesh;
+            }
             base.Start();
         }
 
@@ -78,6 +84,16 @@ namespace Engine
             {
                 Tool.Builder.Instance.DestroyGameObject(gameObject, false);
             }
+        }
+
+        public void OnTriggerEnter(Collider other)
+        {
+            Debug.Log("Trigger Enter.");
+        }
+
+        public void OnCollisionEnter(Collision collision)
+        {
+            Debug.Log("Collision Enter.");
         }
 
 #if (UNITY_EDITOR)
