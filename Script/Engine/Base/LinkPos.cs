@@ -4,8 +4,7 @@ using System;
 
 namespace Engine
 {
-	[System.Serializable]
-    [Flags]
+    [System.Serializable, Flags]
     public enum Face
     {
         None = 0,
@@ -33,8 +32,7 @@ namespace Engine
 
         public UnitPos Center;
         public Face Mask = Face.None;
-        [System.Serializable]
-        public Dictionary<Neighbor, UnitPos> Neighbors = new Dictionary<Neighbor, UnitPos>();
+        public SerializableDictionary<Neighbor, UnitPos> Neighbors = new SerializableDictionary<Neighbor, UnitPos>();
         public int Life = int.MaxValue;
 
         public LinkPos(UnitPos center, int life)
