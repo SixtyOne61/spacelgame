@@ -32,11 +32,20 @@ namespace Engine
 
         public UnitPos Center;
         public Face Mask = Face.None;
-        public SerializableDictionary<Neighbor, UnitPos> Neighbors = new SerializableDictionary<Neighbor, UnitPos>();
         public int Life = int.MaxValue;
         
         [System.SerializableAttribut]
         private UnitPos Top = new UnitPos();
+        [System.SerializableAttribut]
+        private UnitPos Bottom = new UnitPos();
+        [System.SerializableAttribut]
+        private UnitPos Left = new UnitPos();
+        [System.SerializableAttribut]
+        private UnitPos Right = new UnitPos();
+        [System.SerializableAttribut]
+        private UnitPos Back = new UnitPos();
+        [System.SerializableAttribut]
+        private UnitPos Front = new UnitPos();
 
         public LinkPos(UnitPos center, int life)
         {
@@ -55,18 +64,16 @@ namespace Engine
             {
                 Debug.LogError("Linkpos already know this neighbor");
             }
-            Neighbors.Add(where, pos);
-            AddMask(where);
+            AddMask(where, pos);
         }
 
         public void Remove(Neighbor where)
         {
-            if(!Neighbors.ContainsKey(where))
+            if(!Has(where))
             {
                 Debug.LogError("Remove neighbor but doesn't exist. " + Center + " " + where);
                 return;
             }
-            Neighbors.Remove(where);
             RemoveMask(where);
         }
 
@@ -99,43 +106,65 @@ namespace Engine
 
         public bool Has(UnitPos pos)
         {
-            foreach(KeyValuePair<Neighbor, UnitPos> our in Neighbors)
-            {
-                if(pos == our.Value)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+        	if(Has(Neighbor.Top)) && pos == Top)
+        	{
+        		return true;
+        	}
+        	if(Has(Neighbor.Bottom)) && pos == Bottom)
+        	{
+        		return true;
+        	}
+        	if(Has(Neighbor.Left)) && pos == Left)
+        	{
+        		return true;
+        	}
+        	if(Has(Neighbor.Right)) && pos == Right)
+        	{
+        		return true;
+        	}
+        	if(Has(Neighbor.Front)) && pos == Front)
+        	{
+        		return true;
+        	}
+        	if(Has(Neighbor.Back)) && pos == Back)
+        	{
+        		return true;
+        	}
+        	return false;
         }
 
-        private void AddMask(Neighbor where)
+        private void AddMask(Neighbor where, UnitPos pos)
         {
             switch (where)
             {
                 case Neighbor.Top:
                     Mask |= Face.Top;
+                    Top = pos;
                     break;
 
                 case Neighbor.Bottom:
                     Mask |= Face.Bot;
+                    Bottom = pos;
                     break;
 
                 case Neighbor.Left:
                     Mask |= Face.Left;
+                    Left = pos;
                     break;
 
                 case Neighbor.Right:
                     Mask |= Face.Right;
+                    Right = pos;
                     break;
 
                 case Neighbor.Front:
                     Mask |= Face.Front;
+                    Front = pos;
                     break;
 
                 case Neighbor.Back:
                     Mask |= Face.Back;
+                    Back = pos;
                     break;
 
                 default:
@@ -197,3 +226,4 @@ namespace Engine
         }
     }
 }
+    
