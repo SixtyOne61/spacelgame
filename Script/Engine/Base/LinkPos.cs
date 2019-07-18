@@ -34,6 +34,9 @@ namespace Engine
         public Face Mask = Face.None;
         public SerializableDictionary<Neighbor, UnitPos> Neighbors = new SerializableDictionary<Neighbor, UnitPos>();
         public int Life = int.MaxValue;
+        
+        [System.SerializableAttribut]
+        private UnitPos Top = new UnitPos();
 
         public LinkPos(UnitPos center, int life)
         {
@@ -48,7 +51,7 @@ namespace Engine
 
         public void Add(Neighbor where, UnitPos pos)
         {
-            if (Neighbors.ContainsKey(where))
+            if (Has(where))
             {
                 Debug.LogError("Linkpos already know this neighbor");
             }
@@ -69,7 +72,29 @@ namespace Engine
 
         public bool Has(Neighbor where)
         {
-            return Neighbors.ContainsKey(where);
+        	switch (where)
+            {
+                case Neighbor.Top:
+                    return (Mask & Face.Top) == Face.Top;
+
+                case Neighbor.Bottom:
+                    return (Mask & Face.Bottom) == Face.Bot;
+     
+                case Neighbor.Left:
+                    return (Mask & Face.Left) == Face.Left;
+                   
+                case Neighbor.Right:
+                    return (Mask & Face.Right) == Face.Right;
+     
+                case Neighbor.Front:
+                    return (Mask & Face.Front) == Face.Front;
+                    
+                case Neighbor.Back:
+                    return (Mask & Face.Back) == Face.Back;
+                    
+                default:
+                    break;
+            }
         }
 
         public bool Has(UnitPos pos)
