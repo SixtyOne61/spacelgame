@@ -33,19 +33,19 @@ namespace Engine
         public UnitPos Center;
         public Face Mask = Face.None;
         public int Life = int.MaxValue;
-        
-        [System.SerializableAttribut]
-        private UnitPos Top = new UnitPos();
-        [System.SerializableAttribut]
-        private UnitPos Bottom = new UnitPos();
-        [System.SerializableAttribut]
-        private UnitPos Left = new UnitPos();
-        [System.SerializableAttribut]
-        private UnitPos Right = new UnitPos();
-        [System.SerializableAttribut]
-        private UnitPos Back = new UnitPos();
-        [System.SerializableAttribut]
-        private UnitPos Front = new UnitPos();
+
+        [SerializeField]
+        private UnitPos Top = new UnitPos(0, 0, 0);
+        [SerializeField]
+        private UnitPos Bottom = new UnitPos(0, 0, 0);
+        [SerializeField]
+        private UnitPos Left = new UnitPos(0, 0, 0);
+        [SerializeField]
+        private UnitPos Right = new UnitPos(0, 0, 0);
+        [SerializeField]
+        private UnitPos Back = new UnitPos(0, 0, 0);
+        [SerializeField]
+        private UnitPos Front = new UnitPos(0, 0, 0);
 
         public LinkPos(UnitPos center, int life)
         {
@@ -85,7 +85,7 @@ namespace Engine
                     return (Mask & Face.Top) == Face.Top;
 
                 case Neighbor.Bottom:
-                    return (Mask & Face.Bottom) == Face.Bot;
+                    return (Mask & Face.Bot) == Face.Bot;
      
                 case Neighbor.Left:
                     return (Mask & Face.Left) == Face.Left;
@@ -102,31 +102,32 @@ namespace Engine
                 default:
                     break;
             }
+            return false;
         }
 
         public bool Has(UnitPos pos)
         {
-        	if(Has(Neighbor.Top)) && pos == Top)
+        	if(Has(Neighbor.Top) && pos == Top)
         	{
         		return true;
         	}
-        	if(Has(Neighbor.Bottom)) && pos == Bottom)
+        	if(Has(Neighbor.Bottom) && pos == Bottom)
         	{
         		return true;
         	}
-        	if(Has(Neighbor.Left)) && pos == Left)
+        	if(Has(Neighbor.Left) && pos == Left)
         	{
         		return true;
         	}
-        	if(Has(Neighbor.Right)) && pos == Right)
+        	if(Has(Neighbor.Right) && pos == Right)
         	{
         		return true;
         	}
-        	if(Has(Neighbor.Front)) && pos == Front)
+        	if(Has(Neighbor.Front) && pos == Front)
         	{
         		return true;
         	}
-        	if(Has(Neighbor.Back)) && pos == Back)
+        	if(Has(Neighbor.Back) && pos == Back)
         	{
         		return true;
         	}
@@ -223,6 +224,38 @@ namespace Engine
         public static bool operator !=(LinkPos c1, LinkPos c2)
         {
             return !c1.Center.Equals(c2.Center);
+        }
+
+        public Dictionary<LinkPos.Neighbor, UnitPos> getNeighbor()
+        {
+            Dictionary<LinkPos.Neighbor, UnitPos> neighbor = new Dictionary<Neighbor, UnitPos>();
+
+            if (Has(Neighbor.Top))
+            {
+                neighbor.Add(Neighbor.Top, Top);
+            }
+            if (Has(Neighbor.Bottom))
+            {
+                neighbor.Add(Neighbor.Bottom, Bottom);
+            }
+            if (Has(Neighbor.Left))
+            {
+                neighbor.Add(Neighbor.Left, Left);
+            }
+            if (Has(Neighbor.Right))
+            {
+                neighbor.Add(Neighbor.Right, Right);
+            }
+            if (Has(Neighbor.Front))
+            {
+                neighbor.Add(Neighbor.Front, Front);
+            }
+            if (Has(Neighbor.Back))
+            {
+                neighbor.Add(Neighbor.Back, Back);
+            }
+
+            return neighbor;
         }
     }
 }

@@ -62,14 +62,11 @@ namespace Engine
                 return false;
             }
 
-            if(remove.Neighbors != null)
+            foreach (KeyValuePair<LinkPos.Neighbor, UnitPos> neigbor in remove.getNeighbor())
             {
-                foreach (KeyValuePair<LinkPos.Neighbor, UnitPos> neigbor in remove.Neighbors)
-                {
-                    int invert = (int)neigbor.Key * -1;
-                    SearchNeigbhor(neigbor.Value, invert, index, -1);
-                    SearchNeigbhor(neigbor.Value, invert, index, 1);
-                }
+                int invert = (int)neigbor.Key * -1;
+                SearchNeigbhor(neigbor.Value, invert, index, -1);
+                SearchNeigbhor(neigbor.Value, invert, index, 1);
             }
 
             LinkPosList.RemoveAt(index);
