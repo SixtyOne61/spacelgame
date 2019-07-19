@@ -11,6 +11,9 @@ namespace Engine
 
         // component collision
         public ComponentCollision ComponentCollision;
+        
+        // mesh collider on this entity
+        public MeshCollider MyMeshCollider;
 
         public override void Start()
         {
@@ -27,20 +30,26 @@ namespace Engine
             base.Start();
 
             // init mesh collider
-            MeshCollider meshCollider = GetComponent<MeshCollider>();
-            if (meshCollider)
+            MyMeshCollider = GetComponent<MeshCollider>();
+            if (MyMeshCollider)
             {
-                meshCollider.convex = true;
-                meshCollider.isTrigger = true;
-                meshCollider.sharedMesh = CompMeshGenerator.CustomMesh;
+                MyMeshCollider.convex = true;
+                MyMeshCollider.isTrigger = true;
+                RefreshColliderMesh();
             }
         }
 
         public override void Refresh()
         {
             base.Refresh();
+            RefreshColliderMesh();
             // check if object was destroy
             Alive();
+        }
+        
+        private void RefreshColliderMesh()
+        {
+        	MyMeshCollider.sharedMesh = CompMeshGenerator.CustomMesh;
         }
 
         public override void FixedUpdate()
