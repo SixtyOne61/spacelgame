@@ -257,6 +257,18 @@ namespace Engine
 
             return neighbor;
         }
+
+        public bool HasContact(Vector3 pos, float size)
+        {
+            return HasContact(Center.x - size, Center.x + size, pos.x)
+                && HasContact(Center.y - size, Center.y + size, pos.y)
+                && HasContact(Center.z - size, Center.z + size, pos.z);
+        }
+
+        private bool HasContact(float min, float max, float start)
+        {
+            return min <= start && max >= start;
+        }
     }
 }
     

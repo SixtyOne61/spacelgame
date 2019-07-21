@@ -24,6 +24,8 @@ namespace Engine
 
         public override void Start()
         {
+            // dispash linkpos list to sub list
+            DispashLinkPos();
             CompMeshGenerator.LinkPosList = LinkPosList;
 
             AddComponent(CompMeshGenerator);
@@ -31,6 +33,11 @@ namespace Engine
             base.Start();
 
             GetComponent<MeshFilter>().mesh = CompMeshGenerator.CustomMesh;
+        }
+
+        private void DispashLinkPos()
+        {
+            int maxElem = Mathf.RoundToInt(-0.5f + Mathf.Sqrt(0.25f * LinkPosList.Count));
         }
 
         public virtual void Refresh()

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEditor;
 using System.Linq;
 
 namespace Engine
@@ -42,7 +43,6 @@ namespace Engine
         public override void Refresh()
         {
             base.Refresh();
-            RefreshColliderMesh();
             // check if object was destroy
             Alive();
         }
@@ -73,14 +73,20 @@ namespace Engine
                 return;
             }
 
-            Debug.Log("Trigger Enter.");
-            CollideEntity ent = other.GetComponent<CollideEntity>();
-            if(ent == null)
+            // for each link pos, try to remove
+            for(int i = 0; i < LinkPosList.Count; )
             {
-                return;
+                Vector3 worldLocation = transform.TransformPoint(LinkPosList[i].Center.ToVec3());
+                Vector3 closest = other.ClosestPoint(worldLocation);
+                if(LinkPosList[i].HasContact(transform.InverseTransformPoint(closest), CompMeshGenerator.ParamCubeSize.Value))
+                {
+                    if(RemoveAt(i, ParamAttribut.Damage))
+                    {
+                        continue;
+                    }
+                }
+                ++i;
             }
-
-            ComponentCollision.Hit(ent.ComponentCollision);
         }
     }
 }
