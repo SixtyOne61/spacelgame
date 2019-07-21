@@ -15,9 +15,8 @@ namespace Engine
 
         [HideInInspector]
         public List<LinkPos> LinkPosList = new List<LinkPos>();
-        
+        [HideInInspector]
         public List<List<LinkPos>> SubPos = new List<List<LinkPos>>();
-
         // set true for refresh on next frame
         protected bool _flagRefresh = false;
 
@@ -39,18 +38,24 @@ namespace Engine
 
         private void DispashLinkPos()
         {
-            int maxElem = Mathf.RoundToInt(-0.5f + Mathf.Sqrt(0.25f * LinkPosList.Count));
+            int maxElem = Mathf.Max((int)Mathf.Ceil(-0.5f + Mathf.Sqrt(0.25f * LinkPosList.Count)), 1);
             int count = LinkPosList.Count;
             // sort linkPos
+            LinkPosList.Sort((p1, p2) => Vector3.Distance(p1.Center.ToVec3(), Vector3.zero) < Vector3.Distance(p2.Center.ToVec3(), Vector3.zero) ? 1 : -1);
+
             for(int i = 0; i < count;)
             {
             	SubPos.Add(new List<LinkPos>());
-            	int max = mathf.min(count - i, maxElem);
+            	int max = Mathf.Min(count - i, maxElem);
             	for(int j = 0; j < max; ++j)
             	{
-            		SubPos[i].Add(LinkPosList[i]);
-            		++i;
-            	}
+                    if(i+j >= count)
+                    {
+                        break;
+                    }
+                    SubPos.Last().Add(LinkPosList[i+j]);
+                }
+                i += max;
             }
         }
 

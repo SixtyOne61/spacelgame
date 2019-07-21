@@ -28,7 +28,7 @@ namespace Engine
             }
         }
         
-        public bool Hit(ComponentCollision comp)
+        public bool Hit(ComponentCollisionDeprecated comp)
         {
         	// just check distance
         	if(HitSphere(comp))
@@ -45,24 +45,24 @@ namespace Engine
             return false;
         }
         
-        public bool HitSphere(ComponentCollision comp)
+        public bool HitSphere(ComponentCollisionDeprecated comp)
         {
         	return BBox.HitSphere(comp);
         }
         
-        public bool HitOBB(ComponentCollision comp)
+        public bool HitOBB(ComponentCollisionDeprecated comp)
         {
             Vector3 otherVMin;
             Vector3 otherVMax;
             return HitOBB(comp, out otherVMin, out otherVMax);
         }
 
-        private bool HitOBB(ComponentCollision comp, out Vector3 out_vmin, out Vector3 out_vmax)
+        private bool HitOBB(ComponentCollisionDeprecated comp, out Vector3 out_vmin, out Vector3 out_vmax)
         {
         	return BBox.HitOBB(comp, out out_vmin, out out_vmax);
         }
         
-        private void PerfectHit(ComponentCollision comp, Vector3 otherVmin, Vector3 otherVmax)
+        private void PerfectHit(ComponentCollisionDeprecated comp, Vector3 otherVmin, Vector3 otherVmax)
         {
             // find intersect volume
             float minx = Mathf.Max(BBox.Vertex1.x, otherVmin.x);

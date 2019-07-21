@@ -9,10 +9,7 @@ namespace Engine
     {
         // need it for whale, export fail without array
         public LinkPos[] LinkPosArray;
-
-        // component collision
-        public ComponentCollision ComponentCollision;
-        
+                
         // mesh collider on this entity
         public MeshCollider MyMeshCollider;
 
@@ -22,11 +19,6 @@ namespace Engine
             {
                 LinkPosList = LinkPosArray.ToList();
             }
-
-            ComponentCollision = new ComponentCollision();
-            AddComponent(ComponentCollision);
-            ComponentCollision.LinkPosList = LinkPosList;
-            ComponentCollision.Init(CompMeshGenerator.ParamCubeSize.Value);
 
             base.Start();
 
@@ -74,18 +66,14 @@ namespace Engine
             }
 
             // for each link pos, try to remove
-            for(int i = 0; i < LinkPosList.Count; )
+            for(int i = 0; i < LinkPosList.Count; ++i)
             {
                 Vector3 worldLocation = transform.TransformPoint(LinkPosList[i].Center.ToVec3());
                 Vector3 closest = other.ClosestPoint(worldLocation);
                 if(LinkPosList[i].HasContact(transform.InverseTransformPoint(closest), CompMeshGenerator.ParamCubeSize.Value))
                 {
-                    if(RemoveAt(i, ParamAttribut.Damage))
-                    {
-                        continue;
-                    }
+                    RemoveAt(i, ParamAttribut.Damage);
                 }
-                ++i;
             }
         }
     }

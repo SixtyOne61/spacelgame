@@ -33,9 +33,6 @@ public class CompShield : ComponentBase
 
         _impactDuration = ParamShield.Duration;
         _dmgTaken = ParamShield.DamageTaken;
-
-        // TO DO 
-        //CollisionManager.Instance.Register(this);
     }
 
     public override void Update()
@@ -114,8 +111,5 @@ public class CompShield : ComponentBase
     public override void OnDestroy()
     {
         base.OnDestroy();
-
-        // TO DO
-        //CollisionManager.Instance.UnRegister(this);
     }
 }

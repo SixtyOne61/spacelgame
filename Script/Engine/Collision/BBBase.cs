@@ -152,7 +152,7 @@ namespace Engine
         	Ray = Mathf.Max(distx, Mathf.Max(disty, distz));
         }
         
-        public bool HitSphere(ComponentCollision comp)
+        public bool HitSphere(ComponentCollisionDeprecated comp)
         {
         	//aabb from comp
         	BBBase b2 = comp.BBox;
@@ -163,7 +163,7 @@ namespace Engine
         	return distance <= Ray + b2.Ray;
         }
 
-        public bool HitOBB(ComponentCollision comp, out Vector3 out_vmin, out Vector3 out_vmax)
+        public bool HitOBB(ComponentCollisionDeprecated comp, out Vector3 out_vmin, out Vector3 out_vmax)
         {
             // aabb from comp
             BBBase b2 = comp.BBox;
