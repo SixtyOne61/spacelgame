@@ -9,6 +9,7 @@ public class CompMeshGenerator : ComponentMeshBase
 
     [HideInInspector]
     public List<LinkPos> LinkPosList = new List<LinkPos>();
+    public List<List<LinkPos>> SubPos = new List<List<LinkPos>>();
 
     private List<Vector3> _vertices = new List<Vector3>();
     private List<int> _triangles = new List<int>();
@@ -26,7 +27,11 @@ public class CompMeshGenerator : ComponentMeshBase
 
         // we need to determine the outline of the form
         float size = ParamCubeSize.Value;
-        foreach (LinkPos curr in LinkPosList)
+        foreach(List<LinkPos> posList in SubPos)
+        {
+        	
+        
+        foreach (LinkPos curr in posList)
         {
             Face mask = curr.Mask;
             UnitPos currPos = curr.Center;
@@ -85,6 +90,7 @@ public class CompMeshGenerator : ComponentMeshBase
                 _vertices.Add(new Vector3(currPos.x + size, currPos.y + size, currPos.z + size));
                 AddTriangles(deb);
             }
+        }
         }
 
         CustomMesh.Clear();

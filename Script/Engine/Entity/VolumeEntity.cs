@@ -28,6 +28,7 @@ namespace Engine
             // dispash linkpos list to sub list
             DispashLinkPos();
             CompMeshGenerator.LinkPosList = LinkPosList;
+            CompMeshGenerator.SubPos = SubPos;
 
             AddComponent(CompMeshGenerator);
             AddComponent(CompMaterial);
@@ -41,7 +42,7 @@ namespace Engine
             int maxElem = Mathf.Max((int)Mathf.Ceil(-0.5f + Mathf.Sqrt(0.25f * LinkPosList.Count)), 1);
             int count = LinkPosList.Count;
             // sort linkPos
-            LinkPosList.Sort((p1, p2) => Vector3.Distance(p1.Center.ToVec3(), Vector3.zero) < Vector3.Distance(p2.Center.ToVec3(), Vector3.zero) ? 1 : -1);
+            LinkPosList.Sort((p1, p2) => p1.Center.x < p2.Center.y ? 1 : -1);
 
             for(int i = 0; i < count;)
             {
@@ -119,3 +120,4 @@ namespace Engine
         }
     }
 }
+    
