@@ -13,7 +13,9 @@ namespace Engine
         Front = 4,
         Back = 8,
         Right = 16,
-        Left = 32
+        Left = 32,
+        
+        All = Top | Bot | Front | Back | Right | Left
     }
 
     [System.Serializable]
@@ -33,6 +35,8 @@ namespace Engine
         public UnitPos Center;
         public Face Mask = Face.None;
         public int Life = int.MaxValue;
+        
+        public GameObject Owner = null;
 
         [SerializeField]
         private UnitPos Top = new UnitPos(0, 0, 0);
@@ -57,6 +61,15 @@ namespace Engine
         {
             Center = new UnitPos(center);
         }
+        
+        public void EndConstruct()
+        {
+        	// if we have not all neighboor
+        	if(Mask == All)
+        	{
+        		// spawn col
+        	}
+        }
 
         public void Add(Neighbor where, UnitPos pos)
         {
@@ -77,6 +90,7 @@ namespace Engine
             RemoveMask(where);
         }
 
+// to do change enum will be cool
         public bool Has(Neighbor where)
         {
         	switch (where)
@@ -226,6 +240,7 @@ namespace Engine
             return !c1.Center.Equals(c2.Center);
         }
 
+		// To do remove
         public Dictionary<LinkPos.Neighbor, UnitPos> getNeighbor()
         {
             Dictionary<LinkPos.Neighbor, UnitPos> neighbor = new Dictionary<Neighbor, UnitPos>();
