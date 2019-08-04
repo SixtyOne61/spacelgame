@@ -41,7 +41,8 @@ namespace Engine
         
         private void RefreshColliderMesh()
         {
-        	MyMeshCollider.sharedMesh = CompMeshGenerator.CustomMesh;
+            MyMeshCollider.cookingOptions = MeshColliderCookingOptions.None;
+            MyMeshCollider.sharedMesh = CompMeshGenerator.CustomMesh;
         }
 
         public override void FixedUpdate()

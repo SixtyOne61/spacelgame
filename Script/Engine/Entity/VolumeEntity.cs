@@ -26,9 +26,8 @@ namespace Engine
         public override void Start()
         {
             // dispash linkpos list to sub list
-            DispashLinkPos();
+            //DispashLinkPos();
             CompMeshGenerator.LinkPosList = LinkPosList;
-            CompMeshGenerator.SubPos = SubPos;
 
             AddComponent(CompMeshGenerator);
             AddComponent(CompMaterial);

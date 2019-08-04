@@ -16,15 +16,12 @@ namespace Tool
         public GameObject BorderPrefab;
         [Tooltip("World Prefab")]
         public GameObject WorldPrefab;
-        [Tooltip("Unit Collider Prefab")]
-        public GameObject UnitColliderPrefab;
 
         public enum Type : int
         {
             Rock,
             Border,
             World,
-            UnitCollider,
         }
 
         public void Init()
@@ -32,7 +29,6 @@ namespace Tool
             RockPrefab.tag = Tag;
             BorderPrefab.tag = Tag;
             WorldPrefab.tag = Tag;
-            UnitColliderPrefab.tag = Tag;
         }
 
         public GameObject Build(int type)
@@ -51,9 +47,6 @@ namespace Tool
                 case (int)Type.World:
                     obj = WorldPrefab;
                     break;
-                    
-                case (int)Type.UnitCollider:
-                	obj = UnitColliderPrefab;
 
                 default:
                     Debug.LogError("Type doesn't manage.");

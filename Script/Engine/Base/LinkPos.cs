@@ -36,8 +36,6 @@ namespace Engine
         public Face Mask = Face.None;
         public int Life = int.MaxValue;
         
-        public GameObject Owner = null;
-
         [SerializeField]
         private UnitPos Top = new UnitPos(0, 0, 0);
         [SerializeField]
@@ -60,15 +58,6 @@ namespace Engine
         public LinkPos(UnitPos center)
         {
             Center = new UnitPos(center);
-        }
-        
-        public void EndConstruct()
-        {
-        	// if we have not all neighboor
-        	if(Mask == All)
-        	{
-        		// spawn col
-        	}
         }
 
         public void Add(Neighbor where, UnitPos pos)

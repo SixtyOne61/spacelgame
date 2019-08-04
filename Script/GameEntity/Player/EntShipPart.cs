@@ -33,7 +33,7 @@ public class EntShipPart : CollideEntity
     public void Init(Tool.ShipPart part)
     {
     	UnitPos posInit = part.Cubes[0];
-    	X = new Vector2(posInit.x, posInit.x);
+    	//X = new Vector2(posInit.x, posInit.x);
     	Y = new Vector2(posInit.y, posInit.y);
     	Z = new Vector2(posInit.z, posInit.z);
     	
