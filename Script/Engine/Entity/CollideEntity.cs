@@ -27,7 +27,7 @@ namespace Engine
             if (MyMeshCollider)
             {
                 MyMeshCollider.convex = true;
-                MyMeshCollider.isTrigger = true;
+                MyMeshCollider.isTrigger = false;
                 RefreshColliderMesh();
             }
         }
@@ -56,6 +56,14 @@ namespace Engine
             if (LinkPosList.Count == 0)
             {
                 Tool.Builder.Instance.DestroyGameObject(gameObject, false);
+            }
+        }
+
+        public void OnCollisionEnter(Collision other)
+        {
+            if (gameObject.tag.GetHashCode() == other.gameObject.tag.GetHashCode())
+            {
+                return;
             }
         }
 

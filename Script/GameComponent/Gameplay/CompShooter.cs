@@ -67,7 +67,8 @@ public class CompShooter : ComponentTrigger
             if (_timerBulletTrigger[i].IsAvailable)
             {
                 _timerBulletTrigger[i].Start();
-                Builder.Instance.Build(Builder.FactoryType.Gameplay, (int)Tool.BuilderGameplay.Type.Bullet, _bulletSpawners[i].position, _bulletSpawners[i].rotation, Owner.transform.parent);
+                GameObject go = Builder.Instance.Build(Builder.FactoryType.Gameplay, (int)Tool.BuilderGameplay.Type.Bullet, _bulletSpawners[i].position, _bulletSpawners[i].rotation, Owner.transform.parent);
+                //Physics.IgnoreCollision(go.GetComponent<Collider>(), Owner.GetComponent<Collider>());
                 return true;
             }
         }

@@ -4,6 +4,8 @@ using UnityEngine;
 using Engine;
 using Tool;
 
+// TO DO : ent player must have a collider entity for all ship
+
 public class EntPlayer : SpacelEntity
 {
     public CompController ComponentController;
@@ -101,6 +103,23 @@ public class EntPlayer : SpacelEntity
                 partEntity = _shipPartsEntity[part.Key];
                 // init list of position in entity ship part
                 partEntity.Init(part.Value);
+            }
+        }
+
+        // ignore collision
+        foreach(KeyValuePair<int, EntShipPart> shipPart in _shipPartsEntity)
+        {
+            if(shipPart.Value)
+            {
+                Collider colliderComp = shipPart.Value.GetComponent<Collider>();
+                foreach (KeyValuePair<int, EntShipPart> shipPartOther in _shipPartsEntity)
+                {
+                    if(shipPartOther.Value == null || shipPart.Value.GetHashCode() == shipPartOther.Value.GetHashCode())
+                    {
+                        continue;
+                    }
+                    Physics.IgnoreCollision(colliderComp, shipPartOther.Value.GetComponent<Collider>());
+                }
             }
         }
     }
