@@ -24,6 +24,11 @@ public class CompMeshGenerator : ComponentMeshBase
         _vertices.Clear();
         _triangles.Clear();
 
+        if(ParamCubeSize == null)
+        {
+            return;
+        }
+
         // we need to determine the outline of the form
         float size = ParamCubeSize.Value;
         foreach (LinkPos curr in LinkPosList)

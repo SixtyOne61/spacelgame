@@ -10,8 +10,6 @@ namespace Tool
         public static string Tag = "World";
 
         // prefab for world
-        [Tooltip("Rock Prefab")]
-        public GameObject RockPrefab;
         [Tooltip("Border Prefab")]
         public GameObject BorderPrefab;
         [Tooltip("World Prefab")]
@@ -19,14 +17,12 @@ namespace Tool
 
         public enum Type : int
         {
-            Rock,
             Border,
             World,
         }
 
         public void Init()
         {
-            RockPrefab.tag = Tag;
             BorderPrefab.tag = Tag;
             WorldPrefab.tag = Tag;
         }
@@ -36,10 +32,6 @@ namespace Tool
             GameObject obj = null;
             switch (type)
             {
-                case (int)Type.Rock:
-                    obj = RockPrefab;
-                    break;
-
                 case (int)Type.Border:
                     obj = BorderPrefab;
                     break;

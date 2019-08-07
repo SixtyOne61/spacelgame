@@ -152,33 +152,33 @@ namespace Engine
         	Ray = Mathf.Max(distx, Mathf.Max(disty, distz));
         }
         
-        public bool HitSphere(ComponentCollisionDeprecated comp)
-        {
-        	//aabb from comp
-        	BBBase b2 = comp.BBox;
-        	Vector3 centerWorld = b2.Owner.TransformPoint(b2.Center);
-        	Vector3 centerLocal = Owner.InverseTransformPoint(centerWorld);
-        	
-        	float distance = Vector3.Distance(Center, centerLocal);
-        	return distance <= Ray + b2.Ray;
-        }
-
-        public bool HitOBB(ComponentCollisionDeprecated comp, out Vector3 out_vmin, out Vector3 out_vmax)
-        {
-            // aabb from comp
-            BBBase b2 = comp.BBox;
-            // transform Vertex1 (full min) and Vertex7 (full max) from comp to our local space
-            UnitPos v1 = b2.Vertex1;
-            UnitPos v7 = b2.Vertex7;
-
-            Vector3 v1World = b2.Owner.TransformPoint(new Vector3(v1.x, v1.y, v1.z));
-            Vector3 v7World = b2.Owner.TransformPoint(new Vector3(v7.x, v7.y, v7.z));
-
-            out_vmin = Owner.InverseTransformPoint(v1World);
-            out_vmax = Owner.InverseTransformPoint(v7World);
-
-            return HitAABB(out_vmin, out_vmax);
-        }
+//         public bool HitSphere(ComponentCollisionDeprecated comp)
+//         {
+//         	//aabb from comp
+//         	BBBase b2 = comp.BBox;
+//         	Vector3 centerWorld = b2.Owner.TransformPoint(b2.Center);
+//         	Vector3 centerLocal = Owner.InverseTransformPoint(centerWorld);
+//         	
+//         	float distance = Vector3.Distance(Center, centerLocal);
+//         	return distance <= Ray + b2.Ray;
+//         }
+// 
+//         public bool HitOBB(ComponentCollisionDeprecated comp, out Vector3 out_vmin, out Vector3 out_vmax)
+//         {
+//             // aabb from comp
+//             BBBase b2 = comp.BBox;
+//             // transform Vertex1 (full min) and Vertex7 (full max) from comp to our local space
+//             UnitPos v1 = b2.Vertex1;
+//             UnitPos v7 = b2.Vertex7;
+// 
+//             Vector3 v1World = b2.Owner.TransformPoint(new Vector3(v1.x, v1.y, v1.z));
+//             Vector3 v7World = b2.Owner.TransformPoint(new Vector3(v7.x, v7.y, v7.z));
+// 
+//             out_vmin = Owner.InverseTransformPoint(v1World);
+//             out_vmax = Owner.InverseTransformPoint(v7World);
+// 
+//             return HitAABB(out_vmin, out_vmax);
+//         }
 
         private bool HitAABB(Vector3 min, Vector3 max)
         {

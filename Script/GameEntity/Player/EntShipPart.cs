@@ -5,7 +5,7 @@ using UnityEngine;
 using Engine;
 using Tool;
 
-public class EntShipPart : CollideEntity
+public class EntShipPart : VolumeEntity
 {
     private List<LinkPos> _removed = new List<LinkPos>();
     private EntRemovedShip _mirrorRemoved;
@@ -61,35 +61,22 @@ public class EntShipPart : CollideEntity
         CompMaterial.ParamMaterial.Material = part.Param.Material;
     }
 
-    // TO DO : facto with base
-    public override bool RemoveAt(int index, int dmg)
+    public override bool RemoveAt(int _index, ref LinkPos _remove)
     {
-        LinkPos remove = LinkPosList.ElementAt(index);
-
-        remove.Life -= dmg;
-
-        // we don't remove this component, we have life
-        if (remove.Life > 0)
-        {
-            return false;
-        }
-
+        base.RemoveAt(_index, ref _remove);
         // spawn a loot on this pos
-        SpawnLoot(remove);
-
-        LinkPosList.RemoveAt(index);
-        _flagRefresh = true;
+        SpawnLoot(_remove);
 
         // for rebuild
-        _removed.Add(remove);
+        _removed.Add(_remove);
         // for generic debug
-        _debugRemove.Add(remove);
+        _debugRemove.Add(_remove);
         return true;
     }
 
     private void SpawnLoot(LinkPos pos)
     {
-    	Vector3 worldPos =  transform.TransformPoint(new Vector3(pos.Center.x, pos.Center.y, pos.Center.z));
+    	Vector3 worldPos = transform.TransformPoint(new Vector3(pos.Center.x, pos.Center.y, pos.Center.z));
     	LootManager.Instance.AddLoot(worldPos, ParamAttribut.Life);
     }
 

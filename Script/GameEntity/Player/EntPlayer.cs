@@ -107,38 +107,22 @@ public class EntPlayer : CollideEntity
                 partEntity.Init(part.Value);
             }
         }
-        
-        //CombineMesh();
-
-        // ignore collision
-        foreach(KeyValuePair<int, EntShipPart> shipPart in _shipPartsEntity)
-        {
-            if(shipPart.Value)
-            {
-                Collider colliderComp = shipPart.Value.GetComponent<Collider>();
-                foreach (KeyValuePair<int, EntShipPart> shipPartOther in _shipPartsEntity)
-                {
-                    if(shipPartOther.Value == null || shipPart.Value.GetHashCode() == shipPartOther.Value.GetHashCode())
-                    {
-                        continue;
-                    }
-                    Physics.IgnoreCollision(colliderComp, shipPartOther.Value.GetComponent<Collider>());
-                }
-            }
-        }
     }
     
     private void CombineMesh()
     {
-    	MeshFilter[] meshs = new MeshFilter[_shipPartsEntity.Count];
+    	CombineInstance[] meshs = new CombineInstance[_shipPartsEntity.Count];
+        int i = 0;
     	foreach(KeyValuePair<int, EntShipPart> shipPart in _shipPartsEntity)
     	{
-    		meshs[i].mesh = shipPart.Value.CompMeshGenerator.CustomMesh;
-    		meshs[i].transform = shipPart.Value.transform.LocalToWorldMatrix;   		
+            meshs[i].mesh = shipPart.Value.GetComponent<MeshFilter>().mesh;
+            meshs[i].transform = shipPart.Value.transform.localToWorldMatrix;
+            ++i;
     	}
-    	MeshFilter meshFilter = GetComponent<MeshFilter>();
-    	meshFilter.mesh = new Mesh();
-    	meshFilter.mesh.CombineMeshes(meshs);
+
+        MeshCollider playerMeshCollider = GetComponent<MeshCollider>();
+        playerMeshCollider.sharedMesh = new Mesh();
+        playerMeshCollider.sharedMesh.CombineMeshes(meshs);
     }
 
     private void Spawn(ref GameObject obj, Tool.ShipPart part)
@@ -185,10 +169,6 @@ public class EntPlayer : CollideEntity
             // TO DO :
             Debug.Log("Your ship is dead");
         }
-    }
-    
-    public override bool RemoveAt(int index, int dmg)
-    {
     }
 }
     

@@ -31,13 +31,13 @@ namespace Tool
             return result;
         }
 
-        public static void Export(Dictionary<int, CollideEntity> shipParts, string shipName, Transform cameraParent, Transform shipParent, List<Transform> shootingsSpawn, List<Transform> speedFxSpawn)
+        public static void Export(Dictionary<int, VolumeEntity> shipParts, string shipName, Transform cameraParent, Transform shipParent, List<Transform> shootingsSpawn, List<Transform> speedFxSpawn)
         {
             // add root in xml
             XDocument xmlDoc = new XDocument(new XElement("ShipDesc"));
 
             // for each ship part
-            foreach (KeyValuePair<int, CollideEntity> part in shipParts)
+            foreach (KeyValuePair<int, VolumeEntity> part in shipParts)
             {
                 // root of part
                 XElement xmlPart = new XElement("Part");

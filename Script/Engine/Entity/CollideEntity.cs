@@ -50,15 +50,6 @@ namespace Engine
             base.FixedUpdate();
         }
 
-        public virtual void Alive()
-        {
-            // check if object need to be destroy
-            if (LinkPosList.Count == 0)
-            {
-                Tool.Builder.Instance.DestroyGameObject(gameObject, false);
-            }
-        }
-
         public void OnCollisionEnter(Collision other)
         {
             if (gameObject.tag.GetHashCode() == other.gameObject.tag.GetHashCode())
@@ -81,7 +72,7 @@ namespace Engine
                 Vector3 closest = other.ClosestPoint(worldLocation);
                 if(LinkPosList[i].HasContact(transform.InverseTransformPoint(closest), CompMeshGenerator.ParamCubeSize.Value))
                 {
-                    RemoveAt(i, ParamAttribut.Damage);
+                    ApplyDmg(i, ParamAttribut.Damage);
                 }
             }
         }
