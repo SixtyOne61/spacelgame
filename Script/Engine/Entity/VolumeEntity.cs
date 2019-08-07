@@ -74,6 +74,19 @@ namespace Engine
                 _flagRefresh = false;
             }
         }
+        
+        public virtual void ApplyDmg(int _index, int _dmg)
+        {
+        	LinkPos remove = LinkPosList.ElementAt(_index);
+
+            remove.Life -= _dmg;
+
+            // we don't remove this component, we have life
+            if (remove.Life <= 0)
+            {
+                RemoveAt(_index, _dmg);
+            }
+        }
 
         // TO DO : facto with EntShipPart
         public virtual bool RemoveAt(int index, int dmg)
