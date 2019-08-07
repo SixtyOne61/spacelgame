@@ -33,7 +33,7 @@ namespace Engine
             AddComponent(CompMaterial);
             base.Start();
 
-            GetComponent<MeshFilter>().mesh = CompMeshGenerator.CustomMesh;
+            //GetComponent<MeshFilter>().mesh = CompMeshGenerator.CustomMesh;
         }
 
         private void DispashLinkPos()

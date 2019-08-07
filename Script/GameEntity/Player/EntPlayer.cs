@@ -6,7 +6,7 @@ using Tool;
 
 // TO DO : ent player must have a collider entity for all ship
 
-public class EntPlayer : SpacelEntity
+public class EntPlayer : CollideEntity
 {
     public CompController ComponentController;
     public CompShooter ComponentShooter;
@@ -58,6 +58,8 @@ public class EntPlayer : SpacelEntity
 
         SpawnShipPart(ref shipParts);
         base.Start();
+        
+        CombineMesh();
     }
 
     private void SetParent(ref List<Transform> trs)
@@ -105,6 +107,8 @@ public class EntPlayer : SpacelEntity
                 partEntity.Init(part.Value);
             }
         }
+        
+        //CombineMesh();
 
         // ignore collision
         foreach(KeyValuePair<int, EntShipPart> shipPart in _shipPartsEntity)
@@ -122,6 +126,19 @@ public class EntPlayer : SpacelEntity
                 }
             }
         }
+    }
+    
+    private void CombineMesh()
+    {
+    	MeshFilter[] meshs = new MeshFilter[_shipPartsEntity.Count];
+    	foreach(KeyValuePair<int, EntShipPart> shipPart in _shipPartsEntity)
+    	{
+    		meshs[i].mesh = shipPart.Value.CompMeshGenerator.CustomMesh;
+    		meshs[i].transform = shipPart.Value.transform.LocalToWorldMatrix;   		
+    	}
+    	MeshFilter meshFilter = GetComponent<MeshFilter>();
+    	meshFilter.mesh = new Mesh();
+    	meshFilter.mesh.CombineMeshes(meshs);
     }
 
     private void Spawn(ref GameObject obj, Tool.ShipPart part)
@@ -169,5 +186,10 @@ public class EntPlayer : SpacelEntity
             Debug.Log("Your ship is dead");
         }
     }
+    
+    public override bool RemoveAt(int index, int dmg)
+    {
+    }
 }
+    
     
