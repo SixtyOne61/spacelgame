@@ -56,6 +56,9 @@ namespace Engine
             {
                 return;
             }
+
+            ContactPoint[] points = new ContactPoint[other.contactCount];
+            other.GetContacts(points);
         }
 
         public void OnTriggerStay(Collider other)
