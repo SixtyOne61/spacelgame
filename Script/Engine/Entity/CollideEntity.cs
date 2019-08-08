@@ -59,6 +59,21 @@ namespace Engine
 
             ContactPoint[] points = new ContactPoint[other.contactCount];
             other.GetContacts(points);
+            
+            Hit(points);
+        }
+        
+        public virtual void Hit(ContactPoint[] _points)
+        {
+        	foreach(ContactPoint contactPoint in _points)
+            {
+            	Vector3 localPoint = transform.TransformPoint(contactPoint.point);
+            	int index = LinkPosList.Count / 2;
+            	if(LinkPosList[index].Center.x + CubeSize < localPoint.x)
+            	{
+            		// recursive find index 
+            	}
+            }
         }
 
         public void OnTriggerStay(Collider other)
