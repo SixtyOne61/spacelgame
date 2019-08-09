@@ -65,15 +65,38 @@ namespace Engine
         
         public virtual void Hit(ContactPoint[] _points)
         {
+        	float cubeSize = CompMeshGenerator.ParamCubeSize.Value;
         	foreach(ContactPoint contactPoint in _points)
             {
             	Vector3 localPoint = transform.TransformPoint(contactPoint.point);
-            	int index = LinkPosList.Count / 2;
-            	if(LinkPosList[index].Center.x + CubeSize < localPoint.x)
-            	{
-            		// recursive find index 
-            	}
+            	RecursiveFind(0, LinkPosList.Count, localPoint, cubeSize);
             }
+        }
+        
+        public virtual bool RecursiveFind(int _start, int _end, Vector3 _pos, float _cubeSize)
+        {
+        	if(_start - _end < 10)
+        	{
+        		return Find(_start, _end, _pos, _cubeSize);
+        	}
+        	else
+        	{
+        		int half = (_end + _start) / 2;
+        		if(LinkPosList[half].Center.x + _cubeSize < _pos.x)
+        		{
+        			return RecursiveFind(_start, half, _pos, _cubeSize);
+        		}
+        		else
+        		{
+        			return RecursiveFind(_half, _end, _pos, _cubeSize);
+        		}
+        	}
+        	
+        }
+        
+        public virtual bool Find(int _start, int _end, Vector3 _pos, float _cubeSize)
+        {
+        	
         }
 
         public void OnTriggerStay(Collider other)
