@@ -37,6 +37,10 @@ namespace Engine
             base.Refresh();
             // check if object was destroy
             Alive();
+            if(MyMeshCollider)
+            {
+                RefreshColliderMesh();
+            }
         }
         
         private void RefreshColliderMesh()
@@ -59,63 +63,62 @@ namespace Engine
 
             ContactPoint[] points = new ContactPoint[other.contactCount];
             other.GetContacts(points);
-            
-            Hit(points);
+
+            int dmg = other.gameObject.GetComponent<CollideEntity>().ParamAttribut.Damage;
+
+            Hit(points, dmg);
         }
         
-        public virtual void Hit(ContactPoint[] _points)
+        public virtual void Hit(ContactPoint[] _points, int _dmg)
         {
         	float cubeSize = CompMeshGenerator.ParamCubeSize.Value;
         	foreach(ContactPoint contactPoint in _points)
             {
             	Vector3 localPoint = transform.TransformPoint(contactPoint.point);
-            	RecursiveFind(0, LinkPosList.Count, localPoint, cubeSize);
+            	RecursiveFind(0, LinkPosList.Count, localPoint, cubeSize, _dmg);
             }
         }
         
-        public virtual bool RecursiveFind(int _start, int _end, Vector3 _pos, float _cubeSize)
+        public virtual bool RecursiveFind(int _start, int _end, Vector3 _pos, float _cubeSize, int _dmg)
         {
         	if(_start - _end < 10)
         	{
-        		return Find(_start, _end, _pos, _cubeSize);
+        		return Find(_start, _end, _pos, _cubeSize, _dmg);
         	}
         	else
         	{
         		int half = (_end + _start) / 2;
         		if(LinkPosList[half].Center.x + _cubeSize < _pos.x)
         		{
-        			return RecursiveFind(_start, half, _pos, _cubeSize);
+        			return RecursiveFind(_start, half, _pos, _cubeSize, _dmg);
         		}
         		else
         		{
-        			return RecursiveFind(_half, _end, _pos, _cubeSize);
+        			return RecursiveFind(half, _end, _pos, _cubeSize, _dmg);
         		}
         	}
         	
         }
         
-        public virtual bool Find(int _start, int _end, Vector3 _pos, float _cubeSize)
+        public virtual bool Find(int _start, int _end, Vector3 _pos, float _cubeSize, int _dmg)
         {
-        	
-        }
-
-        public void OnTriggerStay(Collider other)
-        {
-            if(gameObject.tag.GetHashCode() == other.gameObject.tag.GetHashCode())
+            bool ret = false;
+            for(int i = _start; i < _end; ++i)
             {
-                return;
-            }
-
-            // for each link pos, try to remove
-            for(int i = 0; i < LinkPosList.Count; ++i)
-            {
-                Vector3 worldLocation = transform.TransformPoint(LinkPosList[i].Center.ToVec3());
-                Vector3 closest = other.ClosestPoint(worldLocation);
-                if(LinkPosList[i].HasContact(transform.InverseTransformPoint(closest), CompMeshGenerator.ParamCubeSize.Value))
+                if (i < LinkPosList.Count)
                 {
-                    ApplyDmg(i, ParamAttribut.Damage);
+                    if (LinkPosList[i].HasContact(_pos, _cubeSize))
+                    {
+                        ret = true;
+                        ApplyDmg(i, _dmg);
+                    }
+                }
+                else
+                {
+                    return ret;
                 }
             }
+            return ret;
         }
     }
 }
