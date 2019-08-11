@@ -18,10 +18,12 @@ public class EntBullet : CollideEntity
 
         AddComponent(ComponentLife);
         base.Start();
+
+        MyMeshCollider.convex = true;
 	}
 	
 	// Update is called once per frame
-	override public void Update ()
+	public override void Update ()
     {
         base.Update();
 
@@ -29,6 +31,17 @@ public class EntBullet : CollideEntity
         float ratioTimer = ComponentLife.GetRatio();
         float evaluteSpeed = ParamSpeed.Value * ParamSpeed.Curve.Evaluate(ratioTimer);
         transform.position += transform.forward * evaluteSpeed * Time.deltaTime;
+    }
+
+    public override void Hit(ContactPoint[] _points, int _dmg)
+    {
+        // will destroy object
+        LinkPosList.Clear();
+        _flagRefresh = true;
+        // spawn spark
+
+        GameObject obj = Tool.Builder.Instance.Build(Tool.Builder.FactoryType.Fx, (int)Tool.BuilderFx.Type.Sparkle, transform.position, Quaternion.identity, null);
+        //obj.GetComponent<EntSparkle>().ImpactNormal = _points[0].normal;
     }
 
 #if (UNITY_EDITOR)

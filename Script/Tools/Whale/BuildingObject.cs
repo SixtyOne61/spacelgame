@@ -13,6 +13,7 @@ namespace Tool
 
         // list of pos
         private List<LinkPos> _desc = new List<LinkPos>();
+        private List<LinkPos> _outer = new List<LinkPos>();
 
         public BuildingObject(SCRNoise param)
         {
@@ -22,6 +23,10 @@ namespace Tool
         public bool Add(LinkPos pos)
         {
             _desc.Add(pos);
+            if(!pos.IsSurrounded())
+            {
+                _outer.Add(pos);
+            }
             return true;
         }
 
@@ -40,6 +45,7 @@ namespace Tool
 
             CollideEntity collideEntity = obj.GetComponent<CollideEntity>();
             collideEntity.LinkPosArray = _desc.ToArray();
+            collideEntity.OuterPosArray = _outer.ToArray();
             collideEntity.ParamAttribut = Param.ParamAttribut;
             collideEntity.CompMeshGenerator.ParamCubeSize = Param.ParamCubeSize;
             collideEntity.CompMaterial.ParamMaterial = Param.ParamMaterial;

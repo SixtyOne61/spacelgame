@@ -9,7 +9,7 @@ namespace Engine
     {
         // need it for whale, export fail without array
         public LinkPos[] LinkPosArray;
-                
+        public LinkPos[] OuterPosArray;
         // mesh collider on this entity
         public MeshCollider MyMeshCollider;
 
@@ -20,13 +20,18 @@ namespace Engine
                 LinkPosList = LinkPosArray.ToList();
             }
 
+            if(OuterPosArray.Length != 0)
+            {
+                _outerPos = OuterPosArray.ToList();
+            }
+
             base.Start();
 
             // init mesh collider
             MyMeshCollider = GetComponent<MeshCollider>();
             if (MyMeshCollider)
             {
-                MyMeshCollider.convex = true;
+                MyMeshCollider.convex = false;
                 MyMeshCollider.isTrigger = false;
                 RefreshColliderMesh();
             }

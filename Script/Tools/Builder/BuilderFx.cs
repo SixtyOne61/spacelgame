@@ -15,10 +15,14 @@ namespace Tool
         [Tooltip("Speed fx Prefab")]
         public GameObject SpeedFxPrefab;
 
+        [Tooltip("Spark fx Prefab")]
+        public GameObject SparkFxPrefab;
+
         public enum Type : int
         {
             Loot,
             Speed,
+            Sparkle
         }
 
         public void Init()
@@ -37,6 +41,10 @@ namespace Tool
 
                 case (int)Type.Speed:
                     obj = SpeedFxPrefab;
+                    break;
+
+                case (int)Type.Sparkle:
+                    obj = SparkFxPrefab;
                     break;
 
                 default:

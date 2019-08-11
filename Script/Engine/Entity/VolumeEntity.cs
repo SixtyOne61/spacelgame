@@ -17,8 +17,11 @@ namespace Engine
 
         [HideInInspector]
         public List<LinkPos> LinkPosList = new List<LinkPos>();
+        
         // set true for refresh on next frame
         protected bool _flagRefresh = false;
+        // outler pos
+        protected List<LinkPos> _outerPos = new List<LinkPos>();
 
         // debug
         protected List<LinkPos> _debugRemove = new List<LinkPos>();

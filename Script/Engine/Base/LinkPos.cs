@@ -79,6 +79,11 @@ namespace Engine
             RemoveMask(where);
         }
 
+        public bool IsSurrounded()
+        {
+            return Mask == Face.All;
+        }
+
 // to do change enum will be cool
         public bool Has(Neighbor where)
         {
