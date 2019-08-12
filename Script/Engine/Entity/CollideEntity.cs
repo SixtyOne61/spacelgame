@@ -76,33 +76,27 @@ namespace Engine
         
         public virtual void Hit(ContactPoint[] _points, int _dmg)
         {
+        	int delta = Mathf.Max((int)Mathf.Ceil(-0.5f + Mathf.Sqrt(0.25f * LinkPosList.Count)), 1);
         	float cubeSize = CompMeshGenerator.ParamCubeSize.Value;
         	foreach(ContactPoint contactPoint in _points)
             {
             	Vector3 localPoint = transform.TransformPoint(contactPoint.point);
-            	RecursiveFind(0, LinkPosList.Count, localPoint, cubeSize, _dmg);
+            	RecursiveFind(0, delta, localPoint, cubeSize, _dmg, delta);
             }
         }
         
-        public virtual bool RecursiveFind(int _start, int _end, Vector3 _pos, float _cubeSize, int _dmg)
+        public virtual bool RecursiveFind(int _start, int _end, Vector3 _pos, float _cubeSize, int _dmg, int _delta)
         {
-        	if(_start - _end < 10)
+        	if(_end >= LinkPosList.Count || LinkPosList[_end].Center.x + _cubeSize > _pos.x)
         	{
         		return Find(_start, _end, _pos, _cubeSize, _dmg);
         	}
         	else
         	{
-        		int half = (_end + _start) / 2;
-        		if(LinkPosList[half].Center.x + _cubeSize < _pos.x)
-        		{
-        			return RecursiveFind(_start, half, _pos, _cubeSize, _dmg);
-        		}
-        		else
-        		{
-        			return RecursiveFind(half, _end, _pos, _cubeSize, _dmg);
-        		}
-        	}
-        	
+        		_start += _delta;
+        		_end += _delta;
+        		return RecursiveFind(_start, _end, _pos, _cubeSize, _dmg, _delta);
+        	}	
         }
         
         public virtual bool Find(int _start, int _end, Vector3 _pos, float _cubeSize, int _dmg)
