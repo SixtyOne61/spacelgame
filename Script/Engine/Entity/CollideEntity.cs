@@ -81,7 +81,10 @@ namespace Engine
         	foreach(ContactPoint contactPoint in _points)
             {
             	Vector3 localPoint = transform.TransformPoint(contactPoint.point);
-            	RecursiveFind(0, delta, localPoint, cubeSize, _dmg, delta);
+            	if(!RecursiveFind(0, delta, localPoint, cubeSize, _dmg, delta))
+                {
+                    Debug.Log("Hit without find");
+                }
             }
         }
         

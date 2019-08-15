@@ -22,7 +22,7 @@ public class EntShipPart : VolumeEntity
     [HideInInspector]
     public Vector2 Z;
     
-    public GameObject PlayerOwner;
+    public EntPlayer PlayerOwner;
 
     public override void Start()
     {
@@ -32,6 +32,8 @@ public class EntShipPart : VolumeEntity
         _mirrorRemoved = Builder.Instance.Build(Builder.FactoryType.Ship, (int)BuilderShip.Type.RemovedShip, transform.position, transform.rotation, transform).GetComponent<EntRemovedShip>();
         _mirrorRemoved.LinkPosList = _removed;
         _mirrorRemoved.CompMeshGenerator.ParamCubeSize = CompMeshGenerator.ParamCubeSize;
+
+        PlayerOwner.PartSpawned();
     }
 
     public void Init(Tool.ShipPart part)

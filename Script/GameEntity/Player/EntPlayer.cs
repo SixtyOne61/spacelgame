@@ -24,15 +24,22 @@ public class EntPlayer : CollideEntity
     // min max on each axis
     [HideInInspector]
     public Vector2 X;
+    [HideInInspector]
     public Vector2 Y;
+    [HideInInspector]
     public Vector2 Z;
     
 
     // contains all entity part of a player
     private Dictionary<int, EntShipPart> _shipPartsEntity = new Dictionary<int, EntShipPart>();
 
+    // nb part spawned
+    private int _nbPartSpawned = 0;
+
     public override void Start()
     {
+        _nbPartSpawned = 0;
+
         // add component
         AddComponent(ComponentController);
         AddComponent(ComponentShooter);
@@ -58,8 +65,6 @@ public class EntPlayer : CollideEntity
 
         SpawnShipPart(ref shipParts);
         base.Start();
-        
-        CombineMesh();
     }
 
     private void SetParent(ref List<Transform> trs)
@@ -87,7 +92,7 @@ public class EntPlayer : CollideEntity
                 partEntity = go.GetComponent<EntShipPart>();
                 // init list of position in entity ship part
                 partEntity.Init(part.Value);
-                partEntity.PlayerOwner = gameObject;
+                partEntity.PlayerOwner = this;
 
                 // update min and max
                 X.x = Mathf.Min(partEntity.X.x, X.x);
@@ -170,6 +175,20 @@ public class EntPlayer : CollideEntity
             // TO DO :
             Debug.Log("Your ship is dead");
         }
+    }
+
+    public void PartSpawned()
+    {
+        ++_nbPartSpawned;
+        if (_nbPartSpawned >= _shipPartsEntity.Count)
+        {
+            CombineMesh();
+        }
+    }
+
+    public override void Hit(ContactPoint[] _points, int _dmg)
+    {
+        
     }
 }
     
