@@ -87,6 +87,7 @@ public class EntPlayer : CollideEntity
                 partEntity = go.GetComponent<EntShipPart>();
                 // init list of position in entity ship part
                 partEntity.Init(part.Value);
+                partEntity.PlayerOwner = gameObject;
 
                 // update min and max
                 X.x = Mathf.Min(partEntity.X.x, X.x);

@@ -17,8 +17,12 @@ public class EntShipPart : VolumeEntity
     // min and max on each axis
     [HideInInspector]
     public Vector2 X;
+    [HideInInspector]
     public Vector2 Y;
+    [HideInInspector]
     public Vector2 Z;
+    
+    public GameObject PlayerOwner;
 
     public override void Start()
     {
