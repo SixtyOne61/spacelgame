@@ -179,6 +179,7 @@ namespace Tool
             {
                 // export all ship part in xml
                 // key was invalid
+                _pandaBuild.SortLocation();
                 XmlRW.Export(_pandaBuild.ShipPartEntities, NameExport, _pandaSettings.Camera, _pandaBuild.ShipParent, _pandaSettings.ShootingsSpawn, _pandaSettings.SpeedFxSpawn);
             }
 

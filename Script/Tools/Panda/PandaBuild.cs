@@ -133,5 +133,15 @@ namespace Tool
                 Builder.Instance.DestroyGameObject(ShipParent.gameObject, true);
             }
         }
+        
+        public void SortLocation()
+        {
+        	foreach(KeyValuePair<int, Engine.VolumeEntity> part in ShipPartEntities)
+        	{
+        		part.LinkPosList.Sort((p1, p2) => p1.Center.x > p2.Center.x ? 1 : (p1.Center.x == p2.Center.x ? (p1.Center.y > p2.Center.y ? 1 : (p1.Center.y == p2.Center.y ? (p1.Center.z > p2.Center.z ? 1 : -1) : -1) ) : -1));
+        	}
+        }
+        
+        
     }
 }
