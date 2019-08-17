@@ -188,7 +188,15 @@ public class EntPlayer : CollideEntity
 
     public override void Hit(ContactPoint[] _points, int _dmg)
     {
-        
+    	foreach(ContactPoint contactPoint in _points)
+       {
+       	Vector3 localPoint = transform.TransformPoint(contactPoint.point);
+            	
+      	foreach(KeyValuePair<int, EntShipPart> part in _shipPartsEntity)
+       	{
+       	
+       	}
+       }
     }
 }
     
